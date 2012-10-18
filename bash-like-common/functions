@@ -1,0 +1,155 @@
+function source_file_if_exists() {
+	if [ -f $1 ]; then
+		source $1;
+        else
+                echo "Attempted to source non-existant file: $1" >&2;
+	fi
+}
+
+# Path manipulation
+function path_ {
+        local path="$1";
+        echo -e ${path//:/\\n};
+}
+
+function path {
+        echo -e ${PATH//:/\\n};
+}
+
+function inPath {
+        path | grep -q -e "^$1$";
+        return $?;
+}
+
+function rmPath {
+	export PATH=$(path | grep -v "^$1$" | grep -v "^$" | paste -s -d ":" -);
+}
+
+function addPath {
+        STRIPPED=${PATH};
+        inPath $1;
+	if [ $? -eq 0 ]; then
+                rmPath $1;
+                STRIPPED=${PATH};
+	fi
+	if [ $# -gt 1 ]; then
+		PATH="$1:${STRIPPED}";
+	else
+		PATH="${STRIPPED}:$1";
+	fi
+	PATH=${PATH#:%:};
+	export PATH=${PATH//::/:};
+}
+
+function addIfNotInPath {
+        inPath $1;
+        if [ $? -ne 0 ]; then
+                addPath $1 $2;
+        fi
+}
+
+# Assorted
+function swap() {
+	[ $# -ne 2 ] && echo "swap: 2 arguments needed" && return 1
+
+	local TMPFILE=$(mktemp $1.XXXX)
+	[ ! -e $1 ] && echo "swap: $1 does not exist" && return 1
+	[ ! -e $2 ] && echo "swap: $2 does not exist" && return 1
+
+	mv "$1" $TMPFILE 
+	mv "$2" "$1"
+	mv $TMPFILE "$2"
+}
+
+function edsrc() {
+	if [ $# -ne 1 ]; then
+		echo "Usage: edsrc\nPlease give file(s) to edit" >&2;
+	else
+		${EDITOR} $1;
+		source $1;
+	fi
+}
+
+function man() {
+        /usr/bin/man $@ || (help $@ 2> /dev/null && help $@ | less)
+}
+
+function pd() {
+	if [[ $# -ge 1 ]]; then
+		choice="$1"
+	else
+		dirs -v
+		echo -n "? "
+		read choice
+	fi
+	if [[ -n $choice ]];
+	then
+		declare -i cnum="$choice"
+		if [[ $cnum != $choice ]];
+		then #choice is not numeric
+			choice=$(dirs -v | grep $choice | tail -1 | awk '{print $1}')
+			cnum="$choice"
+			if [[ -z $choice || $cnum != $choice ]];
+			then
+				echo "$choice not found"
+				return
+			fi
+		fi
+		choice="+$choice"
+	fi
+	pushd $choice
+}
+
+function has_screen() {
+	python -c 'import sys; sys.exit(0 if sys.argv[1].startswith("There is a screen on:") else 1)' \
+		"$(screen -ls | head -n1)";
+	echo $?;
+}
+
+function attachOrNewScreen {
+        if [ ${SSH_CONNECTION} ] || [ 0 -eq $(has_screen) ]; then
+                screen -list | grep -q Detached;
+                if [ $? -eq 0 ]; then
+                        screen -dr && exit;
+                fi
+        fi
+}
+
+function attachOrNewTmux {
+        if [[ ! -f ~/.notmux ]]; then
+                tmux has &> /dev/null;
+                if [ "$?" -eq "0" ]; then
+                        if [ ! -n "${TMUX}" ]; then
+                                if [[ "${SSH_CONNECTION}" != "" ]]; then
+                                        tmux attach -d && exit;
+                                else
+                                        tmux ls | grep -qF "attached";
+                                        if [ "$?" -ne "0" ]; then
+                                                tmux attach && exit;
+                                        fi
+                                fi
+                        fi
+                else
+                        tmux new && exit;
+                fi
+        fi
+}
+
+function cd_wd {
+        CDWDCACHE="~/.cd_wd_cache"
+        if [[ -e ${CDWDCACHE} ]]; then
+                cd $(cat ${CDWDCACHE});
+                rm -f ${CDWDCACHE};
+        fi
+}
+
+# OS X specific
+function sync_osx_tmpdir() {
+        if [[ "$(uname)" == "Darwin" ]]; then
+                export TMPDIR=$(osx_tmpdir.sh);
+        fi
+}
+function osx_finder_hidden() {
+    defaults write com.apple.finder AppleShowAllFiles TRUE;
+    killall Finder;
+}

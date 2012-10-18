@@ -1,0 +1,51 @@
+# Corrections
+alias ..='cd ..'
+alias vi='vim'
+alias suod='sudo'
+alias sl='ls'
+alias pusdh='pushd'
+
+alias rm='rm -i'
+alias cp='cp -iv'
+alias mv='mv -i'
+alias dirs='dirs -v'
+alias ssh='ssh -Y'
+alias ls='ls -lah'
+alias cdl='cd;ls'
+alias cls='clear;ls'
+alias mkdir='mkdir -p'
+alias less='less --RAW-CONTROL-CHARS -i'
+alias more='less'
+alias path='echo -e ${PATH//:/\\n}'
+alias tree='ls -lR'
+alias kint='kill -INT'
+alias kterm='kill -TERM'
+alias murder='kill -KILL'
+alias halt='echo "Really? Halt?"'
+alias reboot='echo "Really? Reboot?"'
+
+# Spelling
+alias ngninx='nginx'
+alias hisotry='history'
+
+alias max="osascript ~/Library/Scripts/KBmaximize.scpt"
+
+alias proj='vim ~/.project'
+
+alias as='sudo -u'
+
+alias gco='git checkout'
+alias gst='git status'
+alias gdiff='git diff --no-ext-diff'
+alias gitk='gitk --all &'
+alias glg='git log --graph --all --decorate --oneline'
+
+alias home='ssh synmantx.dyndns.org'
+alias ghdc='ssh ghdc.ucsd.edu'
+alias go='ssh goship.ucsd.edu'
+alias ocho='ssh ocho.ucsd.edu'
+alias terra='ssh terra.ucsd.edu'
+alias shera='ssh she-ra.ucsd.edu'
+alias alfredo='ssh alfredo.ucsd.edu'
+alias neoco='ssh neoco.ucsd.edu'
+alias fatlip='ssh fatlip.ucsd.edu'

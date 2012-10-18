@@ -1,0 +1,34 @@
+# Note the embeded space after the colon, I feel
+#  it just looks nicer with a blank between the
+#  text and console edge:
+#   '%{=b}%{G} Screens: '
+
+# This prints the window listing in blue:
+#   '%{b}%w'
+
+#caption always "%{Wb} %H %{Bk}| %{Ck}%-w%50>%{Cb} %n %t %{-}%+w%<%{- Wk}%{Bk} | %=%{Wb} %C "
+# This right-aligns what follows:
+#   '%='
+
+# This displays the time (hours and minutes) in 12hr format
+# and adds an AM/PM flag, in bold green:
+#   '%{G}%C%A'
+
+# The resultsing command give you a status line that
+#  looks like this:
+#   | Screens: 0* bash  <blanks zapped>         5:30PM  Fri, Jun/25/2004 |
+#  (The pipes indicate the edges of the xterm/console).
+
+# Green text, time, and date; windows in blue:
+# http://www.gnu.org/software/screen/manual/screen.html#String-Escapes
+hardstatus alwayslastline "%{dg}%H %{=b} %{-b}%{b}%-w %{=b}[%n.%t]%{-b} %+w %=%{dg}%c %D %Y-%m-%d"
+
+startup_message off
+msgwait 5
+activity "^G^G^Gactivity: window ~%" # window activity msg
+vbell_msg "bell: window ~%" # visual bell msg
+vbellwait 3
+allpartial off # Refresh entire screen on window change
+autodetach on # Auto detach session on hangup instead of terminating.
+
+defscrollback 4096

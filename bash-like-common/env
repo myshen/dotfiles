@@ -1,0 +1,59 @@
+# Set up environment
+# This is equivalent to .zshenv and .bash_profile
+export DOTFILES="${HOME}/.dotfiles";
+source "${DOTFILES}/bash-like-common/functions";
+
+source_file_if_exists /etc/profile;
+
+# PATHS #######################################################################
+
+# Note that these are in reverse actual order
+addPath "/usr/local/sbin" 1;
+addPath "/usr/local/bin" 1;
+addPath "/usr/local/share/python" 1;
+addPath "${DOTFILES}/bin" 1;
+addPath "." 1;
+
+export WKPATH="~/Documents";
+export MANPATH="\
+/usr/local/share/man:\
+${MANPATH}";
+
+# ENV #########################################################################
+export EDITOR="vim"
+export PAGER="less"
+export LESS='--RAW-CONTROL-CHARS -i'
+_src_hilite_path="/usr/local/Cellar/source-highlight/3.1.5/bin/src-hilite-lesspipe.sh";
+if [ -f ${_src_hilite_path} ]; then
+        export LESSOPEN="| ${_src_hilite_path} %s"
+fi
+
+export CLICOLOR=1;
+export LSCOLORS=ExFxCxDxBxegedabagacad;
+export PYTHONSTARTUP="~/.pythonstartup.py";
+
+# EXEC ########################################################################
+
+# Attempt to set termcap to something with 256 colors
+try_termcap="screen-256color";
+infocmp ${try_termcap} > /dev/null;
+if [ $? ]; then
+         export TERM="${try_termcap}";
+else
+        try_termcap="xterm-256color";
+        infocmp ${try_termcap} > /dev/null;
+        if [ $? ]; then
+                export TERM="${try_termcap}";
+        fi
+fi
+
+cd_wd;
+
+sync_osx_tmpdir;
+
+# Setup paths for package environment isolaters
+export WORKON_HOME="~/.pyvenv";
+source_file_if_exists /usr/local/share/python/virtualenvwrapper.sh;
+source_file_if_exists ~/.rvm/scripts/rvm;
+
+source_file_if_exists ~/.dotfiles_local/bash-like-common/env;
