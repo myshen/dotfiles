@@ -17,26 +17,34 @@ ECLR="${ESC}m\]"
 HOST_C="${ESC}1;37m\]"
 HOSTNAME=$(hostname);
 if [[ ${HOSTNAME} == 'watershed.ucsd.edu' ]]; then
-	HOST_C="${ESC}1;32m\]"
+	HOST_C="${ESC}1;34m\]"
 elif [[ ${HOSTNAME} == 'sui.ucsd.edu' ]]; then
-	HOST_C="${ESC}1;32m\]"
+	HOST_C="${ESC}1;34m\]"
 elif [[ ${HOSTNAME} == 'ghdc.ucsd.edu' ]]; then
 	HOST_C="${ESC}1;31m\]"
 elif [[ ${HOSTNAME} == 'goship.ucsd.edu' ]]; then
-	HOST_C="${ESC}1;36m\]"
+	HOST_C="${ESC}1;35m\]"
 elif [[ ${HOSTNAME} == 'terra.ucsd.edu' ]]; then
-	HOST_C="${ESC}1;34m\]"
+	HOST_C="${ESC}1;36m\]"
 fi
-CWD_C="${ESC}0;33m\]"
-RESET_C="${ESC}0m\]"
+CWD_C="${ESC}0;33m\]";
+RESET_C="${ESC}0m\]";
+BLACK_C="${ESC}0;30m\]";
+GREEN_C="${ESC}0;32m\]";
 
 # see asciicolors.py TERMCOLORS
 
-prompt_div_char="~";
+prompt_div_char=" ";
 # Recalculated every time the prompt is shown by prompt_command
 prompt_div="${prompt_div_char}";
 
-export PS1_BASE="${HOST_C}\h${ECLR} ${CWD_C}\w${ECLR}${HOST_C} $ ${ECLR}";
+PS1_BASE="";
+PS1_BASE="${PS1_BASE}${HOST_C}. ";
+PS1_BASE="${PS1_BASE}\u${BLACK_C}@${GREEN_C}\H";
+PS1_BASE="${PS1_BASE}${BLACK_C}:${CWD_C}\W${ECLR} ${HOST_C}\s\n";
+PS1_BASE="${PS1_BASE}  ? | \j\n";
+PS1_BASE="${PS1_BASE}  \! ${GREEN_C}\$ ${ECLR}";
+export PS1_BASE;
 
 function make_prompt_divider {
         header="$1 ";
@@ -64,7 +72,7 @@ function make_prompt_divider {
 
 function prompt_command {
         status=$?;
-        trailer="$(date +%T)";
+        trailer="$(date +'%F %T')";
         header="";
         if [[ ${status} -ne 0 ]] && [[ ${status} -ne 146 ]]; then
                 header=${status};
