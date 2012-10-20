@@ -3,7 +3,7 @@
 export DOTFILES="${HOME}/.dotfiles";
 source "${DOTFILES}/bash-like-common/functions";
 
-source_file_if_exists /etc/profile;
+source_file_if_exists /etc/profile &> /dev/null;
 
 # PATHS #######################################################################
 
@@ -51,7 +51,7 @@ cd_wd;
 
 # Setup paths for package environment isolaters
 export WORKON_HOME="~/.pyvenv";
-source_file_if_exists /usr/local/share/python/virtualenvwrapper.sh;
-source_file_if_exists ~/.rvm/scripts/rvm;
+source_file_if_exists /usr/local/share/python/virtualenvwrapper.sh &> /dev/null;
+source_file_if_exists ~/.rvm/scripts/rvm &> /dev/null;
 
-source_file_if_exists ~/.dotfiles_local/bash-like-common/env;
+source_file_if_exists ~/.dotfiles_local/bash-like-common/env &> /dev/null;

@@ -151,6 +151,11 @@ function cd_wd {
 }
 
 # OS X specific
+which reattach-to-user-namespace &> /dev/null;
+if [[ "$(uname)" == "Darwin" ]] && [ 0 -eq $? ]; then
+        alias tmux="tmux -f ~/.dotfiles/tmux/.tmux-osx.conf";
+fi
+
 function sync_osx_tmpdir() {
         # This is not needed for screen and reattach-to-user-namespace covers
         # tmux. I.e. this is no longer needed.

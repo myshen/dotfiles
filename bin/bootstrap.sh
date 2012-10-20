@@ -25,4 +25,4 @@ link_dotfile .hushlogin;
 link_dotfile .gitconfig;
 link_dotfile .pythonstartup.py;
 link_dotfile .screenrc;
-link_dotfile .tmux.conf;
+link_dotfiles .tmux.conf    tmux/.tmux.conf;
