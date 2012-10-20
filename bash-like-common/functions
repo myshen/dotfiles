@@ -101,30 +101,37 @@ function pd() {
 }
 
 function has_screen() {
-	python -c 'import sys; sys.exit(0 if sys.argv[1].startswith("There is a screen on:") else 1)' \
+	python -c 'import sys; sys.exit(1 if sys.argv[1].startswith("There is a screen on:") else 0)' \
 		"$(screen -ls | head -n1)";
-	echo $?;
 }
 
 function attachOrNewScreen {
-        if [ ${SSH_CONNECTION} ] || [ 0 -eq $(has_screen) ]; then
-                screen -list | grep -q Detached;
-                if [ $? -eq 0 ]; then
-                        screen -dr && exit;
+        if [[ ! -f ~/.nomultiplex ]]; then
+                if [ 1 -eq $(has_screen; echo $?) ]; then
+                        if [[ "${SSH_CONNECTION}" != "" ]]; then
+                                screen -dr && exit;
+                        else
+                                screen -list | grep -q Detached;
+                                if [ 0 -eq $? ]; then
+                                        screen -dr && exit;
+                                fi
+                        fi
+                else
+                        screen && exit;
                 fi
         fi
 }
 
 function attachOrNewTmux {
-        if [[ ! -f ~/.notmux ]]; then
+        if [[ ! -f ~/.nomultiplex ]]; then
                 tmux has &> /dev/null;
-                if [ "$?" -eq "0" ]; then
+                if [ 0 -eq $? ]; then
                         if [ ! -n "${TMUX}" ]; then
                                 if [[ "${SSH_CONNECTION}" != "" ]]; then
                                         tmux attach -d && exit;
                                 else
                                         tmux ls | grep -qF "attached";
-                                        if [ "$?" -ne "0" ]; then
+                                        if [ 0 -ne $? ]; then
                                                 tmux attach && exit;
                                         fi
                                 fi
@@ -145,8 +152,11 @@ function cd_wd {
 
 # OS X specific
 function sync_osx_tmpdir() {
-        if [[ "$(uname)" == "Darwin" ]]; then
-                export TMPDIR=$(osx_tmpdir.sh);
+        # This is not needed for screen and reattach-to-user-namespace covers
+        # tmux. I.e. this is no longer needed.
+        gui_tmpdir=$(osx_tmpdir.sh);
+        if [[ "$(uname)" == "Darwin" ]] && [[ "${gui_tmpdir}" != "" ]]; then
+                export TMPDIR="${gui_tmpdir}";
         fi
 }
 function osx_finder_hidden() {
