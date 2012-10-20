@@ -37,19 +37,17 @@ export PYTHONSTARTUP="~/.pythonstartup.py";
 # Attempt to set termcap to something with 256 colors
 try_termcap="screen-256color";
 infocmp ${try_termcap} > /dev/null;
-if [ $? ]; then
+if [ 0 -eq $? ]; then
          export TERM="${try_termcap}";
 else
         try_termcap="xterm-256color";
         infocmp ${try_termcap} > /dev/null;
-        if [ $? ]; then
+        if [ 0 -eq $? ]; then
                 export TERM="${try_termcap}";
         fi
 fi
 
 cd_wd;
-
-sync_osx_tmpdir;
 
 # Setup paths for package environment isolaters
 export WORKON_HOME="~/.pyvenv";
