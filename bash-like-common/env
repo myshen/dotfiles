@@ -30,7 +30,8 @@ fi
 
 export CLICOLOR=1;
 export LSCOLORS=ExFxCxDxBxegedabagacad;
-export PYTHONSTARTUP="~/.pythonstartup.py";
+# Path must be absolute
+export PYTHONSTARTUP="${HOME}/.pythonstartup.py";
 
 # EXEC ########################################################################
 
