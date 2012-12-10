@@ -6,6 +6,8 @@ function source_file_if_exists() {
 	fi
 }
 
+source_file_if_exists ~/.dotfiles_local/bash-like-common/functions &> /dev/null;
+
 # Path manipulation
 function path_ {
         local path="$1";
@@ -56,9 +58,9 @@ function swap() {
 	[ ! -e $1 ] && echo "swap: $1 does not exist" && return 1
 	[ ! -e $2 ] && echo "swap: $2 does not exist" && return 1
 
-	mv "$1" $TMPFILE 
-	mv "$2" "$1"
-	mv $TMPFILE "$2"
+	'mv' "$1" $TMPFILE && \
+	'mv' "$2" "$1" && \
+	'mv' $TMPFILE "$2";
 }
 
 function edsrc() {
