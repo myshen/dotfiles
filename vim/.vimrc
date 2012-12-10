@@ -7,7 +7,12 @@ call pathogen#infect()
 
 let mapleader = ","
 
-syntax enable
+" http://vim.wikia.com/wiki/Fix_syntax_highlighting
+syntax enable sync minlines=256
+
+" clean up syntax highlighting problems
+noremap <F12> <Esc>:syntax sync fromstart<CR>
+inoremap <F12> <C-o>:syntax sync fromstart<CR>
 
 set t_Co=256
 colorscheme ir_black
