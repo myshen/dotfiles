@@ -2,10 +2,43 @@
 
 import sys
 import signal
+from wsgiref.handlers import format_date_time
+from time import mktime
+from datetime import datetime
 import getopt
-import CGIHTTPServer as S
+from CGIHTTPServer import CGIHTTPRequestHandler
 import SocketServer
 import os
+
+
+favicon = ("data:image/vndmicrosofticon;base64,"
+    "AAABAAEAICACAAEAAQAwAQAAFgAAACgAAAAgAAAAQAAAAAEAAQAAAAAAAAAAAAAAAAAAAAAAA"
+    "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=")
+
+
+class CustomCGIHTTPRequestHandler(CGIHTTPRequestHandler):
+    def __init__(self, *args, **kwargs):
+        CGIHTTPRequestHandler.__init__(self, *args, **kwargs)
+        self.cgi_directories.append('/cgi-bin')
+
+    def do_GET(self, *args, **kwargs):
+        if self.path == '/favicon.ico':
+            protocol, data = favicon.split(',')
+            scheme, info = protocol.split(':')
+            mimetype, rest = info.split(';')
+            
+            self.send_response(200)
+            self.send_header('Content-type', mimetype)
+            httpdate = format_date_time(mktime(datetime.utcnow().timetuple()))
+            self.send_header('Last-Modified', httpdate)
+            self.end_headers()
+            self.wfile.write(data.decode('base64'))
+            return
+        CGIHTTPRequestHandler.do_GET(self, *args, **kwargs)
 
 
 def main(argv):
@@ -29,8 +62,7 @@ def main(argv):
     if len(args) >= 1:
     	os.chdir(os.path.realpath(args[0]))
 
-    Handler = S.CGIHTTPRequestHandler
-    Handler.cgi_directories.append('/ci/cgi-bin')
+    Handler = CustomCGIHTTPRequestHandler
     httpd = SocketServer.TCPServer(("", port), Handler)
     httpd.server_name = 'testserver'
     httpd.server_port = port
