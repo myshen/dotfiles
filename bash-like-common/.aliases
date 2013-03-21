@@ -28,6 +28,7 @@ alias reboot='echo "Really? Reboot?"'
 alias ngninx='nginx'
 alias hisotry='history'
 
+# Shortcuts
 alias max="osascript ~/Library/Scripts/KBmaximize.scpt"
 
 alias proj='vim ~/.project'
@@ -50,3 +51,5 @@ alias shera='ssh she-ra.ucsd.edu'
 alias alfredo='ssh alfredo.ucsd.edu'
 alias neoco='ssh neoco.ucsd.edu'
 alias fatlip='ssh fatlip.ucsd.edu'
+
+alias pbrew='perlbrew'
