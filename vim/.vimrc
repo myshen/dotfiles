@@ -52,7 +52,12 @@ noremap <F12> <Esc>:syntax sync fromstart<CR>
 inoremap <F12> <C-o>:syntax sync fromstart<CR>
 
 set t_Co=256
-colorscheme ir_black
+" colorscheme ir_black
+let g:solarized_termcolors = 16
+let g:solarized_termtrans = 1
+let g:solarized_visibility = "normal"
+let g:solarized_contrast = "normal"
+colorscheme solarized
 
 " Terminal colors http://blog.infinitered.com/entries/show/6
 set background=dark " Do this after colorscheme. It doesn't work before.
