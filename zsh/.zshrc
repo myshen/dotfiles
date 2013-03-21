@@ -58,15 +58,18 @@ function initprompt_ {
 initprompt_;
 
 # HISTORY #####################################################################
+for c (pwd fg bg jobs exit clear reset); do
+  alias $c=" $c";
+done
+
 HISTSIZE=1000;
 SAVEHIST=10000;
 HISTFILE=~/.zhistory;
 setopt BANG_HIST;
-# Don't like. Can't keep history separate between terminals.
-#setopt SHARE_HISTORY;
-setopt INC_APPEND_HISTORY;
+# Don't like SHARE_HISTORY. Can't keep history separate between terminals.
+setopt _APPEND_HISTORY;
 setopt HIST_IGNORE_SPACE;
-setopt HIST_IGNORE_ALL_DUPS;
+setopt HIST_EXPIRE_DUPS_FIRST;
 setopt EXTENDED_HISTORY;
 setopt HIST_NO_STORE;
 bindkey "^r" history-incremental-search-backward
