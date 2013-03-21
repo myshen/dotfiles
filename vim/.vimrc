@@ -237,8 +237,9 @@ nnoremap <leader>www :mksession! ~/.vim/saved_session.vim<CR>:qa!<CR>
 
 function! RestoreSession()
   " vim called without arguments
-  if argc() == 0
-    execute 'source ~/.vim/saved_session.vim'
+  let restorefile='~/.vim/saved_session.vim'
+  if argc() == 0 && filereadable(restorefile)
+    execute 'source '.restorefile
   end
 endfunction
 autocmd VimEnter * call RestoreSession()
