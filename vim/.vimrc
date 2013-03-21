@@ -1,9 +1,46 @@
 " This must be first; it changes other options as side effects
 set nocompatible
+" Must turn off filetype before vundle setup
+filetype off
 
-" Use pathogen to easily modify the runtime path to include all plugins under
-" the ~/.vim/bundle directory
-call pathogen#infect() 
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let Vundle manage Vundle
+" required! 
+Bundle 'gmarik/vundle'
+
+" Bundle 'mileszs/ack.vim'
+" Bundle 'panozzaj/vim-autocorrect'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'vim-scripts/taglist.vim'
+Bundle 'tpope/vim-fugitive'
+Bundle 'airblade/vim-gitgutter'
+Bundle 'thenoseman/vim-matchit'
+Bundle 'tpope/vim-surround'
+Bundle 'vim-scripts/ini-syntax-definition'
+Bundle 'vim-scripts/Pydiction'
+Bundle 'hynek/vim-python-pep8-indent'
+Bundle 'bingaman/vim-sparkup'
+Bundle 'nathanaelkane/vim-indent-guides'
+Bundle 'tpope/vim-ragtag'
+Bundle 'zakj/vim-showmarks'
+Bundle 'tpope/vim-rake'
+Bundle 'vim-ruby/vim-ruby'
+Bundle 'scrooloose/nerdtree'
+
+" Must happen after vundle setup
+filetype plugin indent on
+
+"
+" Brief help
+" :BundleList          - list configured bundles
+" :BundleInstall(!)    - install(update) bundles
+" :BundleSearch(!) foo - search(or refresh cache first) for foo
+" :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
+"
+" see :h vundle for more details or wiki for FAQ
+" NOTE: comments after Bundle command are not allowed..
 
 let mapleader = ","
 
@@ -99,8 +136,6 @@ autocmd BufNewFile,BufRead *.jinja,*.jinja2 setf htmljinja
 " Nginx config
 au BufRead,BufNewFile nginx.conf set filetype=nginx
 
-filetype plugin indent on
-
 set expandtab
 
 if has('autocmd')
@@ -173,6 +208,26 @@ nnoremap gj j
 nnoremap gk k
 " wrap on word instead of character
 set linebreak
+
+" ShowMarks plugin configuration
+highlight SignColumn ctermbg=233
+highlight ShowMarksHLl ctermfg=9 ctermbg=17
+highlight ShowMarksHLu ctermfg=1 ctermbg=17
+highlight ShowMarksHLo ctermfg=33 ctermbg=17
+highlight ShowMarksHLm ctermfg=166 ctermbg=17
+
+" TagList
+" https://aufather.wordpress.com/2010/09/01/taglist-in-vim/
+let Tlist_Close_On_Select = 1 "close taglist window once we selected something
+let Tlist_Exit_OnlyWindow = 1 "if taglist window is the only window left, exit vim
+let Tlist_GainFocus_On_ToggleOpen = 1 "automatically switch to taglist window
+let Tlist_Highlight_Tag_On_BufEnter = 1 "highlight current tag in taglist window
+let Tlist_Use_Right_Window = 1 "display taglist window on the right
+let Tlist_Process_File_Always = 1 "even without taglist window, create tags file, required for displaying tag in statusline
+let Tlist_Display_Prototype = 1 "display full prototype instead of just function name
+
+nnoremap <F5> :TlistToggle<CR>
+nnoremap <F6> :TlistShowPrototype<CR>
 
 " Restore sessions when entering vim without arguments
 " save and close all files and save global session
