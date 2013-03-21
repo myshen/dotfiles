@@ -5,7 +5,8 @@ function autoload_init {
         autoload -U $1 && $1;
 }
 autoload_init promptinit;
-autoload_init compinit;
+# Run compinit without checking for insecure directories
+autoload -U compinit; compinit -u;
 autoload_init colors;
 
 setopt interactivecomments;
