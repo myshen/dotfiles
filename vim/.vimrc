@@ -90,6 +90,7 @@ set pastetoggle=<F2>
 
 " Let F3 toggle the NERDTree
 map <F3> :NERDTreeToggle<CR>
+map <F4> :NERDTreeFind<CR>
 
 " Write a file with sudo priviledges
 cmap w!! w !sudo tee % >/dev/null
