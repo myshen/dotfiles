@@ -66,6 +66,7 @@ set relativenumber
 
 set hlsearch
 set incsearch
+set ignorecase
 
 set nowrap
 
@@ -76,6 +77,8 @@ set mouse=a
 
 " We're modern. Send more characters!
 set ttyfast
+" Don't redraw when playing macros
+set lazyredraw
 
 " Hide buffers instead of closing.
 set hidden
@@ -111,9 +114,9 @@ set ruler
 set showcmd
 
 " Keep more lines of context visible
-set scrolloff=3
+set scrolloff=5
 set sidescroll=1
-set sidescrolloff=3
+set sidescrolloff=5
 
 " xterm title
 set title
@@ -203,6 +206,10 @@ noremap <F1> <nop>
 " I can also type :ex and :man
 noremap Q <nop>
 noremap K <nop>
+
+" retain selection in visual mode when indenting blocks
+" vnoremap < <gv
+" vnoremap > >gv
 
 " Allow moving into blank space in virtual
 set virtualedit=block
