@@ -37,11 +37,11 @@ function initprompt_ {
         PROMPT_COLOR_HOST="%{$fg[green]%}";
         local hostname_=$(hostname);
         if [[ ${hostname_} == 'sui.ucsd.edu' ]]; then
-                PROMPT_COLOR_HOST="%{$fg[green]%}"
+                PROMPT_COLOR_HOST="%{$fg[blue]%}"
         elif [[ ${hostname_} == 'ghdc.ucsd.edu' ]]; then
                 PROMPT_COLOR_HOST="%{$fg[red]%}"
         elif [[ ${hostname_} == 'goship.ucsd.edu' ]]; then
-                PROMPT_COLOR_HOST="%{$fg[blue]%}"
+                PROMPT_COLOR_HOST="%{$fg[yellow]%}"
                 PROMPT_COLOR="%{$fg[green]%}"
         elif [[ ${hostname_} == 'terra.ucsd.edu' ]]; then
                 PROMPT_COLOR_HOST="%{$fg[cyan]%}"
