@@ -229,6 +229,10 @@ let Tlist_Display_Prototype = 1 "display full prototype instead of just function
 nnoremap <F5> :TlistToggle<CR>
 nnoremap <F6> :TlistShowPrototype<CR>
 
+" Skeleton files
+" http://vim.runpaint.org/typing/using-templates/
+autocmd! BufNewFile * silent! 0r ~/.vim/skel/tmpl.%:e
+
 " Restore sessions when entering vim without arguments
 " save and close all files and save global session
 nnoremap <leader>qs :mksession! ~/.vim/saved_session.vim<CR>:wqa<CR>
