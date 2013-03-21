@@ -132,7 +132,10 @@ au! Syntax newlang source $VIM/syntax/feature.vim
 " CSV files
 autocmd BufNewFile,BufRead *.csv setf csv
 " Jinja files
-autocmd BufNewFile,BufRead *.jinja,*.jinja2 setf htmljinja
+autocmd BufNewFile,BufRead *.j2,*.jinja,*.jinja2 set filetype=htmljinja
+" json file
+autocmd BufNewFile,BufRead *.json set filetype=json syntax=javascript
+"  equalprg=json_reformat
 " Nginx config
 au BufRead,BufNewFile nginx.conf set filetype=nginx
 
@@ -186,7 +189,9 @@ nnoremap <silent> <leader>h1 :execute 'match W1 /\<<c-r><c-w>\>/'<cr> hi W1 guib
 "highlight Folded ctermfg=black
 
 " Folding
-set foldmethod=indent
+set foldmethod=marker
+" Don't autofold too much
+set foldlevel=5
 
 " I can type :help on my own, thanks.
 noremap <F1> <nop>
