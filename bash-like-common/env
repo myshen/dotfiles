@@ -53,25 +53,3 @@ else
 fi
 
 cd_wd;
-
-# Setup paths for package environment isolaters
-export WORKON_HOME="~/.pyvenv";
-alias workon='ldvenv; workon';
-alias mkvirtualenv='ldvenv; mkvirtualenv';
-alias rmvirtualenv='ldvenv; rmvirtualenv';
-alias cpvirtualenv='ldvenv; cpvirtualenv';
-function ldvenv() {
-  unalias workon;
-  unalias mkvirtualenv;
-  unalias rmvirtualenv;
-  unalias cpvirtualenv;
-  source_file_if_exists /usr/local/share/python/virtualenvwrapper.sh &>! ~/var/ldvenv.error.log;
-}
-# Doing this as a function causes zsh to crash.
-source_file_if_exists ~/.rvm/scripts/rvm &>! ~/var/ldrvm.error.log;
-
-alias perlbrew='ldperlbrew; perlbrew';
-function ldperlbrew() {
-  unalias perlbrew;
-  source_file_if_exists ~/perl5/perlbrew/etc/bashrc &>! ~/var/ldperlbrew.error.log;
-}

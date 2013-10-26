@@ -5,9 +5,20 @@ function autoload_init {
         autoload -U $1 && $1;
 }
 autoload_init promptinit;
+autoload_init bashcompinit;
 # Run compinit without checking for insecure directories
 autoload -U compinit; compinit -u;
 autoload_init colors;
+
+# complete commandline switches
+setopt completealiases
+
+# Nice zsh completion from github.com/windelicato
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-colors 'reply=( "=(#b)(*$VAR)(?)*=00=$color[green]=$color[bg-green]" )'
+zstyle ':completion:*:*:*:*:hosts' list-colors '=*=30;41'
+zstyle ':completion:*:*:*:*:users' list-colors '=*=$color[green]=$color[red]'
+zstyle ':completion:*' menu select
 
 setopt interactivecomments;
 setopt noclobber;
@@ -27,9 +38,9 @@ function precmd {
                 PROMPT_JOBS="";
         fi
 
-        PROMPT_COLOR_CWD_SEP="%{$fg[black]%}";
-        PROMPT_COLOR_CWD_PART="%{$fg[yellow]%}";
-        PROMPT_CWD="${${(%):-%d}//\//${PROMPT_COLOR_CWD_SEP}%B/%b${PROMPT_COLOR_CWD_PART}}%f";
+        PROMPT_COLOR_CWD_SEP="%{$fg_no_bold[black]%}";
+        PROMPT_COLOR_CWD_PART="%{$fg_no_bold[yellow]%}";
+        PROMPT_CWD="${${(%):-%d}//\//${PROMPT_COLOR_CWD_SEP}/${PROMPT_COLOR_CWD_PART}}%f";
 }
 
 function initprompt_ {
@@ -77,3 +88,25 @@ bindkey "^r" history-incremental-search-backward
 function history_share {
         fc -RI;
 }
+
+# EXEC ########################################################################
+
+# Attempt to set termcap to something with 256 colors
+try_termcap="screen-256color";
+infocmp ${try_termcap} > /dev/null;
+if [ 0 -eq $? ]; then
+         export TERM="${try_termcap}";
+else
+        try_termcap="xterm-256color";
+        infocmp ${try_termcap} > /dev/null;
+        if [ 0 -eq $? ]; then
+                export TERM="${try_termcap}";
+        fi
+fi
+
+cd_wd;
+
+source_file_if_exists ~/.dotfiles/bash-like-common/pkg_env;
+source_file_if_exists ~/.bash_completion.d/python-argcomplete.sh;
+
+fpath=(~/.zsh/completion $fpath) 

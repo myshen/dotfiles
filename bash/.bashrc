@@ -109,3 +109,6 @@ export LESS_TERMCAP_se="$'\E[0m'"           # end standout-mode
 export LESS_TERMCAP_so="$'\E[38;5;246m'"    # begin standout-mode - info box
 export LESS_TERMCAP_ue="$'\E[0m'"           # end underline
 export LESS_TERMCAP_us="$'\E[04;38;5;146m'" # begin underline
+
+source_file_if_exists ~/.dotfiles/bash-like-common/pkg_env;
+source_file_if_exists ~/.bash_completion.d/python-argcomplete.sh;
