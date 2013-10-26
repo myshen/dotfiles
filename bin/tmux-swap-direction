@@ -1,0 +1,36 @@
+#!/bin/bash
+
+function usage_exit() {
+  echo <<EOF
+Usage: $0 -DULR
+EOF
+  exit $1;
+}
+
+if [[ "${1:0:1}" != "-" ]]; then
+  usage_exit;
+fi
+
+paneid=$(tmux display-message -p '#{pane_id}');
+
+direction="";
+flag="${1:1:1}";
+if [[ $flag == "D" ]]; then
+  direction="down";
+  new_paneid=$(tmux select-pane -D; tmux display-message -p '#{pane_id}'; tmux select-pane -t ${paneid});
+elif [[ $flag == "L" ]]; then
+  direction="left";
+  new_paneid=$(tmux select-pane -L; tmux display-message -p '#{pane_id}'; tmux select-pane -t ${paneid});
+elif [[ $flag == "U" ]]; then
+  direction="up";
+  new_paneid=$(tmux select-pane -U; tmux display-message -p '#{pane_id}'; tmux select-pane -t ${paneid});
+elif [[ $flag == "R" ]]; then
+  direction="right";
+  new_paneid=$(tmux select-pane -R; tmux display-message -p '#{pane_id}'; tmux select-pane -t ${paneid});
+else
+  usage_exit;
+fi
+
+if [[ ${paneid} != ${new_paneid} ]]; then
+  tmux swap-pane -d -s ${paneid} -t ${new_paneid};
+fi

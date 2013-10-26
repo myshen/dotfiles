@@ -10,7 +10,8 @@ showHelp () {
     echo "Usage: `basename $0` <option>";
     echo;
     echo "Options:";
-    echo " status   = Shows current volume.";
+    echo " status   = Shows current volume and mute status.";
+    echo " get      = Shows current volume.";
     echo " up       = Turn volume up a bit.";
     echo " do(wn)   = Turn volume down a bit.";
     echo " set      = Set volume to percentage.";
@@ -25,6 +26,10 @@ fi
 while [ $# -gt 0 ]; do
     arg=$1;
     case $arg in
+        "get")
+            osascript -e "output volume of (get volume settings)";
+            break ;;
+
         "status")
             osascript -e "output volume of (get volume settings)";
             osascript -e "output muted of (get volume settings)";
