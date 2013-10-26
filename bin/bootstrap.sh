@@ -7,10 +7,18 @@ function link {
     chmod -h -v -v go-rwx $1
 }
 function link_dotfile {
-    link $1 .dotfiles/$1;
+    if [[ -e .dotfiles_local/$1 ]]; then
+        link $1 .dotfiles_local/$1;
+    else
+        link $1 .dotfiles/$1;
+    fi
 }
 function link_dotfiles {
-    link $1 .dotfiles/$2;
+    if [[ -e .dotfiles_local/$2 ]]; then
+        link $1 .dotfiles_local/$2;
+    else
+        link $1 .dotfiles/$2;
+    fi
 }
 
 cd ~;
