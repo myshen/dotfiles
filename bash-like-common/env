@@ -3,27 +3,25 @@
 export DOTFILES="${HOME}/.dotfiles";
 source "${DOTFILES}/bash-like-common/functions";
 
-source_file_if_exists /etc/profile &> /dev/null;
-
 # PATHS #######################################################################
 
-# Note that these are in reverse actual order
-addPath "/usr/local/sbin" 1;
-addPath "/usr/local/bin" 1;
-addPath "/usr/local/share/python" 1;
-addPath "${DOTFILES}/bin" 1;
-addPath "." 1;
-
-export WKPATH="~/Documents";
-export MANPATH="\
-/usr/local/share/man:\
-${MANPATH}";
+function setupPaths() {
+        # Note that these are in reverse actual order
+        addPath "${DOTFILES}/bin" 1;
+        addPath "." 1;
+        
+        export WKPATH="~/Documents";
+        export MANPATH="\
+        /usr/local/share/man:\
+        ${MANPATH}";
+}
+setupPaths;
 
 # ENV #########################################################################
 export EDITOR="vim"
 export PAGER="less"
 export LESS='--RAW-CONTROL-CHARS -i'
-_src_hilite_path="/usr/local/Cellar/source-highlight/3.1.5/bin/src-hilite-lesspipe.sh";
+_src_hilite_path="/usr/local/bin/src-hilite-lesspipe.sh";
 if [ -f ${_src_hilite_path} ]; then
         export LESSOPEN="| ${_src_hilite_path} %s"
 fi
