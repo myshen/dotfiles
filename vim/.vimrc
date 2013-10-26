@@ -140,6 +140,8 @@ au! Syntax newlang source $VIM/syntax/feature.vim
 
 " CSV files
 autocmd BufNewFile,BufRead *.csv setf csv
+" HTML files
+autocmd BufNewFile,BufRead *.html.erb set filetype=eruby
 " Jinja files
 autocmd BufNewFile,BufRead *.j2,*.jinja,*.jinja2 set filetype=htmljinja
 " json file
