@@ -50,6 +50,9 @@ else
         if [ 0 -eq $? ]; then
                 export TERM="${try_termcap}";
         fi
+# OS X specific
+if [[ "$(uname)" == "Darwin" ]]; then
+        source_file_if_exists "${DOTFILES}/osx/bash-like-common/env";
 fi
 
 cd_wd;

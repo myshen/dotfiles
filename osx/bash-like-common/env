@@ -1,0 +1,14 @@
+# http://www.mactricksandtips.com/2013/01/22-finder-hacks-tricks-and-changes.html
+defaults write com.apple.finder QLEnableTextSelection -boolean YES;
+defaults write com.apple.finder AppleShowAllFiles true;
+defaults write com.apple.finder AnimateInfoPanes -boolean YES;
+defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false;
+# defaults write com.apple.finder CreateDesktop false;
+defaults write com.apple.finder OpenWindowForNewRemovableDisk -boolean YES;
+defaults write com.apple.finder QLHidePanelOnDeactivate false;
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool true;
+defaults write com.apple.finder FXListViewStripes -boolean true;
+defaults write com.apple.iTunes play-songs-while-importing -bool FALSE;
+
+# dashboard widgest
+#defaults write com.apple.dashboard mcx-disabled -boolean NO

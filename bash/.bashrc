@@ -1,7 +1,7 @@
 # loaded for interactive shells
 source ~/.dotfiles/bash-like-common/env;
 source_file_if_exists /etc/bashrc;
-source_file_if_exists ${DOTFILES}/bash-like-common/.aliases;
+source_file_if_exists ${DOTFILES}/bash-like-common/aliases;
 
 # COMPLETION ###################################################################
 complete -A hostname ssh ping

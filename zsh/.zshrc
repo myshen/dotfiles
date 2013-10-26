@@ -1,5 +1,5 @@
 # loaded for interactive shells
-source "${HOME}/.dotfiles/bash-like-common/.aliases";
+source "${HOME}/.dotfiles/bash-like-common/aliases";
 
 function autoload_init {
         autoload -U $1 && $1;

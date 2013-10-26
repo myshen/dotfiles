@@ -1,9 +1,9 @@
 function source_file_if_exists() {
-	if [ -f $1 ]; then
-		source $1;
-        else
-                echo "Attempted to source non-existant file: $1" >&2;
-	fi
+        if [ -f $1 ]; then
+                source $1;
+#        else
+#                echo "Attempted to source non-existant file: $1" >&2;
+        fi
 }
 
 source_file_if_exists ~/.dotfiles_local/bash-like-common/functions &> /dev/null;
@@ -153,20 +153,6 @@ function cd_wd {
 }
 
 # OS X specific
-which reattach-to-user-namespace &> /dev/null;
-if [[ "$(uname)" == "Darwin" ]] && [ 0 -eq $? ]; then
-        alias tmux="tmux -f ~/.dotfiles/tmux/.tmux-osx.conf";
+if [[ "$(uname)" == "Darwin" ]]; then
+        source_file_if_exists "${HOME}/.dotfiles/osx/bash-like-common/functions";
 fi
-
-function sync_osx_tmpdir() {
-        # This is not needed for screen and reattach-to-user-namespace covers
-        # tmux. I.e. this is no longer needed.
-        gui_tmpdir=$(osx_tmpdir.sh);
-        if [[ "$(uname)" == "Darwin" ]] && [[ "${gui_tmpdir}" != "" ]]; then
-                export TMPDIR="${gui_tmpdir}";
-        fi
-}
-function osx_finder_hidden() {
-    defaults write com.apple.finder AppleShowAllFiles TRUE;
-    killall Finder;
-}

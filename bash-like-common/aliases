@@ -4,12 +4,12 @@ alias vi='vim'
 alias suod='sudo'
 alias sl='ls'
 alias pusdh='pushd'
+alias fgfg='fg'
 
 alias rm='rm -i'
 alias cp='cp -iv'
 alias mv='mv -i'
 alias dirs='dirs -v'
-alias ssh='ssh -Y'
 alias ls='ls -lah'
 alias cdl='cd;ls'
 alias cls='clear;ls'
@@ -27,8 +27,11 @@ alias reboot='echo "Really? Reboot?"'
 # Spelling
 alias ngninx='nginx'
 alias hisotry='history'
+alias gs='echo "Did you mean ghost?"'
+alias ghost="'gs'"
 
 # Shortcuts
+alias nose="nosetests"
 alias max="osascript ~/Library/Scripts/KBmaximize.scpt"
 
 alias proj='vim ~/.project'
@@ -41,15 +44,19 @@ alias gdiff='git diff --no-ext-diff'
 alias gitk='gitk --all &'
 alias glg='git lg'
 
+alias hydro-vm="source hydro-vm"
+
 alias home='ssh synmantx.dyndns.org'
 alias ghdc='ssh ghdc.ucsd.edu'
-alias go='ssh goship.ucsd.edu'
+alias pacha='ssh pacha.ucsd.edu'
 alias ocho='ssh ocho.ucsd.edu'
 alias kaze='ssh kaze.ucsd.edu'
 alias terra='ssh terra.ucsd.edu'
 alias shera='ssh she-ra.ucsd.edu'
 alias alfredo='ssh alfredo.ucsd.edu'
-alias neoco='ssh neoco.ucsd.edu'
+alias neoco='ssh sccoos@neoco.ucsd.edu'
 alias fatlip='ssh fatlip.ucsd.edu'
+alias sshsrv='ssh -p 2201 admin@hdo.ucsd.edu'
+alias hdo='ssh admin@hdo.ucsd.edu'
 
 alias pbrew='perlbrew'
