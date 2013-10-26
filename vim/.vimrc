@@ -252,14 +252,16 @@ nnoremap <F6> :TlistShowPrototype<CR>
 autocmd! BufNewFile * silent! 0r ~/.vim/skel/tmpl.%:e
 
 " Restore sessions when entering vim without arguments
+" save global session
+nnoremap <leader>S :mksession! ~/tmp/saved_session.vim<CR>
 " save and close all files and save global session
-nnoremap <leader>qs :mksession! ~/.vim/saved_session.vim<CR>:wqa<CR>
+nnoremap <leader>qs :mksession! ~/tmp/saved_session.vim<CR>:wqa<CR>
 " close all files without saving and save global session
-nnoremap <leader>www :mksession! ~/.vim/saved_session.vim<CR>:qa!<CR>
+nnoremap <leader>www :mksession! ~/tmp/saved_session.vim<CR>:qa!<CR>
 
 function! RestoreSession()
   " vim called without arguments
-  let restorefile='~/.vim/saved_session.vim'
+  let restorefile='~/tmp/saved_session.vim'
   if argc() == 0 && filereadable(restorefile)
     execute 'source '.restorefile
   end
