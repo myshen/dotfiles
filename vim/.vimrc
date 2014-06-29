@@ -12,7 +12,6 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 " required! 
 NeoBundleFetch 'Shougo/neobundle.vim'
 
-" NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'chriskempson/base16-vim'
 NeoBundle 'vim-scripts/taglist.vim'
 
@@ -26,7 +25,7 @@ NeoBundle 'scrooloose/nerdtree'
 "
 NeoBundle 'tpope/vim-fugitive'
 "NeoBundle 'airblade/vim-gitgutter'
-"
+
 "NeoBundle 'thenoseman/vim-matchit'
 NeoBundle 'tpope/vim-surround'
 
@@ -105,8 +104,10 @@ set lazyredraw
 " Hide buffers instead of closing.
 set hidden
 
-" See :h listchars
-set listchars=tab:>.,trail:.,extends:#,nbsp:.
+" Use <leader>l to toggle display of whitespace
+nmap <leader>l :set list!<CR>
+
+set listchars=tab:»\ ,eol:¬,trail:.,extends:#,nbsp:.
 
 set pastetoggle=<F2>
 
@@ -123,7 +124,6 @@ let NERDTreeHighlightCursorline=1 " Highlight the selected entry in the tree
 " Write a file with sudo priviledges
 cmap w!! w !sudo tee % >/dev/null
 
-" Map w to :w
 map W :wq<CR>
 
 set wildignore=*.o,*.obj,*.bak,*.exe,*.pyc
@@ -166,6 +166,7 @@ endif
 au BufRead,BufNewFile *.feature set filetype=feature
 au! Syntax newlang source $VIM/syntax/feature.vim
 
+autocmd BufNewFile,BufRead *.less setf css
 " CSV files
 autocmd BufNewFile,BufRead *.csv setf csv
 " HTML files
