@@ -19,3 +19,4 @@ function ldperlbrew() {
   unalias perlbrew;
   source_file_if_exists ~/perl5/perlbrew/etc/bashrc &>! ~/var/ldperlbrew.error.log;
 }
+source_file_if_exists /usr/local/opt/autoenv/activate.sh
