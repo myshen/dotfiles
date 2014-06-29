@@ -12,8 +12,8 @@ function setupPaths() {
         
         export WKPATH="~/Documents";
         export MANPATH="\
-        /usr/local/share/man:\
-        ${MANPATH}";
+/usr/local/share/man:\
+${MANPATH}";
 }
 setupPaths;
 
