@@ -1,68 +1,91 @@
 " This must be first; it changes other options as side effects
 set nocompatible
-" Must turn off filetype before vundle setup
+" Must turn off filetype before bundling setup
 filetype off
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+if has('vim_starting')
+  set runtimepath+=~/.vim/bundle/neobundle.vim/
+endif
+call neobundle#rc(expand('~/.vim/bundle/'))
 
-" let Vundle manage Vundle
+" let NeoBundle manage NeoBundle
 " required! 
-Bundle 'gmarik/vundle'
+NeoBundleFetch 'Shougo/neobundle.vim'
 
-" Bundle 'mileszs/ack.vim'
-" Bundle 'panozzaj/vim-autocorrect'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'vim-scripts/taglist.vim'
-Bundle 'tpope/vim-fugitive'
-Bundle 'airblade/vim-gitgutter'
-Bundle 'thenoseman/vim-matchit'
-Bundle 'tpope/vim-surround'
-Bundle 'vim-scripts/ini-syntax-definition'
-Bundle 'vim-scripts/Pydiction'
-Bundle 'hynek/vim-python-pep8-indent'
-Bundle 'bingaman/vim-sparkup'
-Bundle 'nathanaelkane/vim-indent-guides'
-Bundle 'tpope/vim-ragtag'
-Bundle 'zakj/vim-showmarks'
-Bundle 'tpope/vim-rake'
-Bundle 'vim-ruby/vim-ruby'
-Bundle 'scrooloose/nerdtree'
+" NeoBundle 'altercation/vim-colors-solarized'
+NeoBundle 'chriskempson/base16-vim'
+NeoBundle 'vim-scripts/taglist.vim'
 
-" Must happen after vundle setup
+NeoBundle 'ConradIrwin/vim-bracketed-paste'
+
+NeoBundle 'mileszs/ack.vim'
+
+" NeoBundle 'panozzaj/vim-autocorrect'
+
+NeoBundle 'scrooloose/nerdtree'
+"
+NeoBundle 'tpope/vim-fugitive'
+"NeoBundle 'airblade/vim-gitgutter'
+"
+"NeoBundle 'thenoseman/vim-matchit'
+NeoBundle 'tpope/vim-surround'
+
+NeoBundle 'SirVer/ultisnips'
+NeoBundle 'honza/vim-snippets'
+
+"NeoBundle 'vim-scripts/ini-syntax-definition'
+"NeoBundle 'vim-scripts/Pydiction'
+"NeoBundle 'hynek/vim-python-pep8-indent'
+
+"NeoBundle 'bingaman/vim-sparkup'
+
+NeoBundle 'nathanaelkane/vim-indent-guides'
+
+"NeoBundle 'tpope/vim-ragtag'
+NeoBundle 'zakj/vim-showmarks'
+"NeoBundle 'tpope/vim-rake'
+NeoBundle 'vim-ruby/vim-ruby'
+"NeoBundle 'scrooloose/syntastic'
+NeoBundle 'tpope/vim-characterize'
+NeoBundle 'othree/xml.vim'
+"NeoBundle 'FredKSchott/CoVim'
+"NeoBundle 'Shougo/unite.vim'
+"NeoBundle 'christoomey/vim-tmux-navigator'
+NeoBundle 'mgedmin/pythonhelper.vim'
+
+NeoBundle 'jiangmiao/auto-pairs'
+NeoBundle 'Raimondi/delimitMate'
+
+" Must happen after bundle setup
 filetype plugin indent on
 
-"
 " Brief help
-" :BundleList          - list configured bundles
-" :BundleInstall(!)    - install(update) bundles
-" :BundleSearch(!) foo - search(or refresh cache first) for foo
-" :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
-"
-" see :h vundle for more details or wiki for FAQ
-" NOTE: comments after Bundle command are not allowed..
+" :NeoBundleList          - list configured bundles
+" :NeoBundleInstall(!)    - install(update) bundles
+" :NeoBundleSearch(!) foo - search(or refresh cache first) for foo
+" :NeoBundleClean(!)      - confirm(or auto-approve) removal of unused bundles
+
+" Installation check
+NeoBundleCheck
 
 let mapleader = ","
 
 " http://vim.wikia.com/wiki/Fix_syntax_highlighting
 syntax enable sync minlines=256
 
+
 " clean up syntax highlighting problems
 noremap <F12> <Esc>:syntax sync fromstart<CR>
 inoremap <F12> <C-o>:syntax sync fromstart<CR>
 
-set t_Co=256
-" colorscheme ir_black
-let g:solarized_termcolors = 16
-let g:solarized_termtrans = 1
-let g:solarized_visibility = "normal"
-let g:solarized_contrast = "normal"
-colorscheme solarized
+" color scheme
+let base16colorspace=256  " Access colors present in 256 colorspace
+colorscheme base16-tomorrow
 
 " Terminal colors http://blog.infinitered.com/entries/show/6
 set background=dark " Do this after colorscheme. It doesn't work before.
 
-set relativenumber
+set number
 
 set hlsearch
 set incsearch
@@ -71,7 +94,6 @@ set ignorecase
 set nowrap
 
 set autoindent
-set smartindent
 set title
 set mouse=a
 
@@ -88,9 +110,15 @@ set listchars=tab:>.,trail:.,extends:#,nbsp:.
 
 set pastetoggle=<F2>
 
-" Let F3 toggle the NERDTree
-map <F3> :NERDTreeToggle<CR>
-map <F4> :NERDTreeFind<CR>
+" NERDTree
+map <Leader>n :NERDTreeToggle<CR>
+map <Leader>N :NERDTreeFind<CR>
+" https://github.com/ketan/vimrc/blob/master/vimrc.nerdtree
+let NERDTreeIgnore=[ '\.pyc$', '\.pyo$', '\.py\$class$', '\.obj$', '\.o$', '\.so$', '\.egg$', '^\.git$', '\.gem$',  '\.rbc$', '\~$']
+let NERDTreeShowFiles=1           " Show hidden files, too
+let NERDTreeShowHidden=1
+let NERDTreeQuitOnOpen=1          " Quit on opening files from the tree
+let NERDTreeHighlightCursorline=1 " Highlight the selected entry in the tree
 
 " Write a file with sudo priviledges
 cmap w!! w !sudo tee % >/dev/null
@@ -148,13 +176,14 @@ autocmd BufNewFile,BufRead *.j2,*.jinja,*.jinja2 set filetype=htmljinja
 autocmd BufNewFile,BufRead *.json set filetype=json syntax=javascript
 "  equalprg=json_reformat
 " Nginx config
-au BufRead,BufNewFile nginx.conf set filetype=nginx
+autocmd BufRead,BufNewFile nginx.conf set filetype=nginx
 
 set expandtab
 
 if has('autocmd')
 else
     set tabstop=4
+    set softtabstop=4
     set shiftwidth=4
 endif
 
@@ -166,10 +195,6 @@ nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
 autocmd WinLeave * set nocursorline
 autocmd WinEnter * set cursorline
 set cursorline
-
-" Automatic leave paste mode
-au InsertEnter * set paste
-au InsertLeave * set nopaste
 
 " sudo write
 cmap w!! %!sudo tee > /dev/null %
@@ -203,6 +228,21 @@ nnoremap <silent> <leader>h1 :execute 'match W1 /\<<c-r><c-w>\>/'<cr> hi W1 guib
 set foldmethod=marker
 " Don't autofold too much
 set foldlevel=5
+" http://dhruvasagar.com/2013/03/28/vim-better-foldtext
+function! NeatFoldText()
+  let line = ' ' . substitute(getline(v:foldstart), '^\s*"\?\s*\|\s*"\?\s*{{{\d*\s*', '', 'g') . ' '
+  let lines_count = v:foldend - v:foldstart + 1
+  let lines_count_text = '| ' . printf("%10s", lines_count . ' lines') . ' |'
+  let foldcharstart = match(&fillchars, 'fold:\zs')
+  let foldchar = strpart(&fillchars, foldcharstart, match(&fillchars, 'fold:.*\zs[,$]')-foldcharstart)
+  #let foldchar = '·'
+  let foldtextstart = strpart('+' . repeat(foldchar, v:foldlevel*2) . line, 0, (winwidth(0)*2)/3)
+  let foldtextend = lines_count_text . repeat(foldchar, 8)
+  let length = strlen(substitute(foldtextstart . foldtextend, '.', 'x', 'g'))
+  return foldtextstart . repeat(foldchar, winwidth(0)-length) . foldtextend
+endfunction
+set foldtext=NeatFoldText()
+
 
 " I can type :help on my own, thanks.
 noremap <F1> <nop>
@@ -221,6 +261,13 @@ set virtualedit=block
 set splitbelow
 set splitright
 
+" Easier window switching
+" http://sontek.net/blog/detail/turning-vim-into-a-modern-python-ide#window-splits
+map <c-j> <c-w>j
+map <c-k> <c-w>k
+map <c-l> <c-w>l
+map <c-h> <c-w>h
+
 " Don't skip lines when wrapped
 nnoremap j gj
 nnoremap k gk
@@ -229,7 +276,8 @@ nnoremap gk k
 " wrap on word instead of character
 set linebreak
 
-" ShowMarks plugin configuration
+" ShowMarks
+let g:showmarks_enable=0
 highlight SignColumn ctermbg=233
 highlight ShowMarksHLl ctermfg=9 ctermbg=17
 highlight ShowMarksHLu ctermfg=1 ctermbg=17
@@ -248,6 +296,41 @@ let Tlist_Display_Prototype = 1 "display full prototype instead of just function
 
 nnoremap <F5> :TlistToggle<CR>
 nnoremap <F6> :TlistShowPrototype<CR>
+
+" http://stackoverflow.com/a/1536094/533198
+function! Wipeout()
+  " list of *all* buffer numbers
+  let l:buffers = range(1, bufnr('$'))
+
+  " what tab page are we in?
+  let l:currentTab = tabpagenr()
+  try
+    " go through all tab pages
+    let l:tab = 0
+    while l:tab < tabpagenr('$')
+      let l:tab += 1
+
+      " go through all windows
+      let l:win = 0
+      while l:win < winnr('$')
+        let l:win += 1
+        " whatever buffer is in this window in this tab, remove it from
+        " l:buffers list
+        let l:thisbuf = winbufnr(l:win)
+        call remove(l:buffers, index(l:buffers, l:thisbuf))
+      endwhile
+    endwhile
+
+    " if there are any buffers left, delete them
+    if len(l:buffers)
+      execute 'bwipeout' join(l:buffers)
+    endif
+  finally
+    " go back to our original tab page
+    execute 'tabnext' l:currentTab
+  endtry
+endfunction
+
 
 " Skeleton files
 " http://vim.runpaint.org/typing/using-templates/
@@ -269,3 +352,32 @@ function! RestoreSession()
   end
 endfunction
 autocmd VimEnter * call RestoreSession()
+
+""" Unite
+
+nnoremap <leader>f :Unite file_rec/async<cr>
+nnoremap <leader>/ :Unite grep:.<cr>
+nnoremap <leader>y :Unite history/yanks<cr>
+nnoremap <leader>s :Unite -quick-match buffer<cr>
+
+""" vim-tmux-navigator
+"let g:tmux_navigator_no_mappings = 1
+"
+"nmap <silent> <c-y> :TmuxNavigateLeft<cr>
+"nmap <silent> <c-u> :TmuxNavigateDown<cr>
+"nmap <silent> <c-i> :TmuxNavigateUp<cr>
+"nmap <silent> <c-o> :TmuxNavigateRight<cr>
+"nmap <silent> <c-\> :TmuxNavigatePrevious<cr>
+
+set statusline=%<%f\ %h%m%r\ %1*%{TagInStatusLine()}%*%=%-14.(%l,%c%V%)\ %P
+
+" command to clear the query
+command C let @/=""
+
+" Indent guides
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_auto_colors = 0
+let g:indent_guides_guide_size = 0
+let g:indent_guides_start_level = 1
+highlight IndentGuidesOdd  ctermbg=18
+highlight IndentGuidesEven ctermbg=19
