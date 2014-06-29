@@ -35,22 +35,7 @@ export PYTHONSTARTUP="${HOME}/.pythonstartup.py";
 export LC_ALL="en_US.UTF-8";
 export LANG="en_US.UTF-8";
 
-# EXEC ########################################################################
-
-# Attempt to set termcap to something with 256 colors
-try_termcap="screen-256color";
-infocmp ${try_termcap} > /dev/null;
-if [ 0 -eq $? ]; then
-         export TERM="${try_termcap}";
-else
-        try_termcap="xterm-256color";
-        infocmp ${try_termcap} > /dev/null;
-        if [ 0 -eq $? ]; then
-                export TERM="${try_termcap}";
-        fi
 # OS X specific
 if [[ "$(uname)" == "Darwin" ]]; then
         source_file_if_exists "${DOTFILES}/osx/bash-like-common/env";
 fi
-
-cd_wd;
