@@ -1,5 +1,12 @@
-#!/bin/bash
-
+#!/bin/sh
 # Fast user switch
-
-"/System/Library/CoreServices/Menu Extras/User.menu/Contents/Resources/CGSession" -suspend
+bin="/System/Library/CoreServices/Menu Extras/User.menu/Contents/Resources/CGSession";
+if [[ -z $1 ]]; then
+  ${bin} -suspend
+else
+  USERID=`id -u $1`;
+  if [[ -z $USERID ]]; then
+    exit -1;
+  fi;
+  ${bin} -switchToUserID $USERID
+fi;
