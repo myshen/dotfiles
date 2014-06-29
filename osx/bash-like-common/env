@@ -1,20 +1,26 @@
 # http://www.mactricksandtips.com/2013/01/22-finder-hacks-tricks-and-changes.html
-defaults write com.apple.finder QLEnableTextSelection -boolean YES;
+defaults write com.apple.finder QLEnableTextSelection -boolean true;
 defaults write com.apple.finder AppleShowAllFiles true;
-defaults write com.apple.finder AnimateInfoPanes -boolean YES;
+defaults write com.apple.finder AnimateInfoPanes -boolean true;
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false;
 # defaults write com.apple.finder CreateDesktop false;
-defaults write com.apple.finder QLEnableTextSelection -bool TRUE;
-defaults write com.apple.finder OpenWindowForNewRemovableDisk -boolean YES;
+defaults write com.apple.finder QLEnableTextSelection -bool true;
+defaults write com.apple.finder OpenWindowForNewRemovableDisk -boolean true;
 defaults write com.apple.finder QLHidePanelOnDeactivate false;
 defaults write com.apple.finder _FXShowPosixPathInTitle -bool true;
 defaults write com.apple.finder FXListViewStripes -boolean true;
-defaults write com.apple.desktopservices DSDontWriteNetworkStores TRUE;
+defaults write com.apple.desktopservices DSDontWriteNetworkStores true;
 # move the dock
-defaults write com.apple.dock pinning -string end
-defaults write com.apple.iTunes play-songs-while-importing -bool FALSE;
+defaults write com.apple.dock pinning -string end;
+defaults write com.apple.dock expose-animation-duration -float 0.10;
+
+defaults write com.apple.iTunes play-songs-while-importing -bool false;
+
+defaults write com.apple.screencapture location ~/Pictures/Screenshots;
+defaults write com.apple.screencapture type png;
+
 
 # dashboard widgest
-#defaults write com.apple.dashboard mcx-disabled -boolean NO
+#defaults write com.apple.dashboard mcx-disabled -boolean false
 
 alias ungatekeeper="xattr -d -r com.apple.quarantine "
