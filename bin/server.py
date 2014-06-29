@@ -63,7 +63,7 @@ def main(argv):
     	os.chdir(os.path.realpath(args[0]))
 
     Handler = CustomCGIHTTPRequestHandler
-    httpd = SocketServer.TCPServer(("", port), Handler)
+    httpd = SocketServer.TCPServer(("0.0.0.0", port), Handler)
     httpd.server_name = 'testserver'
     httpd.server_port = port
 
