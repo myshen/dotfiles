@@ -106,8 +106,9 @@ fi
 
 cd_wd;
 
-source_file_if_exists ~/.dotfiles/bash-like-common/pkg_env;
-source_file_if_exists ~/.bash_completion.d/python-argcomplete.sh;
+source_file_if_exists "${HOME}/.dotfiles/bash-like-common/rc";
+source_file_if_exists "${HOME}/.dotfiles/bash-like-common/pkg_env";
+source_file_if_exists "${HOME}/.bash_completion.d/python-argcomplete.sh";
 
 fpath=(~/.zsh/completion $fpath) 
 
