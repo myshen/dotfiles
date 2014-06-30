@@ -37,8 +37,6 @@ set hlsearch
 set incsearch
 set ignorecase
 
-set nowrap
-
 set autoindent
 set title
 set mouse=a
@@ -201,12 +199,13 @@ set splitright
 " map <c-l> <c-w>l
 " map <c-h> <c-w>h
 
-" Don't skip lines when wrapped
+" wrap lines and don't skip lines when moving the cursor
+set nowrap
 nnoremap j gj
 nnoremap k gk
 nnoremap gj j
 nnoremap gk k
-" wrap on word instead of character
+" wrap on words instead of on characters
 set linebreak
 
 " ShowMarks
@@ -269,11 +268,11 @@ autocmd! BufNewFile * silent! 0r ~/.vim/skel/tmpl.%:e
 
 " Restore sessions when entering vim without arguments
 " save global session
-nnoremap <leader>S :mksession! ~/tmp/saved_session.vim<CR>
+nnoremap <Leader>S :mksession! ~/tmp/saved_session.vim<CR>
 " save and close all files and save global session
-nnoremap <leader>qs :mksession! ~/tmp/saved_session.vim<CR>:wqa<CR>
+nnoremap <Leader>qs :mksession! ~/tmp/saved_session.vim<CR>:wqa<CR>
 " close all files without saving and save global session
-nnoremap <leader>www :mksession! ~/tmp/saved_session.vim<CR>:qa!<CR>
+nnoremap <Leader>www :mksession! ~/tmp/saved_session.vim<CR>:qa!<CR>
 
 function! RestoreSession()
   " vim called without arguments
@@ -402,3 +401,15 @@ endfunction
 " Autojump to the last edited position when a file is reopened
 au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") |
                      \ exe "normal g'\"" | endif
+
+" Add the virtualenv's site-packages to vim path
+py << EOF
+import os.path
+import sys
+import vim
+if 'VIRTUAL_ENV' in os.environ:
+    project_base_dir = os.environ['VIRTUAL_ENV']
+    sys.path.insert(0, project_base_dir)
+    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+    execfile(activate_this, dict(__file__=activate_this))
+EOF
