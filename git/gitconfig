@@ -1,6 +1,5 @@
-[user]
-	name = Matt Shen
-	email = myeeshen@gmail.com
+[include]
+        path = .dotfiles_local/git/name.cfg
 [merge]
 	tool = vimdiff
 [diff]
@@ -98,3 +97,5 @@
         #merges
         ours = "!f() { git co --ours $@ && git add $@; }; f"
         theirs = "!f() { git co --theirs $@ && git add $@; }; f"
+[color]
+	ui = auto
