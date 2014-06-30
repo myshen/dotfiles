@@ -40,3 +40,5 @@ export LANG="en_US.UTF-8";
 if [[ "$(uname)" == "Darwin" ]]; then
         source_file_if_exists "${DOTFILES}/osx/bash-like-common/env";
 fi
+
+source_file_if_exists "${HOME}/.dotfiles_local/bash-like-common/env" &> /dev/null;
