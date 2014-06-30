@@ -5,8 +5,6 @@ if [[ "${SSH_CONNECTION}" != "" ]]; then
         if [[ "${client_b_block}" != "${host_b_block}" ]]; then
                 attachOrNewTmux;
         fi
-else
-        attachOrNewTmux;
 fi
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
