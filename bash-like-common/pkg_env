@@ -23,5 +23,9 @@ function ldperlbrew() {
   source_file_if_exists ~/perl5/perlbrew/etc/bashrc
 }
 
-# autoenv
-source_file_if_exists ~/.autoenv/activate.sh
+addPath "$HOME/.rbenv/bin" 1;
+if which rbenv > /dev/null; then
+        eval "$(rbenv init -)";
+fi
+
+source_file_if_exists /usr/local/opt/autoenv/activate.sh
