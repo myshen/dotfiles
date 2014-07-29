@@ -52,6 +52,10 @@ NeoBundle 'othree/xml.vim'
 "NeoBundle 'christoomey/vim-tmux-navigator'
 NeoBundle 'mgedmin/pythonhelper.vim'
 
+NeoBundle 'elzr/vim-json'
+
+NeoBundle 'ekalinin/Dockerfile.vim'
+
 NeoBundle 'jiangmiao/auto-pairs'
 NeoBundle 'Raimondi/delimitMate'
 

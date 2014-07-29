@@ -60,3 +60,5 @@ alias sshsrv='ssh -p 2201 admin@hdo.ucsd.edu'
 alias hdo='ssh admin@hdo.ucsd.edu'
 
 alias pbrew='perlbrew'
+
+source_file_if_exists "${HOME}/.dotfiles/docker/aliases"
