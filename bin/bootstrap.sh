@@ -1,36 +1,69 @@
 #!/bin/bash
-function link {
-    if [ ! -L $1 ]; then
-        rm -rv $1
-    fi
-    ln -s -v -f $2
-    chmod -h -v -v go-rwx $1
-}
-function link_dotfile {
-    if [[ -e .dotfiles_local/$1 ]]; then
-        link $1 .dotfiles_local/$1;
-    else
-        link $1 .dotfiles/$1;
-    fi
-}
-function link_dotfiles {
-    if [[ -e .dotfiles_local/$2 ]]; then
-        link $1 .dotfiles_local/$2;
-    else
-        link $1 .dotfiles/$2;
-    fi
+
+set -eu;
+
+function platform() {
+        platform='unknown'
+        unamestr=$(uname)
+        if [[ "$unamestr" == 'Linux' ]]; then
+                platform='linux'
+        elif [[ "$unamestr" == 'darwin' ]]; then
+                platform='osx'
+        elif [[ "$unamestr" == 'cygwin' ]]; then
+                platform='win32'
+        elif [[ "$unamestr" == 'FreeBSD' ]]; then
+                platform='bsd'
+        fi
+        return $platform
 }
 
-cd ~;
-link_dotfiles .vim          vim/.vim;
-link_dotfiles .vimrc        vim/.vimrc;
-link_dotfiles .bash_profile bash/.bash_profile;
-link_dotfiles .bashrc       bash/.bashrc;
-link_dotfiles .zshenv       zsh/.zshenv; 
-link_dotfiles .zlogin       zsh/.zlogin; 
-link_dotfiles .zshrc        zsh/.zshrc;  
-link_dotfile .hushlogin;
-link_dotfile .gitconfig;
-link_dotfile .pythonstartup.py;
-link_dotfile .screenrc;
-link_dotfiles .tmux.conf    tmux/.tmux.conf;
+function dependencies() {
+        # tmux
+        git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm;
+}
+
+function link {
+        if [ ! -L "$1" ]; then
+                rm --verbose --recursive "$1" || true
+        fi
+        ln --verbose --symbolic --force --no-dereference "$2" "$1"
+        if [[ platform == 'bsd' ]]; then
+                chmod -h -v -v go-rwx "$1"
+        else
+                chmod --verbose go-rwx "$1"
+        fi
+}
+function link_dotfile {
+        if [[ -e .dotfiles_local/$1 ]]; then
+                link "$1" ".dotfiles_local/$1";
+        else
+                link "$1" ".dotfiles/$1";
+        fi
+}
+function link_dotfiles {
+        if [[ -e .dotfiles_local/$2 ]]; then
+                link "$1" ".dotfiles_local/$2";
+        else
+                link "$1" ".dotfiles/$2";
+        fi
+}
+
+function dotlinks() {
+        cd ~;
+        link_dotfiles   .vim                    vim/vim;
+        link_dotfiles   .vimrc                  vim/vimrc;
+        link_dotfiles   .bash_profile           bash/bash_profile;
+        link_dotfiles   .bashrc                 bash/bashrc;
+        link_dotfiles   .zshenv                 zsh/zshenv;
+        link_dotfiles   .zlogin                 zsh/zlogin;
+        link_dotfiles   .zshrc                  zsh/zshrc;
+        link_dotfiles   .tmux                   tmux;
+        link            .tmux.conf              .tmux/tmux.conf;
+        link_dotfiles   .gitconfig              git/gitconfig;
+        link_dotfiles   .pythonstartup.py       pythonstartup.py;
+        link_dotfiles   .screenrc               screenrc;
+        link_dotfile    .hushlogin;
+}
+
+dotlinks
+dependencies

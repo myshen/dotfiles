@@ -1,11 +1,13 @@
 [user]
 	name = Matt Shen
-	email = myshen@ucsd.edu
+	email = myeeshen@gmail.com
 [merge]
 	tool = vimdiff
 [diff]
         #external = git_diff_vim_wrapper
         color = auto
+[core]
+        excludesfile = ~/.dotfiles/git/gitignore
 [alias]
         # the following are stolen from someone
         lgr = log --graph --full-history --all --color --pretty=format:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s"

@@ -1,6 +1,6 @@
 which reattach-to-user-namespace &> /dev/null;
 if [ 0 -eq $? ]; then
-        alias tmux="tmux -f ~/.dotfiles/tmux/.tmux-osx.conf";
+        alias tmux="tmux -f ~/.dotfiles/tmux/tmux-osx.conf";
 fi
 
 function sync_osx_tmpdir() {

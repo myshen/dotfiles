@@ -14,18 +14,9 @@ complete -c -f sudo
 ESC="\[\e["
 ECLR="${ESC}m\]"
 
-HOST_C="${ESC}1;37m\]"
-HOSTNAME=$(hostname);
-if [[ ${HOSTNAME} == 'watershed.ucsd.edu' ]]; then
-	HOST_C="${ESC}1;34m\]"
-elif [[ ${HOSTNAME} == 'sui.ucsd.edu' ]]; then
-	HOST_C="${ESC}1;34m\]"
-elif [[ ${HOSTNAME} == 'ghdc.ucsd.edu' ]]; then
-	HOST_C="${ESC}1;31m\]"
-elif [[ ${HOSTNAME} == 'goship.ucsd.edu' ]]; then
-	HOST_C="${ESC}1;35m\]"
-elif [[ ${HOSTNAME} == 'terra.ucsd.edu' ]]; then
-	HOST_C="${ESC}1;36m\]"
+# http://stackoverflow.com/a/13864829
+if [ -z ${HOST_C+x} ]; then
+        HOST_C="${ESC}1;37m\]"
 fi
 CWD_C="${ESC}0;33m\]";
 RESET_C="${ESC}0m\]";
@@ -110,5 +101,7 @@ export LESS_TERMCAP_so="$'\E[38;5;246m'"    # begin standout-mode - info box
 export LESS_TERMCAP_ue="$'\E[0m'"           # end underline
 export LESS_TERMCAP_us="$'\E[04;38;5;146m'" # begin underline
 
+source_file_if_exists ~/.dotfiles/base16-tomorrow.dark.sh;
+source_file_if_exists ~/.dotfiles/ssh-agent.bash;
 source_file_if_exists ~/.dotfiles/bash-like-common/pkg_env;
 source_file_if_exists ~/.bash_completion.d/python-argcomplete.sh;

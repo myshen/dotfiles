@@ -1,0 +1,7 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =5
+let g:netrw_dirhist_1='/Users/myshen/Documents/sites/cchdo/app/views/by_ocean'
+let g:netrw_dirhist_2='/Users/myshen/Documents/sites/cchdo/app/views/data_access'
+let g:netrw_dirhist_3='/Users/myshen/.pyvenv/pycchdo/lib/python2.7'
+let g:netrw_dirhist_4='/Users/myshen/Documents/libcchdo/uow_testexpo_test_testexpo/1.online'
+let g:netrw_dirhist_5='/Users/myshen/Documents/sites/deploy_wsgi'
