@@ -1,6 +1,8 @@
 # Corrections
 alias ..='cd ..'
-alias vi='vim'
+# collecting data for vim-croquet http://www.drbunsen.org/vim-croquet/
+alias vi='vim -w ~/.vimlog "$@"'
+alias vim='vim -w ~/.vimlog "$@"'
 alias suod='sudo'
 alias sl='ls'
 alias pusdh='pushd'
@@ -10,7 +12,7 @@ alias rm='rm -i'
 alias cp='cp -iv'
 alias mv='mv -i'
 alias dirs='dirs -v'
-alias ls='ls -lah'
+alias ls='ls -lah --color'
 alias cdl='cd;ls'
 alias cls='clear;ls'
 alias mkdir='mkdir -p'
