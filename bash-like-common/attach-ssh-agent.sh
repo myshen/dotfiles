@@ -1,4 +1,3 @@
-#!/bin/sh
 #
 # setup ssh-agent
 #
@@ -16,18 +15,28 @@ if [ ! -S $SSH_AUTH_SOCK ]; then
   unset SSH_AGENT_PID
 fi
 
+start_ssh_agent() {
+  eval `ssh-agent -s` > /dev/null
+}
+
 # start agent if necessary
 if [ -z $SSH_AGENT_PID ] && [ -z $SSH_TTY ]; then  # if no agent & not in ssh
-  eval `ssh-agent -s` > /dev/null
+        start_ssh_agent
 fi
 
 # setup addition of keys when needed
 if [ -z "$SSH_TTY" ] ; then                     # if not using ssh
   ssh-add -l > /dev/null                        # check for keys
-  if [ 0 -ne $? ] ; then
+  if [ 2 -eq $? ] ; then
+    'rm' "$SSH_AUTH_SOCK"
+    'rmdir' "$(dirname $SSH_AUTH_SOCK)"
+    start_ssh_agent
+  fi
+  if [ 0 -eq $? ]; then
     alias ssh='ssh-add -l > /dev/null || ssh-add && unalias ssh ; ssh'
     if [ -f "/usr/lib/ssh/x11-ssh-askpass" ] ; then
       SSH_ASKPASS="/usr/lib/ssh/x11-ssh-askpass" ; export SSH_ASKPASS
     fi
   fi
 fi
+
