@@ -1,4 +1,4 @@
 .DS_Store
 Thumbs.db
 vim/vim/.netrwhist
-vim/vim/bundle
+vim/vim/bundle/**

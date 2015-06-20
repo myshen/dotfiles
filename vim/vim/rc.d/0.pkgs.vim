@@ -1,15 +1,20 @@
-" This must be first; it changes other options as side effects
-set nocompatible
-" Must turn off filetype before bundling setup
-filetype off
+" Note: Skip initialization for vim-tiny or vim-small.
+if 0 | endif
 
 if has('vim_starting')
+  if &compatible
+    set nocompatible               " Be iMproved
+  endif
+
+  " Required:
   set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
+
+" Required:
 call neobundle#begin(expand('~/.vim/bundle/'))
 
-" let NeoBundle manage NeoBundle
-" required! 
+" Let NeoBundle manage NeoBundle
+" Required:
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 " visual
@@ -20,6 +25,8 @@ NeoBundle 'bling/vim-airline'
 NeoBundle 'ConradIrwin/vim-bracketed-paste'
 NeoBundle 'tmux-plugins/vim-tmux'
 " NeoBundle 'christoomey/vim-tmux-navigator'
+NeoBundle 'vim-scripts/IndentConsistencyCopAutoCmds'
+NeoBundle 'vim-scripts/ag.vim'
 
 " navigation
 NeoBundle 'mileszs/ack.vim'
@@ -71,7 +78,7 @@ NeoBundle 'othree/xml.vim'
 "NeoBundle 'vim-scripts/taglist.vim'
 "NeoBundle 'bingaman/vim-sparkup'
 "NeoBundle 'tpope/vim-ragtag'
-"NeoBundle 'scrooloose/syntastic'
+NeoBundle 'scrooloose/syntastic'
 "NeoBundle 'FredKSchott/CoVim'
 "NeoBundle 'Shougo/unite.vim'
 
@@ -80,14 +87,9 @@ NeoBundle 'ekalinin/Dockerfile.vim'
 
 call neobundle#end()
 
-" Brief help
-" :NeoBundleList          - list configured bundles
-" :NeoBundleInstall(!)    - install(update) bundles
-" :NeoBundleSearch(!) foo - search(or refresh cache first) for foo
-" :NeoBundleClean(!)      - confirm(or auto-approve) removal of unused bundles
-
-" Installation check
-NeoBundleCheck
-
-" Must happen after bundle setup
+" Required:
 filetype plugin indent on
+
+" If there are uninstalled bundles found on startup,
+" this will conveniently prompt you to install them.
+NeoBundleCheck

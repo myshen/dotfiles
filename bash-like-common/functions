@@ -130,7 +130,7 @@ function attachOrNewTmux {
                 if [ 0 -eq $? ]; then
                         if [ ! -n "${TMUX}" ]; then
                                 if [[ "${SSH_CONNECTION}" != "" ]]; then
-                                        tmux attach -d && exit;
+                                        tmux new-session -t 0 && exit;
                                 else
                                         tmux ls | grep -qF "attached";
                                         if [ 0 -ne $? ]; then

@@ -1,66 +1,56 @@
-# Corrections
-alias ..='cd ..'
 # collecting data for vim-croquet http://www.drbunsen.org/vim-croquet/
 alias vi='vim -w ~/.vimlog "$@"'
 alias vim='vim -w ~/.vimlog "$@"'
-alias suod='sudo'
-alias sl='ls'
-alias pusdh='pushd'
-alias fgfg='fg'
 
+# protection
 alias rm='rm -i'
 alias cp='cp -iv'
 alias mv='mv -i'
+alias halt='echo "Really? Halt?"'
+alias reboot='echo "Really? Reboot?"'
+
+# customization
+alias ..='cd ..'
+alias ...='..;..'
 alias dirs='dirs -v'
 alias ls='ls -lah --color'
 alias cdl='cd;ls'
+alias clr='clear'
 alias cls='clear;ls'
 alias mkdir='mkdir -p'
 alias less='less --RAW-CONTROL-CHARS -i'
-alias more='less'
-alias path='echo -e ${PATH//:/\\n}'
-alias tree='ls -lR'
+alias lessf='less --RAW-CONTROL-CHARS --follow-name -i +F'
 alias kint='kill -INT'
 alias kterm='kill -TERM'
 alias murder='kill -KILL'
-alias halt='echo "Really? Halt?"'
-alias reboot='echo "Really? Reboot?"'
+
+alias tree='ls -lR'
+alias path='echo -e ${PATH//:/\\n}'
+alias as='sudo -u'
 
 # Spelling
 alias ngninx='nginx'
 alias hisotry='history'
 alias gs='echo "Did you mean ghost?"'
 alias ghost="'gs'"
+alias suod='sudo'
+alias sl='ls'
+alias pusdh='pushd'
+alias qfg='fg'
+alias fgfg='fg'
 
 # Shortcuts
+alias pbrew='perlbrew'
 alias nose="nosetests"
 alias max="osascript ~/Library/Scripts/KBmaximize.scpt"
 
 alias proj='vim ~/.project'
 
-alias as='sudo -u'
-
 alias gco='git co'
 alias gst='git st'
+alias gdh='git diff --no-ext-diff HEAD'
 alias gdiff='git diff --no-ext-diff'
 alias gitk='gitk --all &'
 alias glg='git lg'
-
-alias hydro-vm="source hydro-vm"
-
-alias home='ssh synmantx.dyndns.org'
-alias ghdc='ssh ghdc.ucsd.edu'
-alias pacha='ssh pacha.ucsd.edu'
-alias ocho='ssh ocho.ucsd.edu'
-alias kaze='ssh kaze.ucsd.edu'
-alias terra='ssh terra.ucsd.edu'
-alias shera='ssh she-ra.ucsd.edu'
-alias alfredo='ssh alfredo.ucsd.edu'
-alias neoco='ssh sccoos@neoco.ucsd.edu'
-alias fatlip='ssh fatlip.ucsd.edu'
-alias sshsrv='ssh -p 2201 admin@hdo.ucsd.edu'
-alias hdo='ssh admin@hdo.ucsd.edu'
-
-alias pbrew='perlbrew'
 
 source_file_if_exists "${HOME}/.dotfiles/docker/aliases"
