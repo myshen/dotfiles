@@ -72,6 +72,23 @@ function edsrc() {
 	fi
 }
 
+# https://github.com/markeganfuller/bashrc/blob/master/bashrc
+# Disable crontab -r
+function crontab () {
+	# Replace -r with -e
+	/usr/bin/crontab "${@/-r/-e}"
+}
+
+# Highlight Pattern
+# highlights a pattern in output
+# Usage: hlp CMD PATTERN
+# commands with args should be in quotes
+function hlp () {
+	CMD=$1
+	PATTERN=$2
+	${CMD} 2>&1 | egrep --color "${PATTERN}|$"
+}
+
 function man() {
         /usr/bin/man $@ || (help $@ 2> /dev/null && help $@ | less)
 }

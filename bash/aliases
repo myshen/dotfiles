@@ -1,0 +1,1 @@
+alias please='eval $(thefuck $(fc -ln -1)); history -r'

@@ -9,7 +9,7 @@ function setupPaths() {
         # Note that these are in reverse actual order
         addPath "${DOTFILES}/bin" 1;
         addPath "." 1;
-        
+
         export WKPATH="~/Documents";
         export MANPATH="\
 /usr/local/share/man:\
@@ -19,6 +19,7 @@ setupPaths;
 
 # ENV #########################################################################
 export EDITOR="vim"
+export VISUAL="vim"
 export PAGER="less"
 export LESS='--RAW-CONTROL-CHARS -i'
 _src_hilite_path="/usr/local/bin/src-hilite-lesspipe.sh";

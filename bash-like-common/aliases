@@ -11,9 +11,18 @@ alias reboot='echo "Really? Reboot?"'
 
 # customization
 alias ..='cd ..'
-alias ...='..;..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .3='....'
+alias .4='cd ../../../..'
+alias .5='cd ../../../../..'
+alias .6='cd ../../../../../..'
 alias dirs='dirs -v'
-alias ls='ls -lah --color'
+# LC_COLLATE=C makes underscores sort before a
+alias ls='LC_COLLATE=C ls --color'
+alias ll='LC_COLLATE=C ls -lh --color --classify'
+alias lll='LC_COLLATE=C ls -lah --color --classify'
+alias la='lll'
 alias cdl='cd;ls'
 alias clr='clear'
 alias cls='clear;ls'
@@ -23,18 +32,28 @@ alias lessf='less --RAW-CONTROL-CHARS --follow-name -i +F'
 alias kint='kill -INT'
 alias kterm='kill -TERM'
 alias murder='kill -KILL'
+# https://twitter.com/K_Vladimiroff/status/507091773601370112
+alias please='sudo $(fc -ln -1)'
+# https://www.reddit.com/r/sysadmin/comments/356tub/handy_functions_for_your_bashrc/cr23n6s
+alias df='df -h -x tmpfs -x devtmpfs'
+alias dl='curl -OJL'
+alias nocomment='egrep -v "^\s*(#|$)"'
+alias sudo='sudo ' # Fixes bash ignoring aliases after sudo
 
 alias tree='ls -lR'
 alias path='echo -e ${PATH//:/\\n}'
 alias as='sudo -u'
+alias mine="sudo chown -R $(id -un):$(id -gn)"
+alias mkexe="chmod a+x"
 
 # Spelling
+alias cd..='..'
 alias ngninx='nginx'
 alias hisotry='history'
 alias gs='echo "Did you mean ghost?"'
 alias ghost="'gs'"
 alias suod='sudo'
-alias sl='ls'
+alias chwon='chown'
 alias pusdh='pushd'
 alias qfg='fg'
 alias fgfg='fg'
@@ -43,14 +62,21 @@ alias fgfg='fg'
 alias pbrew='perlbrew'
 alias nose="nosetests"
 alias max="osascript ~/Library/Scripts/KBmaximize.scpt"
+# https://www.reddit.com/r/sysadmin/comments/356tub/handy_functions_for_your_bashrc/cr23grs
+alias dumphttp="sudo tcpdump -A -s 0 'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)'"
+alias cleanpyc="find . -name '*.pyc' -delete"
 
 alias proj='vim ~/.project'
 
 alias gco='git co'
+alias gsl='git stash list'
 alias gst='git st'
+alias gist='gst'
+alias gitst='gst'
 alias gdh='git diff --no-ext-diff HEAD'
 alias gdiff='git diff --no-ext-diff'
 alias gitk='gitk --all &'
 alias glg='git lg'
 
 source_file_if_exists "${HOME}/.dotfiles/docker/aliases"
+source_file_if_exists "${HOME}/.dotfiles/thefuck/aliases"

@@ -9,14 +9,19 @@ function ldvenv() {
   unalias mkvirtualenv;
   unalias rmvirtualenv;
   unalias cpvirtualenv;
-  source_file_if_exists /usr/local/bin/virtualenvwrapper.sh &>! ~/var/ldvenv.error.log;
+  source_file_if_exists /usr/local/bin/virtualenvwrapper.sh
 }
+
 # Doing this as a function causes zsh to crash.
-source_file_if_exists ~/.rvm/scripts/rvm &>! ~/var/ldrvm.error.log;
+source_file_if_exists ~/.rvm/scripts/rvm;
+
+addPath "$HOME/.rvm/bin";
 
 alias perlbrew='ldperlbrew; perlbrew';
 function ldperlbrew() {
   unalias perlbrew;
-  source_file_if_exists ~/perl5/perlbrew/etc/bashrc &>! ~/var/ldperlbrew.error.log;
+  source_file_if_exists ~/perl5/perlbrew/etc/bashrc
 }
-source_file_if_exists /usr/local/opt/autoenv/activate.sh
+
+# autoenv
+source_file_if_exists ~/.autoenv/activate.sh

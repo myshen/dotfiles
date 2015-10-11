@@ -1,0 +1,74 @@
+ESC="\[\e["
+ECLR="${ESC}m\]"
+
+# http://stackoverflow.com/a/13864829
+if [ -z ${HOST_C+x} ]; then
+        HOST_C="${ESC}1;37m\]"
+fi
+CWD_C="${ESC}0;33m\]";
+RESET_C="${ESC}0m\]";
+BLACK_C="${ESC}0;30m\]";
+GREEN_C="${ESC}0;32m\]";
+
+# see asciicolors.py TERMCOLORS
+
+prompt_div_char=" ";
+# Recalculated every time the prompt is shown by prompt_command
+prompt_div="${prompt_div_char}";
+
+if [ -z "$PS1_SUFFIX" ]; then
+        PS1_SUFFIX="";
+fi
+PS1_BASE="";
+PS1_BASE="${PS1_BASE}${HOST_C}. ";
+PS1_BASE="${PS1_BASE}\u${BLACK_C}@${GREEN_C}\H";
+PS1_BASE="${PS1_BASE}${BLACK_C}:${CWD_C}\W${ECLR} ${HOST_C}\s\n";
+PS1_BASE="${PS1_BASE}  ? | \j\n";
+PS1_BASE="${PS1_BASE}  \! ${PS1_SUFFIX}${GREEN_C}\$ ${ECLR}";
+export PS1_BASE;
+
+function make_prompt_divider {
+        header="$1 ";
+        trailer=$2;
+        status=$3;
+        hlen=${#header};
+        if [ ${hlen} -eq 1 ]; then
+                hlen=0;
+                header="";
+        fi
+        tlen=${#trailer}-1;
+        # create a $prompt_div of all screen width minus the time string and a space:
+        let fill_length=${COLUMNS}-${tlen}-${hlen};
+        prompt_div="";
+        while [ "${fill_length}" -gt "0" ]; do
+            prompt_div="${prompt_div_char}${prompt_div}" # fill with underscores to work on 
+            let fill_length=${fill_length}-1;
+        done
+        if [[ ${status} -ne 0 ]] && [[ ${status} -ne 146 ]]; then
+                header="${ESC}0;31m\]${header}${HOST_C}";
+                trailer="${ESC}0;31m\]${trailer}";
+        fi
+        prompt_div="${HOST_C}${header}${prompt_div} ${trailer}${RESET_C}\n"
+}
+
+function prompt_command {
+        status=$?;
+        trailer="$(date +'%F %T')";
+        header="";
+        if [[ ${status} -ne 0 ]] && [[ ${status} -ne 146 ]]; then
+                header=${status};
+        fi
+        make_prompt_divider "${header}" "${trailer}" "${status}";
+        pyvenv="";
+        if [ -n "${VIRTUAL_ENV}" ]; then
+                pyvenv="($(basename ${VIRTUAL_ENV})) ";
+        fi
+        export PS1="${prompt_div}${pyvenv}${PS1_BASE}"
+
+        ## Flush current session history
+        #history -a;
+        ## Load session history
+        #history -n;
+}
+# Executed every time the prompt is shown
+export PROMPT_COMMAND=prompt_command;
