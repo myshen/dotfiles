@@ -19,7 +19,9 @@ function platform() {
 
 function dependencies() {
         # tmux
-        git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm;
+        git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm || :
+        # vim/NeoBundle
+        git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim || :
 }
 
 function link {
