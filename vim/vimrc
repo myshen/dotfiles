@@ -1,10 +1,9 @@
 source ~/.vim/rc.d/0.pkgs.vim
+source ~/.vim/rc.d/z.leader.vim
 
+" Thanks sheerun
 let mapleader = '\'
 map <Space> <Leader>
-
-" reload config
-map <Leader>R :source ~/.vimrc<cr>
 
 " join jump
 " http://blog.sanctum.geek.nz/vim-annoyances/
@@ -12,6 +11,10 @@ nnoremap J mzJ`z
 " center screen on jump
 nnoremap n nzz
 " nnoremap } }zz
+
+if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
+  set t_Co=256
+endif
 
 " http://vim.wikia.com/wiki/Fix_syntax_highlighting
 syntax enable sync minlines=2048
@@ -48,10 +51,6 @@ set lazyredraw
 " Hide buffers instead of closing.
 set hidden
 
-" toggle display of whitespace
-nmap <leader>l :set list!<CR>
-nmap <leader>w :set wrap!<CR>
-
 set listchars=tab:»\ ,eol:¬,trail:.,extends:#,nbsp:.
 
 set pastetoggle=<F2>
@@ -60,10 +59,13 @@ set pastetoggle=<F2>
 map <Leader>t :TagbarToggle<CR>
 
 " NERDTree
-map <Leader>n :NERDTreeToggle<CR>
-map <Leader>N :NERDTreeFind<CR>
+map <Leader>e :NERDTreeToggle<CR>
+map <Leader>E :NERDTreeFind<CR>
 " https://github.com/ketan/vimrc/blob/master/vimrc.nerdtree
 let NERDTreeIgnore=[ '\.pyc$', '\.pyo$', '\.py\$class$', '\.obj$', '\.o$', '\.so$', '\.egg$', '^\.git$', '\.gem$',  '\.rbc$', '\~$']
+" netrw split explorer http://vimcasts.org/blog/2013/01/oil-and-vinegar-split-windows-and-project-drawer/
+" Alternatively, use https://github.com/tpope/vim-vinegar
+let NERDTreeHijackNetrw=1
 let NERDTreeShowFiles=1           " Show hidden files, too
 let NERDTreeShowHidden=1
 let NERDTreeQuitOnOpen=1          " Quit on opening files from the tree
@@ -144,12 +146,6 @@ else
     au BufWinEnter * let w:m2=matchadd('LongLine', '\%>80v.\+', -1)
 endif
 
-" Jump to col 80
-nmap <silent> <leader>80 <ESC>80\|
-
-" Find merge conflict markers
-nmap <silent> <leader>cf <ESC>/\v^[<=>]{7}( .*\|$)<CR>
-
 " Copy current line w/o indent
 nnoremap vv ^vg_
 
@@ -157,8 +153,6 @@ nnoremap vv ^vg_
 iab consloe console
 iab lgo log
 
-" highlight the current word
-nnoremap <silent> <leader>h1 :execute 'match W1 /\<<c-r><c-w>\>/'<cr> hi W1 guibg=#aeee00 guifg=#000000 ctermbg=154 ctermfg=16
 highlight Search ctermbg=blue ctermfg=black
 
 " Folding
@@ -181,10 +175,12 @@ endfunction
 set foldtext=NeatFoldText()
 
 
-" I can type :help on my own, thanks.
+" I can type
+" :help
 noremap <F1> <nop>
-" I can also type :ex and :man
+" :ex 
 noremap Q <nop>
+" :man
 noremap K <nop>
 
 " retain selection in visual mode when indenting blocks
@@ -267,7 +263,6 @@ function! Wipeout()
   endtry
 endfunction
 
-
 " Skeleton files
 " http://vim.runpaint.org/typing/using-templates/
 autocmd! BufNewFile * silent! 0r ~/.vim/skel/tmpl.%:e
@@ -322,9 +317,90 @@ let g:indent_guides_start_level = 1
 highlight IndentGuidesOdd  ctermbg=234
 highlight IndentGuidesEven ctermbg=235
 
-" open file under cursor
-" http://superuser.com/a/277326
-map <leader>gf :e <cfile><cr>
-
 set ttimeout
 set ttimeoutlen=100
+
+" http://stackoverflow.com/a/25233145
+function! HighlightWordUnderCursor()
+    if getline(".")[col(".")-1] !~# '[[:punct:][:blank:]]' 
+        exec 'match' 'Search' '/\V\<'.expand('<cword>').'\>/' 
+    else 
+        match none 
+    endif
+endfunction
+
+" Jump to end of pasted text
+vnoremap <silent> y y`]
+vnoremap <silent> p p`]
+nnoremap <silent> p p`]
+
+" Quickly select text you just pasted:
+noremap gV `[v`]
+
+" Stop that stupid window from popping up:
+map q: :q`]`
+
+vmap v <Plug>(expand_region_expand)
+vmap <C-v> <Plug>(expand_region_shrink)
+
+" http://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
+" configures CtrlP to use git or silver searcher for autocompletion
+let g:ctrlp_use_caching = 0
+if executable('ag')
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+else
+  let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
+  let g:ctrlp_prompt_mappings = {
+        \ 'AcceptSelection("e")': ['<space>', '<cr>', '<2-LeftMouse>'],
+        \ 
+  }
+endif
+
+" command line emacs style
+" https://statico.github.io/vim.html
+:cnoremap <C-a>  <Home>
+:cnoremap <C-b>  <Left>
+:cnoremap <C-f>  <Right>
+:cnoremap <C-d>  <Delete>
+:cnoremap <M-b>  <S-Left>
+:cnoremap <M-f>  <S-Right>
+:cnoremap <M-d>  <S-right><Delete>
+:cnoremap <Esc>b <S-Left>
+:cnoremap <Esc>f <S-Right>
+:cnoremap <Esc>d <S-right><Delete>
+cnoremap <C-g>  <C-c>
+
+
+nmap <C-e> :e#<CR>
+nmap <C-n> :bnext<CR>
+nmap <C-p> :bprev<CR>
+
+nmap \t :set expandtab tabstop=4 shiftwidth=4 softtabstop=4<CR>
+nmap \T :set expandtab tabstop=8 shiftwidth=8 softtabstop=4<CR>
+nmap \M :set noexpandtab tabstop=8 softtabstop=4 shiftwidth=4<CR>
+nmap \m :set expandtab tabstop=2 shiftwidth=2 softtabstop=2<CR>
+
+nmap \w :setlocal wrap!<CR>:setlocal wrap?<CR>
+
+" swap buffers :b#
+
+" Make a simple "search" text object.
+" http://vim.wikia.com/wiki/Copy_or_change_search_hit
+vnoremap <silent> s //e<C-r>=&selection=='exclusive'?'+1':''<CR><CR>
+    \:<C-u>call histdel('search',-1)<Bar>let @/=histget('search',-1)<CR>gv
+    omap s :normal vs<CR>
+
+" https://github.com/bpierre/dotfiles/blob/master/vimrc
+" create the directories to the current file
+function! CreateDirectoriesToFile()
+  let curdir = expand('%:p:h')
+  call system('mkdir -p "'.curdir.'"')
+  echo 'created '.curdir
+endfunction
+
+
+" Autojump to the last edited position when a file is reopened
+au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") |
+                     \ exe "normal g'\"" | endif

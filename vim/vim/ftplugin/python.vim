@@ -24,7 +24,6 @@ let g:pymode_rope = 1
 
 " Documentation
 let g:pymode_doc = 1
-let g:pymode_doc_key = 'K'
 
 "Linting
 let g:pymode_lint = 1
@@ -47,3 +46,5 @@ let g:pymode_syntax_space_errors = g:pymode_syntax_all
 
 " Don't autofold code
 let g:pymode_folding = 0
+
+nmap <Leader>pr iprint(repr())<Esc>F(a

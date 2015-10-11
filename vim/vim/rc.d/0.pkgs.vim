@@ -21,18 +21,26 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'chriskempson/base16-vim'
 
 " ui
+NeoBundle 'tpope/vim-sensible'
 NeoBundle 'bling/vim-airline'
 NeoBundle 'ConradIrwin/vim-bracketed-paste'
 NeoBundle 'tmux-plugins/vim-tmux'
 " NeoBundle 'christoomey/vim-tmux-navigator'
-NeoBundle 'vim-scripts/IndentConsistencyCopAutoCmds'
 NeoBundle 'vim-scripts/ag.vim'
+NeoBundle 'vim-scripts/ZoomWin'
+
+" indentation
+NeoBundle 'vim-scripts/IndentConsistencyCopAutoCmds'
+" NeoBundle 'luochen1990/indent-detector.vim'
+NeoBundle 'tpope/vim-sleuth'
 
 " navigation
 NeoBundle 'mileszs/ack.vim'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'majutsushi/tagbar'
 NeoBundle 'zakj/vim-showmarks'
+NeoBundle 'terryma/vim-expand-region'
+NeoBundle 'justinmk/vim-sneak'
 
 " Show unicode info on 'ga'
 NeoBundle 'tpope/vim-characterize'
@@ -84,6 +92,12 @@ NeoBundle 'scrooloose/syntastic'
 
 NeoBundle 'elzr/vim-json'
 NeoBundle 'ekalinin/Dockerfile.vim'
+
+" unorganized I am
+NeoBundle 'danro/rename.vim'
+NeoBundle '29decibel/vim-stringify'
+NeoBundle 'sjl/gundo.vim'
+NeoBundle 'robmiller/vim-movar'
 
 call neobundle#end()
 
