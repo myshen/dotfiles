@@ -11,7 +11,7 @@ defaults write com.apple.finder _FXShowPosixPathInTitle -bool true;
 defaults write com.apple.finder FXListViewStripes -boolean true;
 defaults write com.apple.desktopservices DSDontWriteNetworkStores true;
 # move the dock
-defaults write com.apple.dock pinning -string end;
+defaults write com.apple.dock pinning -string start;
 defaults write com.apple.dock expose-animation-duration -float 0.10;
 
 defaults write com.apple.iTunes play-songs-while-importing -bool false;

@@ -113,3 +113,5 @@ source_file_if_exists "${HOME}/.bash_completion.d/python-argcomplete.sh";
 fpath=(~/.zsh/completion $fpath) 
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+export GOPATH="$HOME/.go";
+addPath "$HOME/.go/bin";

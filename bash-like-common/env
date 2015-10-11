@@ -7,6 +7,9 @@ source "${DOTFILES}/bash-like-common/functions";
 
 function setupPaths() {
         # Note that these are in reverse actual order
+        addPath "/usr/local/sbin" 1;
+        addPath "/usr/local/bin" 1;
+        addPath "/usr/local/share/npm/bin" 1;
         addPath "${DOTFILES}/bin" 1;
         addPath "." 1;
 
@@ -35,10 +38,5 @@ export PYTHONSTARTUP="${HOME}/.pythonstartup.py";
 # LOCALE ######################################################################
 export LC_ALL="en_US.UTF-8";
 export LANG="en_US.UTF-8";
-
-# OS X specific
-if [[ "$(uname)" == "Darwin" ]]; then
-        source_file_if_exists "${DOTFILES}/osx/bash-like-common/env";
-fi
 
 source_file_if_exists "${HOME}/.dotfiles_local/bash-like-common/env" &> /dev/null;
