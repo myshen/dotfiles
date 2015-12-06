@@ -52,6 +52,7 @@ function link_dotfiles {
 
 function dotlinks() {
         cd ~;
+        link_dotfiles   .desk                   desk;
         link_dotfiles   .vim                    vim/vim;
         link_dotfiles   .vimrc                  vim/vimrc;
         link_dotfiles   .bash_profile           bash/bash_profile;

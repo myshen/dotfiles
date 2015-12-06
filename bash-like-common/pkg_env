@@ -28,4 +28,8 @@ if which rbenv > /dev/null; then
         eval "$(rbenv init -)";
 fi
 
-source_file_if_exists /usr/local/opt/autoenv/activate.sh
+# Hook for desk activation
+[ -n "$DESK_ENV" ] && source "$DESK_ENV" || true
+
+# autoenv
+source_file_if_exists ~/.autoenv/activate.sh
