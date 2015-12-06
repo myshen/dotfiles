@@ -22,3 +22,8 @@ nnoremap <silent> <leader>h1 :execute 'match W1 /\<<c-r><c-w>\>/'<cr> hi W1 guib
 " open file under cursor
 " http://superuser.com/a/277326
 map <leader>gf :e <cfile><cr>
+
+nnoremap <leader>p :prev<cr>
+nnoremap <leader>gdh :Gdiff HEAD<cr>
+nnoremap <leader>gd :Gdiff 
+nnoremap <leader>/ :AgFromSearch<cr>

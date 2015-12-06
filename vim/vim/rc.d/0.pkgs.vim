@@ -32,7 +32,9 @@ NeoBundle 'vim-scripts/ZoomWin'
 " indentation
 NeoBundle 'vim-scripts/IndentConsistencyCopAutoCmds'
 " NeoBundle 'luochen1990/indent-detector.vim'
-NeoBundle 'tpope/vim-sleuth'
+NeoBundle 'ciaranm/detectindent'
+" sleuth overrides python tabstop to 8 :(
+" NeoBundle 'tpope/vim-sleuth'
 
 " navigation
 NeoBundle 'mileszs/ack.vim'
@@ -76,6 +78,8 @@ NeoBundle 'nathanaelkane/vim-indent-guides'
 "NeoBundle 'vim-scripts/Pydiction'
 "NeoBundle 'hynek/vim-python-pep8-indent'
 NeoBundle 'klen/python-mode'
+NeoBundle 'tpope/vim-dispatch'
+NeoBundle 'JarrodCTaylor/vim-python-test-runner'
 " Shows python class method, etc
 "NeoBundle 'mgedmin/pythonhelper.vim'
 
