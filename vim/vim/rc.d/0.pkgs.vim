@@ -49,6 +49,7 @@ NeoBundle 'tpope/vim-characterize'
 
 " git
 NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'twe4ked/vim-diff-toggle'
 "NeoBundle 'airblade/vim-gitgutter'
 
 "NeoBundle 'thenoseman/vim-matchit'
@@ -68,6 +69,12 @@ NeoBundle 'tpope/vim-abolish'
 NeoBundle 'SirVer/ultisnips'
 NeoBundle 'honza/vim-snippets'
 
+" syntax
+NeoBundle 'Chiel92/vim-autoformat'
+
+" session
+NeoBundle 'tpope/vim-obsession'
+
 " golang
 NeoBundle 'fatih/vim-go'
 
@@ -79,29 +86,34 @@ NeoBundle 'nathanaelkane/vim-indent-guides'
 "NeoBundle 'hynek/vim-python-pep8-indent'
 NeoBundle 'klen/python-mode'
 NeoBundle 'tpope/vim-dispatch'
-NeoBundle 'JarrodCTaylor/vim-python-test-runner'
+NeoBundle 'alfredodeza/pytest.vim'
+" NeoBundle 'JarrodCTaylor/vim-python-test-runner'
 " Shows python class method, etc
-"NeoBundle 'mgedmin/pythonhelper.vim'
+" NeoBundle 'mgedmin/pythonhelper.vim'
 
 " ruby
 NeoBundle 'vim-ruby/vim-ruby'
 
 NeoBundle 'othree/xml.vim'
-"NeoBundle 'vim-scripts/taglist.vim'
 "NeoBundle 'bingaman/vim-sparkup'
 "NeoBundle 'tpope/vim-ragtag'
 NeoBundle 'scrooloose/syntastic'
 "NeoBundle 'FredKSchott/CoVim'
 "NeoBundle 'Shougo/unite.vim'
 
+" unorganized I am
 NeoBundle 'elzr/vim-json'
 NeoBundle 'ekalinin/Dockerfile.vim'
-
-" unorganized I am
-NeoBundle 'danro/rename.vim'
-NeoBundle '29decibel/vim-stringify'
-NeoBundle 'sjl/gundo.vim'
-NeoBundle 'robmiller/vim-movar'
+"NeoBundle 'vim-scripts/taglist.vim'
+NeoBundle 'majutsushi/tagbar'
+" NeoBundle 'danro/rename.vim' " rename a file, may be obsoleted by vim-eunuch
+NeoBundle 'tpope/vim-eunuch' " Mkdir, Rename, Find
+" NeoBundle '29decibel/vim-stringify' " Convert html template into strings
+NeoBundle 'sjl/gundo.vim' " show undo tree
+" NeoBundle 'robmiller/vim-movar' " move around/inside variable
+" NeoBundle 'tpope/vim-unimpaired' " need a cheat sheet for this one
+" NeoBundle 'bkad/CamelCaseMotion'
+" NeoBundle 'julienr/vim-cellmode' " VimuxRun[Last]Command
 
 call neobundle#end()
 

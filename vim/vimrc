@@ -1,5 +1,4 @@
 source ~/.vim/rc.d/0.pkgs.vim
-source ~/.vim/rc.d/z.leader.vim
 
 " Thanks sheerun
 let mapleader = '\'
@@ -11,6 +10,9 @@ nnoremap J mzJ`z
 " center screen on jump
 nnoremap n nzz
 " nnoremap } }zz
+
+" https://www.reddit.com/r/vim/comments/44e1ig/slug/czporx7
+nnoremap gb :ls<CR>:buffer<Space>
 
 if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
   set t_Co=256
@@ -69,6 +71,7 @@ let NERDTreeShowHidden=1
 let NERDTreeQuitOnOpen=1          " Quit on opening files from the tree
 let NERDTreeHighlightCursorline=1 " Highlight the selected entry in the tree
 
+" XXX obsoleted? tpope/vim-eunuch :SudoWrite
 " Write a file with sudo priviledges
 cmap w!! w !sudo tee % >/dev/null
 
@@ -266,14 +269,6 @@ endfunction
 " http://vim.runpaint.org/typing/using-templates/
 autocmd! BufNewFile * silent! 0r ~/.vim/skel/tmpl.%:e
 
-" Restore sessions when entering vim without arguments
-" save global session
-nnoremap <Leader>S :mksession! ~/tmp/saved_session.vim<CR>
-" save and close all files and save global session
-nnoremap <Leader>qs :mksession! ~/tmp/saved_session.vim<CR>:wqa<CR>
-" close all files without saving and save global session
-nnoremap <Leader>www :mksession! ~/tmp/saved_session.vim<CR>:qa!<CR>
-
 function! RestoreSession()
   " vim called without arguments
   let restorefile='~/tmp/saved_session.vim'
@@ -283,13 +278,11 @@ function! RestoreSession()
 endfunction
 autocmd VimEnter * call RestoreSession()
 
-""" Unite
-nnoremap <leader>f :Unite file_rec/async<cr>
-nnoremap <leader>/ :Unite grep:.<cr>
-nnoremap <leader>y :Unite history/yanks<cr>
-nnoremap <leader>s :Unite -quick-match buffer<cr>
-
-"set statusline=%<%f\ %h%m%r\ %1*%{TagInStatusLine()}%*%=%-14.(%l,%c%V%)\ %P
+" " Unite
+" nnoremap <leader>f :Unite file_rec/async<cr>
+" nnoremap <leader>/ :Unite grep:.<cr>
+" nnoremap <leader>y :Unite history/yanks<cr>
+" nnoremap <leader>s :Unite -quick-match buffer<cr>
 
 " command to clear the query
 command! C let @/=""
@@ -316,9 +309,6 @@ let g:indent_guides_start_level = 1
 highlight IndentGuidesOdd  ctermbg=234
 highlight IndentGuidesEven ctermbg=235
 
-set ttimeout
-set ttimeoutlen=100
-
 " http://stackoverflow.com/a/25233145
 function! HighlightWordUnderCursor()
     if getline(".")[col(".")-1] !~# '[[:punct:][:blank:]]' 
@@ -336,7 +326,7 @@ nnoremap <silent> p p`]
 " Quickly select text you just pasted:
 noremap gV `[v`]
 
-" Stop that stupid window from popping up:
+" Stop that command window from popping up:
 map q: :q`]`
 
 vmap v <Plug>(expand_region_expand)
@@ -355,31 +345,11 @@ else
         \ 'AcceptSelection("e")': ['<space>', '<cr>', '<2-LeftMouse>']}
 endif
 
-" command line emacs style
-" https://statico.github.io/vim.html
-:cnoremap <C-a>  <Home>
-:cnoremap <C-b>  <Left>
-:cnoremap <C-f>  <Right>
-:cnoremap <C-d>  <Delete>
-:cnoremap <M-b>  <S-Left>
-:cnoremap <M-f>  <S-Right>
-:cnoremap <M-d>  <S-right><Delete>
-:cnoremap <Esc>b <S-Left>
-:cnoremap <Esc>f <S-Right>
-:cnoremap <Esc>d <S-right><Delete>
-cnoremap <C-g>  <C-c>
-
-
 nmap <C-e> :e#<CR>
 nmap <C-n> :bnext<CR>
 nmap <C-p> :bprev<CR>
-
-nmap \t :set expandtab tabstop=4 shiftwidth=4 softtabstop=4<CR>
-nmap \T :set expandtab tabstop=8 shiftwidth=8 softtabstop=4<CR>
-nmap \M :set noexpandtab tabstop=8 softtabstop=4 shiftwidth=4<CR>
-nmap \m :set expandtab tabstop=2 shiftwidth=2 softtabstop=2<CR>
-
-nmap \w :setlocal wrap!<CR>:setlocal wrap?<CR>
+nnoremap <C-S-l> :bnext<CR>
+nnoremap <C-S-h> :bprev<CR>
 
 " swap buffers :b#
 
@@ -389,14 +359,14 @@ vnoremap <silent> s //e<C-r>=&selection=='exclusive'?'+1':''<CR><CR>
     \:<C-u>call histdel('search',-1)<Bar>let @/=histget('search',-1)<CR>gv
     omap s :normal vs<CR>
 
-" https://github.com/bpierre/dotfiles/blob/master/vimrc
-" create the directories to the current file
-function! CreateDirectoriesToFile()
-  let curdir = expand('%:p:h')
-  call system('mkdir -p "'.curdir.'"')
-  echo 'created '.curdir
-endfunction
-
+" obsoleted by tpope/vim-eunuch :Mkdir()
+" " https://github.com/bpierre/dotfiles/blob/master/vimrc
+" " create the directories to the current file
+" function! CreateDirectoriesToFile()
+"   let curdir = expand('%:p:h')
+"   call system('mkdir -p "'.curdir.'"')
+"   echo 'created '.curdir
+" endfunction
 
 " Autojump to the last edited position when a file is reopened
 au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") |
@@ -413,3 +383,30 @@ if 'VIRTUAL_ENV' in os.environ:
     activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
     execfile(activate_this, dict(__file__=activate_this))
 EOF
+
+let g:airline#extensions#tagbar#flags = 'f'
+" let g:airline_section_c = '%{TagInStatusLine()}'
+"set statusline=%<%f\ %h%m%r\ %1*%{TagInStatusLine()}%*%=%-14.(%l,%c%V%)\ %P
+
+" call camelcasemotion#CreateMotionMappings('<leader>')
+autocmd BufReadPost * DetectIndent
+
+" change dir for file completion
+" https://github.com/bag-man/dotfiles/blob/master/vimrc
+autocmd InsertEnter * let save_cwd = getcwd() | set autochdir
+autocmd InsertLeave * set noautochdir | execute 'cd' fnameescape(save_cwd)
+
+" auto complete file paths
+imap <Tab> <C-X><C-F>
+
+" fugitive maps
+map gl :Gblame<Cr>
+map gb :Gbrowse!<Cr>
+
+source ~/.vim/rc.d/2.bubbling.vim
+source ~/.vim/rc.d/2.persistundo.vim
+source ~/.vim/rc.d/2.emacscmdl.vim
+source ~/.vim/rc.d/z.leader.vim
+" TODO consider fresh https://github.com/freshshell/fresh
+" TODO consider search https://github.com/jasoncodes/dotfiles/blob/master/vim/config/search.vim
+" also ctrlp https://github.com/jasoncodes/dotfiles/blob/master/vim/plugins/ctrlp.vim

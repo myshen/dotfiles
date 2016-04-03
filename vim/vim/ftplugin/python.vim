@@ -65,14 +65,14 @@ let g:pymode_syntax_space_errors = g:pymode_syntax_all
 
 nmap <Leader>pr iprint(repr())<Esc>F(a
 nnoremap <leader>C :PymodeLint<cr>
-nnoremap <leader>n :! nosetests --nocapture<cr>
 
-nnoremap <Leader>da :DjangoTestApp<CR>
-nnoremap <Leader>df :DjangoTestFile<CR>
-nnoremap <Leader>dc :DjangoTestClass<CR>
-nnoremap <Leader>dm :DjangoTestMethod<CR>
-nnoremap <Leader>nf :NosetestFile<CR>
-nnoremap <Leader>nc :NosetestClass<CR>
-nnoremap <Leader>nm :NosetestMethod<CR>
-nnoremap <Leader>nb :NosetestBaseMethod<CR>
-nnoremap <Leader>nl :RerunLastTests<CR>
+nnoremap <Leader>tda <Esc>:DjangoTestApp<CR>
+nnoremap <Leader>tdf <Esc>:DjangoTestFile<CR>
+nnoremap <Leader>tdc <Esc>:DjangoTestClass<CR>
+nnoremap <Leader>tdm <Esc>:DjangoTestMethod<CR>
+
+nnoremap <Leader>tF <Esc>:Pytest file<CR>
+nnoremap <Leader>tc <Esc>:Pytest class<CR>
+nnoremap <Leader>tm <Esc>:Pytest method<CR>
+nnoremap <Leader>tf <Esc>:Pytest function<CR>
+nnoremap <Leader>tl <Esc>:RerunLastTests<CR>
