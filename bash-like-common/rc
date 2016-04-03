@@ -1,2 +1,1 @@
-export USE_CCACHE=1
 source_file_if_exists "${HOME}/.dotfiles_local/bash-like-common/rc";

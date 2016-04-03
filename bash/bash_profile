@@ -1,3 +1,5 @@
 # loaded by bash from login shells
 source ~/.bashrc
+
 # attachOrNewTmux
+cat ~/.motd

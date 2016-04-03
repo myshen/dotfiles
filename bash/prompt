@@ -27,7 +27,7 @@ PS1_BASE="${PS1_BASE}  ? | \j\n";
 PS1_BASE="${PS1_BASE}  \! ${PS1_SUFFIX}${GREEN_C}\$ ${ECLR}";
 export PS1_BASE;
 
-function make_prompt_divider {
+make_prompt_divider() {
         header="$1 ";
         trailer=$2;
         status=$3;
@@ -51,7 +51,7 @@ function make_prompt_divider {
         prompt_div="${HOST_C}${header}${prompt_div} ${trailer}${RESET_C}\n"
 }
 
-function prompt_command {
+prompt_command() {
         status=$?;
         trailer="$(date +'%F %T')";
         header="";
@@ -65,10 +65,10 @@ function prompt_command {
         fi
         export PS1="${prompt_div}${pyvenv}${PS1_BASE}"
 
-        ## Flush current session history
-        #history -a;
+        # Flush current session history
+        history -a;
         ## Load session history
         #history -n;
 }
 # Executed every time the prompt is shown
-export PROMPT_COMMAND=prompt_command;
+export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND ;} prompt_command"

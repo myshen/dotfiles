@@ -42,7 +42,6 @@ alias nocomment='egrep -v "^\s*(#|$)"'
 alias sudo='sudo ' # Fixes bash ignoring aliases after sudo
 
 alias tree='ls -lR'
-alias path='echo -e ${PATH//:/\\n}'
 alias as='sudo -u'
 alias mine="sudo chown -R $(id -un):$(id -gn)"
 alias mkexe="chmod a+x"
@@ -60,14 +59,23 @@ alias qfg='fg'
 alias fgfg='fg'
 
 # Shortcuts
+alias refresh="source ~/.bashrc"
 alias pbrew='perlbrew'
 alias nose="nosetests"
 alias max="osascript ~/Library/Scripts/KBmaximize.scpt"
 # https://www.reddit.com/r/sysadmin/comments/356tub/handy_functions_for_your_bashrc/cr23grs
 alias dumphttp="sudo tcpdump -A -s 0 'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)'"
 alias cleanpyc="find . -name '*.pyc' -delete"
+# http://stackoverflow.com/a/26482258/533198
+alias ipy="python -c 'import IPython; IPython.terminal.ipapp.launch_new_instance()'"
+alias sshtun="ssh -nNT"
+alias logv="less +F"
 
 alias proj='vim ~/.project'
+
+alias dk="docker"
+alias dc="docker-compose"
+alias ds="docker-ssh"
 
 alias gco='git co'
 alias gsl='git stash list'

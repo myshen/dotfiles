@@ -1,26 +1,26 @@
 # Set up environment
 # This is equivalent to .zshenv and .bash_profile
 export DOTFILES="${HOME}/.dotfiles";
-source "${DOTFILES}/bash-like-common/functions";
+. "${DOTFILES}/bash-like-common/functions";
 
 # PATHS #######################################################################
 
-function setupPaths() {
+setupPaths() {
         # Note that these are in reverse actual order
-        addPath "/usr/local/sbin" 1;
-        addPath "/usr/local/bin" 1;
-        addPath "/usr/local/share/npm/bin" 1;
-        addPath "${DOTFILES}/bin" 1;
-        addPath "." 1;
+        path_add "/usr/local/sbin" 1;
+        path_add "/usr/local/bin" 1;
+        path_add "/usr/local/share/npm/bin" 1;
+        path_add "${DOTFILES}/bin" 1;
+        path_add "." 1;
+
+        path_add "/usr/local/share/man" 1 "MANPATH"
 
         export WKPATH="~/Documents";
-        export MANPATH="\
-/usr/local/share/man:\
-${MANPATH}";
 }
-setupPaths;
+setupPaths
 
 # ENV #########################################################################
+export USE_CCACHE=1
 export EDITOR="vim"
 export VISUAL="vim"
 export PAGER="less"
@@ -38,5 +38,7 @@ export PYTHONSTARTUP="${HOME}/.pythonstartup.py";
 # LOCALE ######################################################################
 export LC_ALL="en_US.UTF-8";
 export LANG="en_US.UTF-8";
+
+source_file_if_exists ~/.dotfiles/bash-like-common/openvpn.sh
 
 source_file_if_exists "${HOME}/.dotfiles_local/bash-like-common/env" &> /dev/null;

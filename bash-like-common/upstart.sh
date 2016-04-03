@@ -1,0 +1,1 @@
+svc() { sudo service $@ ;}
