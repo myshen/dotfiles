@@ -11,6 +11,7 @@
         # the following are stolen from someone
         lgr = log --graph --full-history --all --color --pretty=format:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s"
         lg = log --graph --all --decorate --oneline
+        lgs = log --graph --decorate --oneline
 
         st = status
 
