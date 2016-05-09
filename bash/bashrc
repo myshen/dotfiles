@@ -10,12 +10,7 @@ source_file_if_exists ${DOTFILES}/bash/aliases;
 source_file_if_exists ${DOTFILES}/bash/prompt;
 source_file_if_exists /usr/share/autojump/autojump.sh
 
-# COMPLETION ###################################################################
-complete -A hostname ssh ping
-complete -d -f mkdir rmdir chmod chown chgrp
-complete -f zip
-complete -e echo
-complete -c -f sudo
+source_file_if_exists "${DOTFILES}/bash/completion"
 
 # ENV #########################################################################
 export HISTCONTROL=ignoreboth

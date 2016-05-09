@@ -1,4 +1,6 @@
 " setlocal foldmethod=indent
+let g:detectindent_preferred_indent = 4
+let g:detectindent_preferred_when_mixed = 1
 setlocal tabstop=4
 setlocal softtabstop=4
 setlocal shiftwidth=4

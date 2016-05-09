@@ -25,8 +25,9 @@ nmap <leader>m :set expandtab tabstop=2 shiftwidth=2 softtabstop=2<CR>
 
 nmap <leader>w :setlocal wrap!<CR>:setlocal wrap?<CR>
 
-" trim trailing whitespace
+" trim blank lines
 nmap <leader>W mz:%s/^\s*$//<CR>`z:let @/=""<CR>
+" TODO whitespace
 
 " highlight the current word
 nnoremap <silent> <leader>h1 :execute 'match W1 /\<<c-r><c-w>\>/'<cr> hi W1 guibg=#aeee00 guifg=#000000 ctermbg=154 ctermfg=16

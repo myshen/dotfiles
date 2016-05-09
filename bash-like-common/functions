@@ -11,64 +11,63 @@ source_file_if_exists ~/.dotfiles_local/bash-like-common/functions &> /dev/null;
 # Path manipulation
 
 path() {
-	local path_="$1"
-	if [ -z "$path_" ]; then
-		path_="PATH"
-	fi
+	local var="${1:-PATH}"; shift
+	local delim="${1:-:}"; shift
 
-        echo -e ${!path_//:/\\n}
+        printf "${!var//$delim/\\n}"
 }
 
 path_contains() {
-        path "$2" | grep -q -e "^$1$"
+	local newpath="$1"; shift
+	local var="${1:-PATH}"; shift
+	local delim="${1:-:}"; shift
+        path "$var" "$delim" | grep -q -e "^[[:space:]]*$newpath[[:space:]]*$"
 }
 
 path_rm() {
-	# Arguments: path_to_rm [path_variable]
+	# Arguments: path_rm [path_variable]
 	local rmpath="$1"; shift
-	local path_="$1"; shift
-	if [ -z "$path_" ]; then
-		path_="PATH"
-	fi
+	local var="${1:-PATH}"; shift
+	local delim="${1:-:}"; shift
 
 	local newpath=$(\
-		path "$path_" | grep -v -e "^$rmpath$" | grep -v -e "^$" | \
-		paste -s -d ":" -)
-	eval "$path_=\"$newpath\""
-	export "$path_"
+		path "$var" "$delim" | \
+		grep -v -e "^[[:space:]]*$rmpath[[:space:]]*$" -e "^$" | \
+		paste -s -d "$delim" -)
+	eval "$var=\"$newpath\""
+	export "$var"
 }
 
 path_add() {
-	# Arguments: path_to_add [prepend] [path_variable]
+	# Arguments: path_add [prepend] [path_variable]
 	local newpath="$1"; shift
-	local prepend="$1"; shift
-	local path_="$1"; shift
-	if [ -z "$prepend" ]; then
-		prepend="0"
-	fi
-	if [ -z "$path_" ]; then
-		path_="PATH"
-	fi
+	local prepend="${1:-0}"; shift
+	local var="${1:-PATH}"; shift
+	local delim="${1:-:}"; shift
 
-        local stripped="${!path_}"
-	if path_contains $newpath "$path_"; then
-                path_rm $newpath "$path_"
-                stripped="${!path_}"
+        local stripped="${!var}"
+	if path_contains "$newpath" "$var" "$delim"; then
+                path_rm "$newpath" "$var" "$delim"
+                stripped="${!var}"
 	fi
 	if [ 0 -ne $prepend ]; then
-		stripped="$newpath:${stripped}"
+		stripped="$newpath$delim${stripped}"
 	else
-		stripped="${stripped}:$newpath"
+		stripped="${stripped}$delim$newpath"
 	fi
-	stripped=${stripped#:%:}
-	eval "$path_=\"${stripped//::/:}\""
-	export "$path_"
+	stripped=${stripped#$delim%$delim}
+	eval "$var=\"${stripped//$delim$delim/$delim}\""
+	export "$var"
 }
 
 path_add_maybe() {
 	# Arguments: see path_add, if new path is already in path, noop.
-	if ! path_contains $1 $3; then
-                path_add $1 $2;
+	local newpath="$1"
+	local var="${3:-PATH}"
+	local delim="${4:-:}"
+
+	if ! path_contains "$newpath" "$var" "$delim"; then
+                path_add "$@"
         fi
 }
 
@@ -243,6 +242,59 @@ unz() { gunzip -c $1 ;}
 lastm() {
     # last modified time in find
     find $@ -print0 | xargs -0 stat --format '%Y' | sort --numeric --reverse | head -n 1
+}
+
+_dotfiles() {
+  find "${HOME}/.dotfiles" "${HOME}/.dotfiles_local" \
+    -maxdepth 2 \
+    -name bin -prune -o -name .git -prune \
+    -o \( -type f \)
+}
+
+editcfg() {
+  local cfg
+  cfg="$1"
+  files="$(_dotfiles | grep "${cfg}")"
+  if [ -z "$cfg" ]; then
+    printf "oh the possibilities...\n" >&2
+    _dotfiles
+  else
+    "$EDITOR" "${files[@]}"
+  fi
+}
+
+editcfg_then_source() {
+  local cfg
+  cfg="$1"
+  files="$(_dotfiles | grep "${cfg}")"
+  if [ -z "$cfg" ]; then
+    printf "oh the possibilities...\n" >&2
+    _dotfiles
+  else
+    "$EDITOR" "${files[@]}"
+    for file in "${files[@]}"; do
+      . "$file"
+    done
+  fi
+}
+
+editfuncs() {
+  local funcs
+  funcs="${HOME}/.dotfiles/bash-like-common/functions"
+  "$EDITOR" "$funcs"
+  . "$funcs"
+}
+
+editexe() {
+  local exe
+  exe="$1"
+  path="$(command -v "$exe" 2> /dev/null)"
+  if [ ! -z "$path" ]; then
+    printf "edit %s\n" "$path"
+    "$EDITOR" "$path"
+  else
+    printf "no exe found for %s" "$exe"
+  fi
 }
 
 # OS X specific

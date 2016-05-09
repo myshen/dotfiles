@@ -1,5 +1,8 @@
+#! /usr/bin/env bash
+
 # loaded by bash from login shells
-source ~/.bashrc
+# shellcheck source=/dev/null
+. "$HOME/.bashrc"
 
 # attachOrNewTmux
 cat ~/.motd

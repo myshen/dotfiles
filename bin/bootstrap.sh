@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eu;
+set -eu
 
 platform() {
 	platform='unknown'
@@ -22,6 +22,10 @@ dependencies() {
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm || :
 	# vim/NeoBundle
 	git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim || :
+
+	apt-get install cabal
+	cabal update
+	cabal install shellcheck
 }
 
 link() {

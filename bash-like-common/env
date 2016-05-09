@@ -10,6 +10,7 @@ setupPaths() {
         path_add "/usr/local/sbin" 1;
         path_add "/usr/local/bin" 1;
         path_add "/usr/local/share/npm/bin" 1;
+        path_add "${HOME}/.cabal/bin" 1;
         path_add "${DOTFILES}/bin" 1;
         path_add "." 1;
 

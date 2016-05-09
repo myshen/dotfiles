@@ -1,0 +1,7 @@
+complete -A hostname ssh ping
+complete -d -f mkdir rmdir chmod chown chgrp
+complete -f zip
+complete -e echo
+complete -c -f sudo
+
+source_file_if_exists "${DOTFILES}/bash-like-common/git-completion.sh"
