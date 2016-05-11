@@ -40,10 +40,10 @@ path_rm() {
 
 path_add() {
 	# Arguments: path_add [prepend] [path_variable]
-	local newpath="$1"; shift
-	local prepend="${1:-0}"; shift
-	local var="${1:-PATH}"; shift
-	local delim="${1:-:}"; shift
+	local newpath="$1"; shift || :
+	local prepend="${1:-0}"; shift || :
+	local var="${1:-PATH}"; shift || :
+	local delim="${1:-:}"; shift || :
 
         local stripped="${!var}"
 	if path_contains "$newpath" "$var" "$delim"; then
@@ -89,7 +89,7 @@ edsrc() {
 		echo "Usage: edsrc\nPlease give file(s) to edit" >&2;
 	else
 		${EDITOR} $1;
-		source $1;
+		. $1;
 	fi
 }
 
@@ -226,76 +226,74 @@ tmux_() {
 }
 
 pyloc() {
-	pip show "$1" | grep Location | awk '{print $2}'
+  pip show "$1" | awk '/Location/ {print $2}'
 }
 
 gpgself() {
-    gpg --encrypt --recipient "matt.shen@sentrian.com" --output -
+  gpg --encrypt --recipient "matt.shen@sentrian.com" --output -
 }
 
 gzto() { 
-    $1 | gzip - > $2
+  $1 | gzip - > $2
 }
-gunz() { unzip -c $1 ;}
-unz() { gunzip -c $1 ;}
+gunz() {
+  unzip -c $1
+}
+unz() {
+  gunzip -c $1
+}
 
 lastm() {
-    # last modified time in find
-    find $@ -print0 | xargs -0 stat --format '%Y' | sort --numeric --reverse | head -n 1
+  # last modified time in find
+  find $@ -print0 | xargs -0 stat --format '%Y' | sort --numeric --reverse | head -n 1
 }
 
-_dotfiles() {
-  find "${HOME}/.dotfiles" "${HOME}/.dotfiles_local" \
-    -maxdepth 2 \
-    -name bin -prune -o -name .git -prune \
-    -o \( -type f \)
+lsdotfiles() {
+  (
+    find "$HOME/.dotfiles" "$HOME/.dotfiles_local" \
+      -maxdepth 2 \
+      -name bin -prune -o -name .git -prune \
+      -o \( -type f \)
+  )
 }
 
-editcfg() {
+edcfg() {
   local cfg
   cfg="$1"
-  files="$(_dotfiles | grep "${cfg}")"
+  dosource="${2:-0}"
+
+  files="$(lsdotfiles | grep "${cfg}")"
   if [ -z "$cfg" ]; then
     printf "oh the possibilities...\n" >&2
-    _dotfiles
+    lsdotfiles | sed -e "s,$HOME/.dotfiles[_/],,"
+
   else
     "$EDITOR" "${files[@]}"
+
+    if [[ "$dosource" != "0" ]]; then
+      for file in "${files[@]}"; do
+	. "$file"
+      done
+    fi
+
   fi
 }
 
-editcfg_then_source() {
-  local cfg
-  cfg="$1"
-  files="$(_dotfiles | grep "${cfg}")"
-  if [ -z "$cfg" ]; then
-    printf "oh the possibilities...\n" >&2
-    _dotfiles
-  else
-    "$EDITOR" "${files[@]}"
-    for file in "${files[@]}"; do
-      . "$file"
-    done
-  fi
-}
-
-editfuncs() {
-  local funcs
-  funcs="${HOME}/.dotfiles/bash-like-common/functions"
-  "$EDITOR" "$funcs"
-  . "$funcs"
-}
-
-editexe() {
+edexe() {
   local exe
   exe="$1"
   path="$(command -v "$exe" 2> /dev/null)"
   if [ ! -z "$path" ]; then
-    printf "edit %s\n" "$path"
+    printf "edit %s\n" "$path" >&2
     "$EDITOR" "$path"
   else
-    printf "no exe found for %s" "$exe"
+    printf "no exe to edit found for %s" "$exe" >&2
   fi
 }
+
+if [[ "$(uname -o)" == "Cygwin" ]]; then
+  source_file_if_exists "$HOME/.dotfiles/windows/bash-like-common/functions"
+fi
 
 # OS X specific
 if [[ "$(uname)" == "Darwin" ]]; then

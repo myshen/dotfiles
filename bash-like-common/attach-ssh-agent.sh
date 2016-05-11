@@ -26,7 +26,7 @@ fi
 
 # setup addition of keys when needed
 if [ -z "$SSH_TTY" ] ; then                     # if not using ssh
-  ssh-add -l > /dev/null                        # check for keys
+  ssh-add -l &> /dev/null                       # check for keys
   if [ 2 -eq $? ] ; then
     'rm' "$SSH_AUTH_SOCK"
     'rmdir' "$(dirname $SSH_AUTH_SOCK)"

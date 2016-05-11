@@ -4,7 +4,7 @@ alias workon='ldvenv; workon';
 alias mkvirtualenv='ldvenv; mkvirtualenv';
 alias rmvirtualenv='ldvenv; rmvirtualenv';
 alias cpvirtualenv='ldvenv; cpvirtualenv';
-function ldvenv() {
+ldvenv() {
   unalias workon;
   unalias mkvirtualenv;
   unalias rmvirtualenv;
@@ -24,7 +24,7 @@ function ldperlbrew() {
 }
 
 path_add "$HOME/.rbenv/bin" 1;
-if which rbenv > /dev/null; then
+if which rbenv &> /dev/null; then
         eval "$(rbenv init -)";
 fi
 

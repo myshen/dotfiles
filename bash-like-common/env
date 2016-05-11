@@ -5,7 +5,7 @@ export DOTFILES="${HOME}/.dotfiles";
 
 # PATHS #######################################################################
 
-setupPaths() {
+setup_paths() {
         # Note that these are in reverse actual order
         path_add "/usr/local/sbin" 1;
         path_add "/usr/local/bin" 1;
@@ -15,10 +15,9 @@ setupPaths() {
         path_add "." 1;
 
         path_add "/usr/local/share/man" 1 "MANPATH"
-
-        export WKPATH="~/Documents";
 }
-setupPaths
+setup_paths
+unset -f setup_paths
 
 # ENV #########################################################################
 export USE_CCACHE=1

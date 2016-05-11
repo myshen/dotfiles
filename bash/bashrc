@@ -76,4 +76,7 @@ bind "set completion-map-case on"
 # Display matches for ambiguous patterns at first tab press
 bind "set show-all-if-ambiguous on"
 
-ulimit -S -u 1024
+# Can't set this on cygwin, it's managed by windows
+if [[ "$(uname -o)" != "Cygwin" ]]; then
+	ulimit -S -u 256
+fi
