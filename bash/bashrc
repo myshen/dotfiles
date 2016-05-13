@@ -4,8 +4,8 @@
 . ~/.dotfiles/bash-like-common/env
 
 # Interactive stuff follows
-source_file_if_exists /etc/bashrc;
-source_file_if_exists ${DOTFILES}/bash-like-common/aliases;
+source_file_if_exists /etc/bashrc
+source_file_if_exists ${DOTFILES}/bash-like-common/rc
 source_file_if_exists ${DOTFILES}/bash/aliases;
 source_file_if_exists ${DOTFILES}/bash/prompt;
 source_file_if_exists /usr/share/autojump/autojump.sh

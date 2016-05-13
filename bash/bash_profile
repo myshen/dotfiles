@@ -5,4 +5,4 @@
 . "$HOME/.bashrc"
 
 # attachOrNewTmux
-cat ~/.motd
+[[ -f "$HOME/.motd" ]] && cat "$HOME/.motd"

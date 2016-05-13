@@ -1,15 +1,13 @@
 
 # http://www.kfirlavi.com/blog/2012/11/06/elegant-locking-of-bash-program/
 # Wrapless flocking
-
-readonly PROGNAME=$(basename "$0")
-readonly LOCKFILE_DIR=/tmp
-readonly LOCK_FD=200
+# readonly PROGNAME=$(basename "$0")
 
 lock() {
     local prefix=$1
     local fd=${2:-$LOCK_FD}
-    local lock_file=$LOCKFILE_DIR/$prefix.lock
+    local lock_file="${LOCKFILE_DIR:-/tmp}/$prefix.lock"
+    local lock_fd="${LOCK_FD:-200}"
 
     eval "exec $fd>$lock_file"
 

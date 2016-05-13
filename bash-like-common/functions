@@ -14,7 +14,7 @@ path() {
 	local var="${1:-PATH}"; shift
 	local delim="${1:-:}"; shift
 
-        printf "${!var//$delim/\\n}"
+        printf "%s" "${!var//$delim/\\n}"
 }
 
 path_contains() {
