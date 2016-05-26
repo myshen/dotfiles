@@ -1,12 +1,10 @@
-#
+#! /usr/bin/env bash
 # setup ssh-agent
-#
-
 # http://mah.everybody.org/docs/ssh#run-ssh-agent
 
 # set environment variables if user's agent already exists
 #SSH_AUTH_SOCK=$('ls' -l /tmp/ssh-*/agent.* 2> /dev/null | grep $(whoami) | awk '{print $9}')
-SSH_AUTH_SOCK=$(/bin/find /tmp/ssh-* -user "$(id -u)" -name 'agent.*' 2> /dev/null | head -n 1)
+SSH_AUTH_SOCK=$(find /tmp/ssh-* -user "$(id -u)" -name 'agent.*' 2> /dev/null | head -n 1)
 SSH_AGENT_PID=$(echo $SSH_AUTH_SOCK | cut -d. -f2)
 [ -n "$SSH_AUTH_SOCK" ] && export SSH_AUTH_SOCK
 [ -n "$SSH_AGENT_PID" ] && export SSH_AGENT_PID

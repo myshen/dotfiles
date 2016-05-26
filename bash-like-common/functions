@@ -14,7 +14,7 @@ path() {
 	local var="${1:-PATH}"; shift
 	local delim="${1:-:}"; shift
 
-        printf "%s" "${!var//$delim/\\n}"
+        printf "${!var//$delim/\\n}"
 }
 
 path_contains() {
@@ -206,23 +206,37 @@ gsvnpush() {
     git stash; git svnr; git svnd && git stash pop
 }
 
+wait_for_cancel() {
+  local time="${1:-1}"
+  printf "ctrl-c to cancel " >&2
+  while [ $time -gt 0 ]; do
+    printf "$time " >&2
+    time=$((time - 1))
+    sleep 1
+  done
+}
+
 tmux_() {
-    detached=$(tmux list-sessions \
-            -F "#{session_id} #{session_name} #{session_attached}" | \
-        grep -v " 1$" | head -n 1 | cut -d " " -f 1
-    )
-    if [[ "$detached" != "" ]]; then
-	local time=1
-        printf "attaching to $detached; ctrl-c to cancel before "
-		while [ $time -gt 0 ]; do
-			printf "$time "
-			time=$((time - 1))
-			sleep 1
-		done
-		tmux attach -d -t "$detached"
+  detached=$(tmux list-sessions \
+      -F "#{session_id} #{session_name} #{session_attached}" | \
+    grep -v " 1$" | head -n 1 | cut -d " " -f 1
+  )
+  if [[ "$detached" != "" ]]; then
+    printf "attaching to $detached; " >&2
+    wait_for_cancel
+    tmux attach -d -t "$detached"
+  else
+    attached="$(tmux list-sessions \
+      -F "#{session_id} #{session_name} #{session_attached}")" | \
+      grep -v " 0$" | head -n | cut -d " " -f 1
+    if [[ ! -z "$attached" ]]; then
+      printf "attaching to $attached" >&22
+      wait_for_cancel
+      tmux attach -d -t "$attached"
     else
-        tmux $@
+      tmux $@
     fi
+  fi
 }
 
 pyloc() {
@@ -289,6 +303,10 @@ edexe() {
   else
     printf "no exe to edit found for %s" "$exe" >&2
   fi
+}
+
+dev() {
+  docker run --rm -it devbox
 }
 
 if [[ "$(uname -o)" == "Cygwin" ]]; then

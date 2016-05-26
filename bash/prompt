@@ -32,6 +32,31 @@ unacceptable_status() {
   [[ "${status}" -ne 0 ]] && [[ "${status}" -ne 146 ]]
 }
 
+make_prompt_filler() {
+  local tlen
+  local hlen
+  hlen="$2"
+  tlen="$1"
+  let fill_length=${COLUMNS}-${tlen}-${hlen}
+  let filler_len="${#prompt_div_char}"
+
+  local filler
+  filler="$prompt_div_char"
+  while (( "$filler_len" < "$fill_length" / 2 )); do
+    filler="$filler$filler"
+    (( filler_len = filler_len * 2 ))
+  done
+  while [ "${fill_length}" -gt "0" ]; do
+    printf "$filler"
+    let fill_length=${fill_length}-$filler_len
+    while (( "$filler_len" > "$fill_length" )) && \
+          (( "$filler_len" > "${#prompt_div_char}" )); do
+      let filler_len=filler_len/2
+      filler="${filler:0:$filler_len}"
+    done
+  done
+}
+
 make_prompt_divider() {
   header="$1"
   trailer=" $2"
@@ -49,19 +74,17 @@ make_prompt_divider() {
     trailer="$C_GREEN${trailer}"
   fi
 
-  # create a $prompt_div of all screen width minus the time string and a space:
-  let fill_length=${COLUMNS}-${tlen}-${hlen}
-
-  prompt_div=""
-  while [ "${fill_length}" -gt "0" ]; do
-      prompt_div="${prompt_div_char}${prompt_div}"
-      let fill_length=${fill_length}-1
-  done
-  printf "${header}${prompt_div}${trailer}${RESET_C}\n"
+  printf "${header}$(make_prompt_filler $hlen $tlen)${trailer}${RESET_C}\n"
 }
 
 prompt_command() {
   status="$?"
+
+  [[ ! "$-" =~ "x" ]]
+  setx="$?"
+  if (( "$setx" > 0 )); then
+   set +x
+  fi
 
   pyvenv=""
   if [ -n "${VIRTUAL_ENV}" ]; then
@@ -82,6 +105,10 @@ prompt_command() {
 
   # Load session history
   # history -n
+
+  if (( "$setx" > 0 )); then
+    set -x
+  fi
 }
 
 path_add "prompt_command" 1 "PROMPT_COMMAND" ";"

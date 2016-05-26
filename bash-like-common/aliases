@@ -75,7 +75,7 @@ alias proj='vim ~/.project'
 
 alias dk="docker"
 alias dc="docker-compose"
-alias ds="docker-ssh"
+alias dkssh="docker-ssh"
 
 alias gco='git co'
 alias gsl='git stash list'

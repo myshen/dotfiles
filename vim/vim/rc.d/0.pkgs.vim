@@ -105,7 +105,6 @@ NeoBundle 'scrooloose/syntastic'
 NeoBundle 'elzr/vim-json'
 NeoBundle 'ekalinin/Dockerfile.vim'
 "NeoBundle 'vim-scripts/taglist.vim'
-NeoBundle 'majutsushi/tagbar'
 " NeoBundle 'danro/rename.vim' " rename a file, may be obsoleted by vim-eunuch
 NeoBundle 'tpope/vim-eunuch' " Mkdir, Rename, Find
 " NeoBundle '29decibel/vim-stringify' " Convert html template into strings
