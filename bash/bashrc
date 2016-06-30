@@ -13,6 +13,8 @@ source_file_if_exists /usr/share/autojump/autojump.sh
 source_file_if_exists "${DOTFILES}/bash/completion"
 
 # ENV #########################################################################
+# LC_COLLATE=C makes underscores sort before a
+export LC_COLLATE=C
 export HISTCONTROL=ignoreboth
 
 # Update window size after every command
@@ -22,7 +24,7 @@ shopt -s histappend
 # Save multi-line commands as one command
 shopt -s cmdhist
 unset HISTFILESIZE
-export HISTSIZE=1000000
+export HISTSIZE=10000000  # 10e7
 export HISTIGNORE='&:[  ]*:ls:bg:fg:history:exit:clear:reset:git st:git co:git lg:gst:cd ..:jobs'
 export HISTCONTROL="ignoreboth:erasedups"
 export HISTTIMEFORMAT='%F %T '
@@ -78,5 +80,5 @@ bind "set show-all-if-ambiguous on"
 
 # Can't set this on cygwin, it's managed by windows
 if [[ "$(uname -o)" != "Cygwin" ]]; then
-	ulimit -S -u 256
+	ulimit -S -u 512
 fi

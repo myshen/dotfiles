@@ -20,8 +20,8 @@
         ci = commit
         cm = commit -m
         cma = commit -a -m
-        ca = commit --amend
-        amend = commit --amend
+        ca = commit --amend --no-edit
+        amend = commit --amend --no-edit
         caa = commit -a --amend -C HEAD
         filelog = log -u
         fl = log -u
@@ -60,6 +60,8 @@
         rh = reset --hard
         rh1 = reset HEAD^ --hard
         rh2 = reset HEAD^^ --hard
+
+	cb = rev-parse --abbrev-ref HEAD
         
         #git svn
         svnr = svn rebase

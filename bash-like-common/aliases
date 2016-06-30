@@ -19,10 +19,9 @@ alias .4='cd ../../../..'
 alias .5='cd ../../../../..'
 alias .6='cd ../../../../../..'
 alias dirs='dirs -v'
-# LC_COLLATE=C makes underscores sort before a
-alias ls='LC_COLLATE=C ls --color'
-alias ll='LC_COLLATE=C ls -lh --color --classify'
-alias lll='LC_COLLATE=C ls -lah --color --classify'
+alias ls='ls --color'
+alias ll='ls -lh --color --classify'
+alias lll='ls -lah --color --classify'
 alias la='lll'
 alias cdl='cd;ls'
 alias clr='clear'
@@ -68,6 +67,7 @@ alias dumphttp="sudo tcpdump -A -s 0 'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<
 alias cleanpyc="find . -name '*.pyc' -delete"
 # http://stackoverflow.com/a/26482258/533198
 alias ipy="python -c 'import IPython; IPython.terminal.ipapp.launch_new_instance()'"
+alias py="ipy"
 alias sshtun="ssh -nNT"
 alias logv="less +F"
 
@@ -83,8 +83,12 @@ alias gst='git st'
 alias gist='gst'
 alias gitst='gst'
 alias gdh='git diff --no-ext-diff HEAD'
+alias gdhh='git diff --no-ext-diff HEAD^'
+alias gd^='gdhh'
 alias gdiff='git diff --no-ext-diff'
 alias gitk='gitk --all &'
+alias gitsave='git cb > .gitsave'
+alias gitrest='git checkout $(cat .gitsave)'
 alias glg='git lg'
 
 source_file_if_exists "${HOME}/.dotfiles/docker/aliases"

@@ -50,3 +50,5 @@ nnoremap <Leader>S :mksession! ~/tmp/saved_session.vim<CR>
 nnoremap <Leader>qs :mksession! ~/tmp/saved_session.vim<CR>:wqa<CR>
 " close all files without saving and save global session
 nnoremap <Leader>www :mksession! ~/tmp/saved_session.vim<CR>:qa!<CR>
+
+nnoremap <Leader>p :CtrlP<CR>

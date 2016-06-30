@@ -4,5 +4,13 @@
 # shellcheck source=/dev/null
 . "$HOME/.bashrc"
 
+if hash ag 2>/dev/null; then
+  tag() { command tag "$@"; source ${TAG_ALIAS_FILE:-/tmp/tag_aliases} 2>/dev/null; }
+fi
+
 # attachOrNewTmux
 [[ -f "$HOME/.motd" ]] && cat "$HOME/.motd"
+
+if [[ -z "$DESK_ENV" ]]; then
+	ds
+fi

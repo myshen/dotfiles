@@ -18,7 +18,7 @@ source_file_if_exists ~/.rvm/scripts/rvm;
 path_add "$HOME/.rvm/bin";
 
 alias perlbrew='ldperlbrew; perlbrew';
-function ldperlbrew() {
+ldperlbrew() {
   unalias perlbrew;
   source_file_if_exists ~/perl5/perlbrew/etc/bashrc
 }

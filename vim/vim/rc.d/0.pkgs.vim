@@ -38,7 +38,9 @@ NeoBundle 'ciaranm/detectindent'
 
 " navigation
 NeoBundle 'mileszs/ack.vim'
-NeoBundle 'scrooloose/nerdtree'
+" NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'tpope/vim-vinegar'
 NeoBundle 'majutsushi/tagbar'
 NeoBundle 'zakj/vim-showmarks'
 NeoBundle 'terryma/vim-expand-region'
