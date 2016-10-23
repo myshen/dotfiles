@@ -330,6 +330,11 @@ edexe() {
   fi
 }
 
+git_rebase_onto() {
+  target="${1:-develop}"
+  git rebase --onto "$target" $(git merge-base "$target" $(git cb)) $(git cb)
+}
+
 dev() {
   docker run --rm -it devbox
 }

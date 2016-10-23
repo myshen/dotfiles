@@ -11,6 +11,8 @@ source_file_if_exists ${DOTFILES}/bash/prompt
 source_file_if_exists /usr/share/autojump/autojump.sh
 
 source_file_if_exists "${DOTFILES}/bash/completion"
+source_file_if_exists "${DOTFILES}/git/fzf.sh"
+source_file_if_exists "/usr/local/Cellar/fzf/0.15.4/shell/completion.bash"
 
 # ENV #########################################################################
 # LC_COLLATE=C makes underscores sort before a
@@ -82,3 +84,7 @@ bind "set show-all-if-ambiguous on"
 if [[ "$(platform)" != "cygwin" ]]; then
 	ulimit -S -u 512
 fi
+
+hist_last() {
+   history | awk 'END { $1 = ""; $2 = ""; $3 = ""; print }'
+}
