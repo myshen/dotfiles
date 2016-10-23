@@ -8,6 +8,26 @@ source_file_if_exists() {
 
 source_file_if_exists ~/.dotfiles_local/bash-like-common/functions &> /dev/null;
 
+# OS detection
+
+platform() {
+	unamestr="$(uname)"
+	if [[ "$unamestr" == "Linux" ]]; then
+		printf "linux\n"
+	elif [[ "$unamestr" == "Darwin" ]]; then
+		printf "mac\n"
+	elif [[ "$unamestr" == "cygwin" ]]; then
+		printf "win32\n"
+	elif [[ "$unamestr" == "FreeBSD" ]]; then
+		printf "bsd\n"
+	else
+		printf "unknown\n"
+	fi
+}
+
+OSNAME="$(platform)"
+export OSNAME
+
 # Path manipulation
 
 path() {
@@ -314,11 +334,11 @@ dev() {
   docker run --rm -it devbox
 }
 
-if [[ "$(uname -o)" == "Cygwin" ]]; then
+if [[ "$OSNAME" == "cygwin" ]]; then
   source_file_if_exists "$HOME/.dotfiles/windows/bash-like-common/functions"
 fi
 
 # OS X specific
-if [[ "$(uname)" == "Darwin" ]]; then
-        source_file_if_exists "${HOME}/.dotfiles/osx/bash-like-common/functions";
+if [[ "$OSNAME" == "mac" ]]; then
+  source_file_if_exists "${HOME}/.dotfiles/osx/bash-like-common/functions";
 fi

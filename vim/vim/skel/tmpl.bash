@@ -4,6 +4,8 @@ set -o nounset
 set -o errexit
 set -o pipefail
 
+HERE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 main() {
 	:
 }

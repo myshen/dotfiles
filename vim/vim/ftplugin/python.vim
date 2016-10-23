@@ -1,12 +1,12 @@
-" setlocal foldmethod=indent
+setlocal foldmethod=indent
 let g:detectindent_preferred_indent = 4
 let g:detectindent_preferred_when_mixed = 1
-setlocal tabstop=4
-setlocal softtabstop=4
-setlocal shiftwidth=4
+" setlocal tabstop=4
+" setlocal softtabstop=4
+" setlocal shiftwidth=4
 " setlocal textwidth=80 " overridden by pymode_options
 setlocal smarttab
-setlocal expandtab
+" setlocal expandtab
 setlocal smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
 
 " Python-mode
@@ -30,6 +30,7 @@ let g:pymode_rope = 1
 let g:pymode_rope_complete_on_dot=0
 let g:pymode_rope_goto_definition_bind="<C-]>"
 let g:pymode_rope_lookup_project = 0
+let g:pymode_rope_regenerate_on_write = 0
 
 " Documentation
 let g:pymode_doc = 1
@@ -37,13 +38,19 @@ let g:pymode_doc_bind="<C-S-d>"
 
 "Linting
 let g:pymode_lint = 1
-let g:pymode_lint_checker = "pyflakes,pep8"
+"let g:pymode_lint_checkers = ['pylint', 'pyflakes', 'pep8']
+let g:pymode_lint_checkers = ['pylint']
 let g:pymode_lint_cwindow = 1
 let g:pymode_lint_message = 1
 let g:pymode_lint_sort = ['E', 'W', 'C', 'I']
+" let g:pymode_lint_ignore = "C0301,W0312"
+let g:pymode_lint_ignore = "W0312"
+" C0301 - pylint
+" W0312 - pylint tabs
+" W191 - tabs
 
 " Auto check on save
-let g:pymode_lint_write = 1
+let g:pymode_lint_on_write = 0
 
 " Support virtualenv
 let g:pymode_virtualenv = 1
@@ -55,18 +62,18 @@ let g:pymode_breakpoint_key = '<leader>b'
 " syntax highlighting
 let g:pymode_syntax = 1
 let g:pymode_syntax_all = 1
-let g:pymode_syntax_print_as_function = 1
-let g:pymode_syntax_highlight_equal_operator = g:pymode_syntax_all
-let g:pymode_syntax_highlight_stars_operator = g:pymode_syntax_all
-let g:pymode_syntax_highlight_sself = g:pymode_syntax_all
-let g:pymode_syntax_indent_errors = g:pymode_syntax_all
-let g:pymode_syntax_space_errors = g:pymode_syntax_all
+"let g:pymode_syntax_print_as_function = 1
+"let g:pymode_syntax_highlight_equal_operator = g:pymode_syntax_all
+"let g:pymode_syntax_highlight_stars_operator = g:pymode_syntax_all
+"let g:pymode_syntax_highlight_sself = g:pymode_syntax_all
+"let g:pymode_syntax_indent_errors = g:pymode_syntax_all
+"let g:pymode_syntax_space_errors = g:pymode_syntax_all
 
 " " Don't autofold code
 " let g:pymode_folding = 0
 
-nmap <Leader>pr iprint(repr())<Esc>F(a
-nnoremap <leader>C :PymodeLint<cr>
+nmap <Leader>pr print(repr())<Esc>F(a
+nnoremap <leader>L :PymodeLint<cr>
 
 nnoremap <Leader>tda <Esc>:DjangoTestApp<CR>
 nnoremap <Leader>tdf <Esc>:DjangoTestFile<CR>

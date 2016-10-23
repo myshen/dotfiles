@@ -6,8 +6,8 @@
 # Interactive stuff follows
 source_file_if_exists /etc/bashrc
 source_file_if_exists ${DOTFILES}/bash-like-common/rc
-source_file_if_exists ${DOTFILES}/bash/aliases;
-source_file_if_exists ${DOTFILES}/bash/prompt;
+source_file_if_exists ${DOTFILES}/bash/aliases
+source_file_if_exists ${DOTFILES}/bash/prompt
 source_file_if_exists /usr/share/autojump/autojump.sh
 
 source_file_if_exists "${DOTFILES}/bash/completion"
@@ -25,7 +25,7 @@ shopt -s histappend
 shopt -s cmdhist
 unset HISTFILESIZE
 export HISTSIZE=10000000  # 10e7
-export HISTIGNORE='&:[  ]*:ls:bg:fg:history:exit:clear:reset:git st:git co:git lg:gst:cd ..:jobs'
+export HISTIGNORE='&:[  ]*:ls:ll:bg:fg:history:exit:clear:reset:git st:git co:git lg:gst:gdh:cd ..:jobs'
 export HISTCONTROL="ignoreboth:erasedups"
 export HISTTIMEFORMAT='%F %T '
 
@@ -79,6 +79,6 @@ bind "set completion-map-case on"
 bind "set show-all-if-ambiguous on"
 
 # Can't set this on cygwin, it's managed by windows
-if [[ "$(uname -o)" != "Cygwin" ]]; then
+if [[ "$(platform)" != "cygwin" ]]; then
 	ulimit -S -u 512
 fi

@@ -1,42 +1,46 @@
 #!/bin/bash
 
+set -x
 set -eu
 
-platform() {
-	platform='unknown'
-	unamestr=$(uname)
-	if [[ "$unamestr" == 'Linux' ]]; then
-		platform='linux'
-	elif [[ "$unamestr" == 'darwin' ]]; then
-		platform='osx'
-	elif [[ "$unamestr" == 'cygwin' ]]; then
-		platform='win32'
-	elif [[ "$unamestr" == 'FreeBSD' ]]; then
-		platform='bsd'
-	fi
-	return $platform
+HERE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+. "$HERE/../bash-like-common/functions"
+
+dep_pyenv() {
+	brew install pyenv-virtualenv
+}
+
+dep_cabal() {
+	apt-get install cabal
 }
 
 dependencies() {
+	# powerline
+	dep_pyenv && {
+		pyenv virtualenv global
+	}
+	/Users/mattshen/.pyenv/versions/global/bin/pip install powerline-status
+	# base16-shell
+	git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell || :
 	# tmux
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm || :
 	# vim/NeoBundle
 	git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim || :
-
-	apt-get install cabal
-	cabal update
-	cabal install shellcheck
+	dep_cabal && {
+		cabal update
+		cabal install shellcheck
+	} || :
 }
 
 link() {
 	if [ ! -L "$1" ]; then
-		rm --verbose --recursive "$1" || true
+		rm -v -r "$1" || true
 	fi
-	ln --verbose --symbolic --force --no-dereference "$2" "$1"
+	ln -v -s -f -h "$2" "$1"
 	if [[ platform == 'bsd' ]]; then
 		chmod -h -v -v go-rwx "$1"
 	else
-		chmod --verbose go-rwx "$1"
+		chmod -v go-rwx "$1"
 	fi
 }
 
@@ -63,6 +67,7 @@ dotlinks() {
 	link_dotfiles   .vim			vim/vim
 	link_dotfiles   .vimrc		  vim/vimrc
 	link_dotfiles   .bash_profile	   bash/bash_profile
+	set +x
 	link_dotfiles   .bashrc		 bash/bashrc
 	link_dotfiles   .zshenv		 zsh/zshenv
 	link_dotfiles   .zlogin		 zsh/zlogin

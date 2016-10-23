@@ -1,9 +1,17 @@
 set ttimeout
 set ttimeoutlen=100
 
+" Thanks sheerun
+let mapleader = '\'
+map <Space> <Leader>
+
+" go to buffer
+" https://www.reddit.com/r/vim/comments/44e1ig/slug/czporx7
+nnoremap <Leader>b :ls<CR>:buffer<Space>
+
 " reload config
 map <Leader>vr :source ~/.vimrc<cr>
-map <Leader>ve :vsplit ~/.vimrc<cr>
+map <Leader>ve :e ~/.vimrc<cr>
 
 " Save modified buffers and reload externally modified files
 map <Leader>r :checktime<CR>:wall<CR>:redraw!<CR>

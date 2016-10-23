@@ -1,25 +1,22 @@
-is_os_osx() {
-  [[ "$(uname)" == "Darwin" ]]
-}
 
-which reattach-to-user-namespace &> /dev/null;
-if [ 0 -eq $? ]; then
-        alias tmux="tmux -f ~/.dotfiles/tmux/tmux-osx.conf";
+if which reattach-to-user-namespace &> /dev/null; then
+  alias tmux="tmux -f ~/.dotfiles/tmux/tmux-osx.conf";
 fi
 
-function sync_osx_tmpdir() {
+sync_osx_tmpdir() {
         # This is not needed for screen and reattach-to-user-namespace covers
         # tmux. I.e. this is no longer needed.
         gui_tmpdir=$(osx_tmpdir.sh);
-        if is_os_osx && [[ "${gui_tmpdir}" != "" ]]; then
+        if [[ "$OSNAME" == "mac" ]] && [[ "${gui_tmpdir}" != "" ]]; then
                 export TMPDIR="${gui_tmpdir}";
         fi
 }
-function osx_finder_hidden() {
+osx_finder_hidden() {
     defaults write com.apple.finder AppleShowAllFiles TRUE;
     killall Finder;
 }
-function afp {
+
+afp() {
     mntpoint="$1";
     hostname="$2";
     host_disk="$3";

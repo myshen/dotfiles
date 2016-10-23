@@ -19,9 +19,16 @@ alias .4='cd ../../../..'
 alias .5='cd ../../../../..'
 alias .6='cd ../../../../../..'
 alias dirs='dirs -v'
-alias ls='ls --color'
-alias ll='ls -lh --color --classify'
-alias lll='ls -lah --color --classify'
+if [[ "$OSNAME" == "mac" ]]; then
+  _flag_ls_color="-G"
+  _flag_ls_classify="-F"
+else
+  _flag_ls_color="--color"
+  _flag_ls_classify="--classify"
+fi
+alias ls="ls $_flag_ls_color"
+alias ll="ls -lh $_flag_ls_color $_flag_ls_classify"
+alias lll="ls -lah $_flag_ls_color $_flag_ls_classify"
 alias la='lll'
 alias cdl='cd;ls'
 alias clr='clear'

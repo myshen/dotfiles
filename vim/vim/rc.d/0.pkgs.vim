@@ -7,120 +7,130 @@ if has('vim_starting')
   endif
 
   " Required:
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
+  set runtimepath+=~/.vim/bundle/dein.vim/repos/github.com/Shougo/dein.vim
 endif
 
 " Required:
-call neobundle#begin(expand('~/.vim/bundle/'))
-
-" Let NeoBundle manage NeoBundle
-" Required:
-NeoBundleFetch 'Shougo/neobundle.vim'
-
-" visual
-NeoBundle 'chriskempson/base16-vim'
+call dein#begin(expand('~/.vim/bundle/dein.vim'))
 
 " ui
-NeoBundle 'tpope/vim-sensible'
-NeoBundle 'bling/vim-airline'
-NeoBundle 'ConradIrwin/vim-bracketed-paste'
-NeoBundle 'tmux-plugins/vim-tmux'
-" NeoBundle 'christoomey/vim-tmux-navigator'
-NeoBundle 'vim-scripts/ag.vim'
-NeoBundle 'vim-scripts/ZoomWin'
+call dein#add('chriskempson/base16-vim')
+call dein#add('tpope/vim-sensible')
+call dein#add('bling/vim-airline')
+call dein#add('tmux-plugins/vim-tmux')
+call dein#add('ConradIrwin/vim-bracketed-paste')  " supposedly allows direct pasting
+call dein#add('tpope/vim-dispatch')  " async build/test dispatcher
+
+"  <c-w>o toggles window as only
+" http://vim.sourceforge.net/scripts/script.php?script_id=508
+call dein#add('vim-scripts/ZoomWin')
 
 " indentation
-NeoBundle 'vim-scripts/IndentConsistencyCopAutoCmds'
-" NeoBundle 'luochen1990/indent-detector.vim'
-NeoBundle 'ciaranm/detectindent'
+" http://www.vim.org/scripts/script.php?script_id=1691
+call dein#add('vim-scripts/IndentConsistencyCopAutoCmds')
+" call dein#add('luochen1990/indent-detector.vim')
+" call dein#add('ciaranm/detectindent')
 " sleuth overrides python tabstop to 8 :(
-" NeoBundle 'tpope/vim-sleuth'
+call dein#add('tpope/vim-sleuth')
 
 " navigation
-NeoBundle 'mileszs/ack.vim'
-" NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'kien/ctrlp.vim'
-NeoBundle 'tpope/vim-vinegar'
-NeoBundle 'majutsushi/tagbar'
-NeoBundle 'zakj/vim-showmarks'
-NeoBundle 'terryma/vim-expand-region'
-NeoBundle 'justinmk/vim-sneak'
+call dein#add('christoomey/vim-tmux-navigator')
+call dein#add('vim-scripts/ag.vim')
+" call dein#add('scrooloose/nerdtree')
+call dein#add('kien/ctrlp.vim')
+call dein#add('tpope/vim-vinegar')
+call dein#add('majutsushi/tagbar')
+call dein#add('zakj/vim-showmarks')
+call dein#add('terryma/vim-expand-region')
+" call dein#add('justinmk/vim-sneak')
+
+" coverage
+" call dein#add('google/vim-maktaba')
+" call dein#add('google/vim-coverage')
+" Also add Glaive, which is used to configure coverage's maktaba flags. See
+" `:help :Glaive` for usage.
+" call dein#add('google/vim-glaive')
 
 " Show unicode info on 'ga'
-NeoBundle 'tpope/vim-characterize'
+call dein#add('tpope/vim-characterize')
 
 " git
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'twe4ked/vim-diff-toggle'
-"NeoBundle 'airblade/vim-gitgutter'
+call dein#add('tpope/vim-fugitive')
+call dein#add('twe4ked/vim-diff-toggle')
+"call dein#add('airblade/vim-gitgutter')
 
-"NeoBundle 'thenoseman/vim-matchit'
-NeoBundle 'tpope/vim-repeat'
-NeoBundle 'tpope/vim-commentary'
+"call dein#add('thenoseman/vim-matchit')
+call dein#add('tpope/vim-repeat')
+call dein#add('tpope/vim-commentary')
 
 " pairs
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'jiangmiao/auto-pairs'
-NeoBundle 'Raimondi/delimitMate'
+call dein#add('tpope/vim-surround')
+call dein#add('jiangmiao/auto-pairs')
+call dein#add('Raimondi/delimitMate')
 
 " corrections
-NeoBundle 'tpope/vim-abolish'
-" NeoBundle 'panozzaj/vim-autocorrect'
+call dein#add('tpope/vim-abolish')
+" call dein#add('panozzaj/vim-autocorrect')
 
 " snippets
-NeoBundle 'SirVer/ultisnips'
-NeoBundle 'honza/vim-snippets'
+call dein#add('SirVer/ultisnips')
+call dein#add('honza/vim-snippets')
 
 " syntax
-NeoBundle 'Chiel92/vim-autoformat'
+call dein#add('Chiel92/vim-autoformat')
 
 " session
-NeoBundle 'tpope/vim-obsession'
+call dein#add('tpope/vim-obsession')
 
 " golang
-NeoBundle 'fatih/vim-go'
+call dein#add('fatih/vim-go')
 
-NeoBundle 'nathanaelkane/vim-indent-guides'
+call dein#add('nathanaelkane/vim-indent-guides')
 
 " python
-"NeoBundle 'vim-scripts/ini-syntax-definition'
-"NeoBundle 'vim-scripts/Pydiction'
-"NeoBundle 'hynek/vim-python-pep8-indent'
-NeoBundle 'klen/python-mode'
-NeoBundle 'tpope/vim-dispatch'
-NeoBundle 'alfredodeza/pytest.vim'
-" NeoBundle 'JarrodCTaylor/vim-python-test-runner'
+"call dein#add('vim-scripts/ini-syntax-definition')
+"call dein#add('vim-scripts/Pydiction')
+"call dein#add('hynek/vim-python-pep8-indent')
+call dein#add('klen/python-mode')
+call dein#add('alfredodeza/pytest.vim')
+" call dein#add('JarrodCTaylor/vim-python-test-runner')
 " Shows python class method, etc
-" NeoBundle 'mgedmin/pythonhelper.vim'
+" call dein#add('mgedmin/pythonhelper.vim')
 
 " ruby
-NeoBundle 'vim-ruby/vim-ruby'
+" call dein#add('vim-ruby/vim-ruby')
 
-NeoBundle 'othree/xml.vim'
-"NeoBundle 'bingaman/vim-sparkup'
-"NeoBundle 'tpope/vim-ragtag'
-NeoBundle 'scrooloose/syntastic'
-"NeoBundle 'FredKSchott/CoVim'
-"NeoBundle 'Shougo/unite.vim'
+call dein#add('othree/xml.vim')
+"call dein#add('bingaman/vim-sparkup')
+"call dein#add('tpope/vim-ragtag')
+"call dein#add('scrooloose/syntastic')
+"call dein#add('FredKSchott/CoVim')
+"call dein#add('Shougo/unite.vim')
 
 " unorganized I am
-NeoBundle 'elzr/vim-json'
-NeoBundle 'ekalinin/Dockerfile.vim'
-"NeoBundle 'vim-scripts/taglist.vim'
-" NeoBundle 'danro/rename.vim' " rename a file, may be obsoleted by vim-eunuch
-NeoBundle 'tpope/vim-eunuch' " Mkdir, Rename, Find
-" NeoBundle '29decibel/vim-stringify' " Convert html template into strings
-NeoBundle 'sjl/gundo.vim' " show undo tree
-" NeoBundle 'robmiller/vim-movar' " move around/inside variable
-" NeoBundle 'tpope/vim-unimpaired' " need a cheat sheet for this one
-" NeoBundle 'bkad/CamelCaseMotion'
-" NeoBundle 'julienr/vim-cellmode' " VimuxRun[Last]Command
+call dein#add('tpope/vim-eunuch') " Mkdir, Rename, Find, Move, Wall
+call dein#add('sjl/gundo.vim') " show undo tree
+call dein#add('elzr/vim-json')
+call dein#add('ekalinin/Dockerfile.vim')
+"call dein#add('vim-scripts/taglist.vim')
+" call dein#add('danro/rename.vim') " rename a file, may be obsoleted by vim-eunuch
+" call dein#add('29decibel/vim-stringify') " Convert html template into strings
+" call dein#add('robmiller/vim-movar') " move around/inside variable
+" call dein#add('tpope/vim-unimpaired') " need a cheat sheet for this one
+" call dein#add('bkad/CamelCaseMotion')
+" call dein#add('julienr/vim-cellmode') " VimuxRun[Last]Command
 
-call neobundle#end()
+call dein#end()
+
+" REMEMBER TO CALL ME
+" call dein#recache_runtimepath()
 
 " Required:
 filetype plugin indent on
 
-" If there are uninstalled bundles found on startup,
-" this will conveniently prompt you to install them.
-NeoBundleCheck
+" Install!
+" call dein#install()
+
+" call glaive#Install()
+" " Enable coverage's default mappings on the <Leader>C prefix.
+" Glaive coverage plugin[mappings]

@@ -1,0 +1,33 @@
+
+# common login shell customizations
+
+# global python virtualenv
+path_add "$HOME/.pyenv/versions/global/bin" 1
+
+# pyenv
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi 
+if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
+
+# base16-shell colors
+BASE16_SHELL="$HOME/.config/base16-shell"
+[ -n "$PS1" ] && [ -s "$BASE16_SHELL/profile_helper.sh" ] && eval "$(PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH" "$BASE16_SHELL/profile_helper.sh")"
+
+# tag for ag
+if hash ag 2>/dev/null; then
+  tag() { command tag "$@"; source ${TAG_ALIAS_FILE:-/tmp/tag_aliases} 2>/dev/null; }
+fi
+
+# pass password manager
+export PASSWORD_STORE_CLIP_TIME=20
+
+# pip
+export PIP_DEFAULT_TIMEOUT=10
+export PIP_REQUIRE_VIRTUALENV=true 
+gpip() {
+  PIP_REQUIRE_VIRTUALENV="" pip "$@"
+}
+
+# attachOrNewTmux
+
+# motd
+[[ -f "$HOME/.motd" ]] && cat "$HOME/.motd"

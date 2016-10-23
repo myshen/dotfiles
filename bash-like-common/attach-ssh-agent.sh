@@ -4,8 +4,11 @@
 
 # set environment variables if user's agent already exists
 #SSH_AUTH_SOCK=$('ls' -l /tmp/ssh-*/agent.* 2> /dev/null | grep $(whoami) | awk '{print $9}')
-SSH_AUTH_SOCK=$(find /tmp/ssh-* -user "$(id -u)" -name 'agent.*' 2> /dev/null | head -n 1)
-SSH_AGENT_PID=$(echo $SSH_AUTH_SOCK | cut -d. -f2)
+SSH_AUTH_SOCK="$(find /tmp/com.apple.launchd.* -user "$(id -u)" -name 'Listeners' 2> /dev/null | head -n 1)"
+if [ -z "$SSH_AUTH_SOCK" ]; then
+  SSH_AUTH_SOCK=$(find /tmp/ssh-* -user "$(id -u)" -name 'agent.*' 2> /dev/null | head -n 1)
+  SSH_AGENT_PID=$(echo $SSH_AUTH_SOCK | cut -d. -f2)
+fi
 [ -n "$SSH_AUTH_SOCK" ] && export SSH_AUTH_SOCK
 [ -n "$SSH_AGENT_PID" ] && export SSH_AGENT_PID
 
@@ -18,7 +21,7 @@ start_ssh_agent() {
 }
 
 # start agent if necessary
-if [ -z $SSH_AGENT_PID ] && [ -z $SSH_TTY ]; then  # if no agent & not in ssh
+if [ -z $SSH_AUTH_SOCK ] && [ -z $SSH_TTY ]; then  # if no agent & not in ssh
         start_ssh_agent
 fi
 

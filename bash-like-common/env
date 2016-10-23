@@ -12,7 +12,6 @@ setup_paths() {
         path_add "/usr/local/share/npm/bin" 1;
         path_add "${HOME}/.cabal/bin" 1;
         path_add "${DOTFILES}/bin" 1;
-        path_add "." 1;
 
         path_add "/usr/local/share/man" 1 "MANPATH"
 }
@@ -39,6 +38,7 @@ export PYTHONSTARTUP="${HOME}/.pythonstartup.py";
 export LC_ALL="en_US.UTF-8";
 export LANG="en_US.UTF-8";
 
+source_file_if_exists "${DOTFILES}/bash-like-common/osname.sh"
 source_file_if_exists "${DOTFILES}/bash-like-common/openvpn.sh"
 source_file_if_exists "${DOTFILES}/bash-like-common/attach-ssh-agent.sh"
 source_file_if_exists "${DOTFILES}/bash-like-common/lock"

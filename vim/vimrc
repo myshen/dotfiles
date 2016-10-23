@@ -1,59 +1,21 @@
 source ~/.vim/rc.d/0.pkgs.vim
-
-" Thanks sheerun
-let mapleader = '\'
-map <Space> <Leader>
+source ~/.vim/rc.d/1.theme.vim
+source ~/.vim/rc.d/1.custom.vim
 
 " join jump
 " http://blog.sanctum.geek.nz/vim-annoyances/
 nnoremap J mzJ`z
-" center screen on jump
-nnoremap n nzz
+" " center screen on jump
+" nnoremap n nzz
 " nnoremap } }zz
-
-" https://www.reddit.com/r/vim/comments/44e1ig/slug/czporx7
-nnoremap gb :ls<CR>:buffer<Space>
-
-if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
-  set t_Co=256
-endif
 
 " http://vim.wikia.com/wiki/Fix_syntax_highlighting
 syntax enable sync minlines=2048
 noremap <F12> <Esc>:syntax sync fromstart<CR>
 inoremap <F12> <C-o>:syntax sync fromstart<CR>
+runtime macros/matchit.vim
 
-" color scheme
-let base16colorspace=256  " Access colors present in 256 colorspace
-colorscheme base16-tomorrow
-
-" Terminal colors http://blog.infinitered.com/entries/show/6
-set background=dark " Do this after colorscheme. It doesn't work before.
-
-" Always show status bar, we have enough space
-set laststatus=2
-
-set number
-
-set hlsearch
-set incsearch
-set ignorecase
-
-set autoindent
-set title
-set mouse=a
-
-" We're modern. Send more characters!
-set ttyfast
-" Don't redraw when playing macros
-set lazyredraw
-
-" Hide buffers instead of closing.
-set hidden
-
-set listchars=tab:»\ ,eol:¬,trail:.,extends:#,nbsp:.
-
-set pastetoggle=<F2>
+source ~/.vim/rc.d/1.ftypes.vim
 
 " tagbar
 map <Leader>t :TagbarToggle<CR>
@@ -71,53 +33,19 @@ let NERDTreeShowHidden=1
 let NERDTreeQuitOnOpen=1          " Quit on opening files from the tree
 let NERDTreeHighlightCursorline=1 " Highlight the selected entry in the tree
 
-" XXX obsoleted? tpope/vim-eunuch :SudoWrite
-" Write a file with sudo priviledges
-cmap w!! w !sudo tee % >/dev/null
+" obsoleted by tpope/vim-eunuch
+" use :SudoWrite()
+" cmap w!! w !sudo tee % >/dev/null
+" cmap w!! %!sudo tee > /dev/null %
 
-set wildignore=*.o,*.obj,*.bak,*.exe,*.pyc
-" nnoremap `'
-" nnoremap '`
-set history=50
-runtime macros/matchit.vim
-set wildmenu
-set wildmode=longest,list
-set smartcase
-
-" Briefly jump to the matched close block
-set showmatch
-set matchtime=0
-
-set ruler
-set showcmd
-set showmode
-
-" Keep more lines of context visible
-set scrolloff=5
-set sidescroll=1
-set sidescrolloff=5
-
-" xterm title
-set title
-
-" Make backspace delete intuitively
-set backspace=indent,eol,start
-
-" Be quiet
-set noerrorbells
-set shortmess+=I
-
-" Put backup files and swap files in one place
-set nobackup
-set noswapfile
-set backupdir=~/tmp,/tmp
-set directory=~/tmp,/tmp
-
-if has("mouse")
-    set mouse=a
-endif
-
-source ~/.vim/rc.d/1.ftypes.vim
+" use :Mkdir()
+" " https://github.com/bpierre/dotfiles/blob/master/vimrc
+" " create the directories to the current file
+" function! CreateDirectoriesToFile()
+"   let curdir = expand('%:p:h')
+"   call system('mkdir -p "'.curdir.'"')
+"   echo 'created '.curdir
+" endfunction
 
 if has('autocmd')
 else
@@ -135,16 +63,13 @@ autocmd WinLeave * set nocursorline
 autocmd WinEnter * set cursorline
 set cursorline
 
-" sudo write
-cmap w!! %!sudo tee > /dev/null %
-
-" Color 80 column
+" Color column for line length warning
 if exists('+colorcolumn')
-    set colorcolumn=80
+    set colorcolumn=120
     highlight colorcolumn ctermbg=235
 else
     highlight LongLine ctermbg=darkred
-    au BufWinEnter * let w:m2=matchadd('LongLine', '\%>80v.\+', -1)
+    au BufWinEnter * let w:m2=matchadd('LongLine', '\%>120v.\+', -1)
 endif
 
 " Copy current line w/o indent
@@ -175,41 +100,12 @@ function! NeatFoldText()
 endfunction
 set foldtext=NeatFoldText()
 
-
-" I can type
-" :help
-noremap <F1> <nop>
-" :ex 
-noremap Q <nop>
-" :man
-noremap K <nop>
-
-" retain selection in visual mode when indenting blocks
-vnoremap < <gv
-vnoremap > >gv
-
-" Allow moving into blank space in virtual
-set virtualedit=block
-
-" Split in intuitive direction
-set splitbelow
-set splitright
-
 " " Easier window switching
 " " http://sontek.net/blog/detail/turning-vim-into-a-modern-python-ide#window-splits
 " map <c-j> <c-w>j
 " map <c-k> <c-w>k
 " map <c-l> <c-w>l
 " map <c-h> <c-w>h
-
-" wrap lines and don't skip lines when moving the cursor
-set nowrap
-nnoremap j gj
-nnoremap k gk
-nnoremap gj j
-nnoremap gk k
-" wrap on words instead of on characters
-set linebreak
 
 " ShowMarks
 let g:showmarks_enable=0
@@ -296,11 +192,6 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
 
-" pymode
-let g:pymode_lint = 0
-let g:pymode_lint_on_write = 0
-let g:pymode_rope_regenerate_on_write = 0
-
 " Indent guides
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_auto_colors = 0
@@ -311,26 +202,12 @@ highlight IndentGuidesEven ctermbg=235
 
 " http://stackoverflow.com/a/25233145
 function! HighlightWordUnderCursor()
-    if getline(".")[col(".")-1] !~# '[[:punct:][:blank:]]' 
-        exec 'match' 'Search' '/\V\<'.expand('<cword>').'\>/' 
-    else 
-        match none 
+    if getline(".")[col(".")-1] !~# '[[:punct:][:blank:]]'
+        exec 'match' 'Search' '/\V\<'.expand('<cword>').'\>/'
+    else
+        match none
     endif
 endfunction
-
-" Jump to end of pasted text
-vnoremap <silent> y y`]
-vnoremap <silent> p p`]
-nnoremap <silent> p p`]
-
-" Quickly select text you just pasted:
-noremap gV `[v`]
-
-" Stop that command window from popping up:
-map q: :q`]`
-
-vmap v <Plug>(expand_region_expand)
-vmap <C-v> <Plug>(expand_region_shrink)
 
 " http://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
 " configures CtrlP to use git or silver searcher for autocompletion
@@ -359,15 +236,6 @@ vnoremap <silent> s //e<C-r>=&selection=='exclusive'?'+1':''<CR><CR>
     \:<C-u>call histdel('search',-1)<Bar>let @/=histget('search',-1)<CR>gv
     omap s :normal vs<CR>
 
-" obsoleted by tpope/vim-eunuch :Mkdir()
-" " https://github.com/bpierre/dotfiles/blob/master/vimrc
-" " create the directories to the current file
-" function! CreateDirectoriesToFile()
-"   let curdir = expand('%:p:h')
-"   call system('mkdir -p "'.curdir.'"')
-"   echo 'created '.curdir
-" endfunction
-
 " Autojump to the last edited position when a file is reopened
 au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") |
                      \ exe "normal g'\"" | endif
@@ -389,7 +257,6 @@ let g:airline#extensions#tagbar#flags = 'f'
 "set statusline=%<%f\ %h%m%r\ %1*%{TagInStatusLine()}%*%=%-14.(%l,%c%V%)\ %P
 
 " call camelcasemotion#CreateMotionMappings('<leader>')
-autocmd BufReadPost * DetectIndent
 
 " change dir for file completion
 " https://github.com/bag-man/dotfiles/blob/master/vimrc
@@ -400,13 +267,14 @@ autocmd InsertLeave * set noautochdir | execute 'cd' fnameescape(save_cwd)
 imap <Tab> <C-X><C-F>
 
 " fugitive maps
-map gl :Gblame<Cr>
-map gb :Gbrowse!<Cr>
+map <Leader>Gl :Gblame<Cr>
+map <Leader>Gb :Gbrowse!<Cr>
 
 source ~/.vim/rc.d/2.bubbling.vim
 source ~/.vim/rc.d/2.persistundo.vim
 source ~/.vim/rc.d/2.emacscmdl.vim
 source ~/.vim/rc.d/z.leader.vim
+
 " TODO consider fresh https://github.com/freshshell/fresh
 " TODO consider search https://github.com/jasoncodes/dotfiles/blob/master/vim/config/search.vim
 " also ctrlp https://github.com/jasoncodes/dotfiles/blob/master/vim/plugins/ctrlp.vim
