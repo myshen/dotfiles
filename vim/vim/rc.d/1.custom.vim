@@ -24,6 +24,7 @@ set listchars=tab:»\ ,eol:¬,trail:.,extends:#,nbsp:.
 set pastetoggle=<F2>
 
 set wildignore=*.o,*.obj,*.bak,*.exe,*.pyc
+let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
 " nnoremap `'
 " nnoremap '`
 set history=50
@@ -98,11 +99,13 @@ vnoremap <silent> y y`]
 vnoremap <silent> p p`]
 nnoremap <silent> p p`]
 
-" Quickly select text you just pasted:
-noremap gV `[v`]
-
 " Stop that command window from popping up:
 map q: :q`]`
 
-vmap v <Plug>(expand_region_expand)
-vmap <C-v> <Plug>(expand_region_shrink)
+" change dir for file completion
+" https://github.com/bag-man/dotfiles/blob/master/vimrc
+autocmd InsertEnter * let save_cwd = getcwd() | set autochdir
+autocmd InsertLeave * set noautochdir | execute 'cd' fnameescape(save_cwd)
+
+" auto complete file paths
+imap <Tab> <C-X><C-F>

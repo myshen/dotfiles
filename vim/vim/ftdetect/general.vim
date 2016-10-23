@@ -1,5 +1,4 @@
-autocmd BufRead,BufNewFile *.feature set filetype=feature
-au! Syntax newlang source $VIM/syntax/feature.vim
+autocmd BufNewFile,BufRead *.feature set filetype=feature
 autocmd BufNewFile,BufRead *.py set filetype=python
 autocmd BufNewFile,BufRead *.less set filetype=css
 " CSV files
