@@ -1,0 +1,53 @@
+confirm() {
+	read -p "[yN]? " choice
+	case "$choice" in
+		y|Y ) return 0;;
+		n|N ) return 1;;
+		* ) return 1;;
+	esac
+}
+
+confirm_func() {
+	func="$1"
+	prompt="$2"
+	printf "$prompt"
+	confirm && "$func"
+}
+
+docker-clean-containers() {
+	force="${1:-}"
+	if [[ "$force" != "-f" ]]; then
+		printf "dryrun; use -f to confirm\n"
+	fi
+	while read line; do
+		awk '{print $2}' <<< "$line"
+		cid="$(awk '{print $1}' <<< "$line")"
+		if [[ "$force" == "-f" ]]; then
+			docker rm "$cid"
+		fi
+	done < <(docker ps -a --no-trunc | \
+		awk '/ Exited / && !/ "\/bin\/true" / && ! / vnc$/ && / [a-z]+_[a-z]+$/ {print $1 " " $NF}')
+}
+
+
+# https://github.com/chadoe/docker-cleanup-volumes
+# Alternatively, https://www.calazan.com/docker-cleanup-commands/ ?
+docker-clean-volumes() {
+	docker volume rm $(docker volume ls -qf dangling=true)
+}
+docker-clean-images() {
+	docker rmi $(docker images -q -f dangling=true)
+}
+# dockercleanimages() {
+#docker images -a --no-trunc | grep none | awk "{print \$3}" | xargs -L 1 docker rmi
+# }
+
+docker-cleanc() {
+	docker-clean-containers -f
+}
+docker-cleani() {
+	docker-clean-images -f
+}
+docker-clean() {
+	docker-clean-containers -f; docker-clean-images -f
+}

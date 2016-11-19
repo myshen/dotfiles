@@ -6,12 +6,10 @@ export DOTFILES="${HOME}/.dotfiles";
 # PATHS #######################################################################
 
 setup_paths() {
-        # Note that these are in reverse actual order
-        path_add "/usr/local/sbin" 1;
-        path_add "/usr/local/bin" 1;
-        path_add "/usr/local/share/npm/bin" 1;
-        path_add "${HOME}/.cabal/bin" 1;
-        path_add "${DOTFILES}/bin" 1;
+        # Note that these are in reverse actual order because of prepend
+        path_add "/usr/local/sbin" 1
+        path_add "/usr/local/bin" 1
+        path_add "${DOTFILES}/bin" 1
 
         path_add "/usr/local/share/man" 1 "MANPATH"
 }

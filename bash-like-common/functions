@@ -347,3 +347,5 @@ fi
 if [[ "$OSNAME" == "mac" ]]; then
   source_file_if_exists "${HOME}/.dotfiles/osx/bash-like-common/functions";
 fi
+
+source_file_if_exists "${HOME}/.dotfiles/docker/functions"

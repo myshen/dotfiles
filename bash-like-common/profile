@@ -31,3 +31,5 @@ gpip() {
 
 # motd
 [[ -f "$HOME/.motd" ]] && cat "$HOME/.motd"
+
+# vim: ft=sh

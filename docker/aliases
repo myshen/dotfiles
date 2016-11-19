@@ -1,13 +1,3 @@
-alias dockercleancontainers='docker ps -a --no-trunc| grep "Exit" | awk "{print \$1}" | xargs -L 1 docker rm'
-# alias dockercleanimages='docker images -a --no-trunc | grep none | awk "{print \$3}" | xargs -L 1 docker rmi'
-# https://github.com/chadoe/docker-cleanup-volumes
-alias dockercleanvolumes='docker volume rm $(docker volume ls -qf dangling=true)'
-alias dockercleanimages='docker rmi $(docker images -q -f dangling=true)'
-alias dockerclean='dockercleancontainers ; dockercleanimages'
-
-# Alternatively, https://www.calazan.com/docker-cleanup-commands/
-# alias dockercleanc="docker rm \$(docker ps -a -q)"
-# alias dockercleani="docker rmi \$(docker images -q -f dangling=true)"
-# alias dockerclean="dockercleanc || true && dockercleani"
-alias dockercleanc='dockercleancontainers'
-alias dockercleani='dockercleanimages'
+alias dk="docker"
+alias dc="docker-compose"
+alias dkssh="docker-ssh"

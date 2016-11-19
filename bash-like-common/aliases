@@ -80,10 +80,6 @@ alias logv="less +F"
 
 alias proj='vim ~/.project'
 
-alias dk="docker"
-alias dc="docker-compose"
-alias dkssh="docker-ssh"
-
 alias gco='git co'
 alias gsl='git stash list'
 alias gst='git st'
