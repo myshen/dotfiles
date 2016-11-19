@@ -74,12 +74,13 @@
 " " let g:pymode_folding = 0
 
 
+" Overwrite macvim's python style which sets tabs to 8 spaces.
 let g:python_recommended_style = 0
 setlocal softtabstop=4 tabstop=4
 
 
 " BracelessEnable +indent +fold +highlight
-BracelessEnable +indent +fold
+BracelessEnable +indent
 
 
 nmap <Leader>pr print(repr())<Esc>F(a
@@ -90,8 +91,8 @@ nmap <Leader>B <Esc>Oimport pdb; pdb.set_trace()  # XXX debug<Esc>==:w<CR>
 " Syntax checking
 setlocal errorformat=%f:%l:\ %m
 setlocal makeprg=pylint\ --rcfile=~/git-hooks/pylintrc\ --jobs=4\ --reports=n\ --output-format=parseable
-" nnoremap <leader>L :PymodeLint<cr>
 nnoremap <leader>L :make %:p<cr><cr>
+" nnoremap <leader>L :PymodeLint<cr>
 
 
 nnoremap <leader>c :Coveragepy show<cr>

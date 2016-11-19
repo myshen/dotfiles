@@ -62,10 +62,10 @@ map <Leader>T :TagbarToggle<CR>
 " let g:sparkupNextMapping = '<c-x>'
 
 " Cursor line in active window
-nnoremap <Leader>CC :set cursorline! cursorcolumn!<CR>
-autocmd WinLeave * set nocursorline
-autocmd WinEnter * set cursorline
-set cursorline
+" nnoremap <Leader>CC :set cursorline! cursorcolumn!<CR>
+" autocmd WinLeave * set nocursorline
+" autocmd WinEnter * set cursorline
+" set cursorline
 
 " Color column for line length warning
 if exists('+colorcolumn')
@@ -88,7 +88,8 @@ highlight Search ctermbg=blue ctermfg=black
 "-------------------------------------------------------------------------------
 " Folding
 "-------------------------------------------------------------------------------
-set foldmethod=marker
+" set foldmethod=marker
+set foldmethod=indent
 " Don't autofold too much
 set foldlevel=7
 
@@ -279,3 +280,4 @@ nnoremap <Leader>== :call SpaceOpNo()<CR>
 
 nnoremap <Leader>ft <Esc>:filetype detect<CR>
 
+map <F5> :Dispatch sleep 1; pydbgp.py %<CR>:python debugger.run()<CR>

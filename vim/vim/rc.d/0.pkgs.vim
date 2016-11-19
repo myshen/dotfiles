@@ -36,13 +36,16 @@ call dein#add('vim-scripts/IndentConsistencyCopAutoCmds') " http://www.vim.org/s
 " sleuth overrides python tabstop to 8 :(
 call dein#add('tpope/vim-sleuth')
 
-" naviagte buffers
+" navigate buffers
 call dein#add('christoomey/vim-tmux-navigator')
 " call dein#add('tpope/vim-vinegar')
 call dein#add('justinmk/vim-dirvish')
 " call dein#add('kien/ctrlp.vim')
 call dein#add('tpope/vim-eunuch') " Mkdir, Rename, Find, Move, Wall
 call dein#add('sjl/gundo.vim') " show undo tree
+
+" session
+call dein#add('tpope/vim-obsession')
 
 " TODO https://github.com/ervandew/supertab
 call dein#add('mhinz/vim-grepper')
@@ -65,9 +68,6 @@ call dein#add('majutsushi/tagbar')
 " call dein#add('scrooloose/nerdtree')
 " call dein#add('justinmk/vim-sneak')
 
-" coverage
-call dein#add('alfredodeza/coveragepy.vim')
-
 " git
 call dein#add('tpope/vim-fugitive')
 call dein#add('twe4ked/vim-diff-toggle')
@@ -89,8 +89,8 @@ call dein#add('tpope/vim-abolish')
 " syntax
 call dein#add('Chiel92/vim-autoformat')
 
-" session
-call dein#add('tpope/vim-obsession')
+" coverage
+call dein#add('alfredodeza/coveragepy.vim', {"on_ft": "python"})
 
 " golang
 call dein#add('fatih/vim-go', {"on_ft": "go"})
@@ -120,6 +120,7 @@ call dein#add('othree/xml.vim')
 
 " unorganized I am
 call dein#add('elzr/vim-json')
+call dein#add('joonty/vdebug')
 call dein#add('ekalinin/Dockerfile.vim')
 "call dein#add('vim-scripts/taglist.vim')
 " call dein#add('danro/rename.vim') " rename a file, may be obsoleted by vim-eunuch
