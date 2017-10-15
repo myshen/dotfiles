@@ -22,11 +22,11 @@ inoremap <F12> <C-o>:syntax sync fromstart<CR>
 runtime macros/matchit.vim
 
 " tagbar
-map <Leader>T :TagbarToggle<CR>
+nnoremap <LocalLeader>T :TagbarToggle<CR>
 
 " " NERDTree
-" map <Leader>e :NERDTreeToggle<CR>
-" map <Leader>E :NERDTreeFind<CR>
+" map <LocalLeader>e :NERDTreeToggle<CR>
+" map <LocalLeader>E :NERDTreeFind<CR>
 " " https://github.com/ketan/vimrc/blob/master/vimrc.nerdtree
 " let NERDTreeIgnore=[ '\.pyc$', '\.pyo$', '\.py\$class$', '\.obj$', '\.o$', '\.so$', '\.egg$', '^\.git$', '\.gem$',  '\.rbc$', '\~$']
 " " netrw split explorer http://vimcasts.org/blog/2013/01/oil-and-vinegar-split-windows-and-project-drawer/
@@ -62,7 +62,7 @@ map <Leader>T :TagbarToggle<CR>
 " let g:sparkupNextMapping = '<c-x>'
 
 " Cursor line in active window
-" nnoremap <Leader>CC :set cursorline! cursorcolumn!<CR>
+" nnoremap <LocalLeader>CC :set cursorline! cursorcolumn!<CR>
 " autocmd WinLeave * set nocursorline
 " autocmd WinEnter * set cursorline
 " set cursorline
@@ -78,10 +78,6 @@ endif
 
 " Copy current line w/o indent
 nnoremap vv ^vg_
-
-" corrections
-iab consloe console
-iab lgo log
 
 highlight Search ctermbg=blue ctermfg=black
 
@@ -186,11 +182,11 @@ autocmd! BufNewFile * silent! 0r ~/.vim/skel/tmpl.%:e
 " 
 " " Restore sessions when entering vim without arguments
 " " save global session
-" nnoremap <Leader>S :mksession! ~/tmp/saved_session.vim<CR>
+" nnoremap <LocalLeader>S :mksession! ~/tmp/saved_session.vim<CR>
 " " save and close all files and save global session
-" nnoremap <Leader>qs :mksession! ~/tmp/saved_session.vim<CR>:wqa<CR>
+" nnoremap <LocalLeader>qs :mksession! ~/tmp/saved_session.vim<CR>:wqa<CR>
 " " close all files without saving and save global session
-" nnoremap <Leader>www :mksession! ~/tmp/saved_session.vim<CR>:qa!<CR>
+" nnoremap <LocalLeader>www :mksession! ~/tmp/saved_session.vim<CR>:qa!<CR>
 
 " " Unite
 " nnoremap <leader>f :Unite file_rec/async<cr>
@@ -240,8 +236,36 @@ else
   let g:ctrlp_prompt_mappings = { 'AcceptSelection("e")': ['<space>', '<cr>', '<2-LeftMouse>']}
 endif
 
+" vim-grepper
+nnoremap <leader>git :Grepper -tool git -noswitch<cr>
+function! RgFromSearch(cmd, args)
+  let search =  getreg('/')
+  " translate vim regular expression to perl regular expression.
+  let search = substitute(search,'\(\\<\|\\>\)','\\b','g')
+  call Grepper(a:cmd, '"' .  search .'" '. a:args)
+endfunction
+" text files
+nnoremap <leader>rg  :Grepper -tool rg  -grepprg rg --vimgrep -g '^.+\.txt'<cr>
+nnoremap <leader>*   :Grepper -tool rg -cword -noprompt<cr>
+nnoremap <leader>//  :Grepper<cr>
+nnoremap <leader>/   :Grepper -tool rg -highlight -noprompt -switch -query "<c-r>/"<cr>
+command! -nargs=* -complete=file  GG Grepper -tool git -query <args>
+command! -nargs=*    Rg Grepper -noprompt -tool rg -grepprg rg --vimgrep <args> %
+command! Todo :Grepper -tool git -query '\(TODO\|FIXME\)'
+nnoremap g/ <plug>(GrepperOperator)
+xnoremap g/ <plug>(GrepperOperator)
+let g:grepper = {
+      \ 'tools': ['rg', 'git', 'vimgrep'],
+      \ 'rg': {
+      \   'grepprg':    "rg --no-heading --vimgrep -g '!*.min.js' -g '!*.min.css'",
+      \ },
+      \ 'vimgrep': {
+      \   'grepprg':    "vim -es +'vimgrep /$*/ ** | cw | %p | qa'",
+      \   'grepprgbuf': "vim -es +'vimgrep /$*/ $. | cw | %p | qa'",
+      \   'grepformat': '%f|%l col %c|%m' }}
+
 " swap buffers :b#
-nmap <C-e> :e#<CR>
+nnoremap <C-e> :e#<CR>
 
 " Make a simple "search" text object.
 " http://vim.wikia.com/wiki/Copy_or_change_search_hit
@@ -275,9 +299,13 @@ function! SpaceOp()
 
   let @/ = old
 endfunction
-nnoremap <Leader>= :call SpaceOp()<CR>
-nnoremap <Leader>== :call SpaceOpNo()<CR>
+nnoremap <LocalLeader>= :call SpaceOp()<CR>
+nnoremap <LocalLeader>== :call SpaceOpNo()<CR>
 
-nnoremap <Leader>ft <Esc>:filetype detect<CR>
+nnoremap <LocalLeader>ft <Esc>:filetype detect<CR>:setlocal filetype?<CR>
 
-map <F5> :Dispatch sleep 1; pydbgp.py %<CR>:python debugger.run()<CR>
+noremap <F5> :Dispatch sleep 1; pydbgp.py %<CR>:python debugger.run()<CR>
+
+let g:ale_sign_error = 'E'
+let g:ale_sign_warning = '-'
+let g:ale_open_list = 0

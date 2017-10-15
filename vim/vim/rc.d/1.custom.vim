@@ -5,7 +5,7 @@ set number
 
 set hlsearch
 set incsearch
-set ignorecase
+set smartcase
 
 set autoindent
 set title
@@ -24,7 +24,7 @@ set listchars=tab:»\ ,eol:¬,trail:.,extends:#,nbsp:.
 set pastetoggle=<F2>
 
 set wildignore=*.o,*.obj,*.bak,*.exe,*.pyc
-let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
+let g:netrw_list_hide = netrw_gitignore#Hide().'\(^\|\s\s\)\zs\.\S\+'
 " nnoremap `'
 " nnoremap '`
 set history=50
@@ -42,7 +42,7 @@ set showcmd
 set showmode
 
 " Keep more lines of context visible
-set scrolloff=5
+set scrolloff=3
 set sidescroll=1
 set sidescrolloff=5
 
@@ -100,12 +100,18 @@ vnoremap <silent> p p`]
 nnoremap <silent> p p`]
 
 " Stop that command window from popping up:
-map q: :q`]`
+nnoremap q: :q`]`
 
-" change dir for file completion
-" https://github.com/bag-man/dotfiles/blob/master/vimrc
-autocmd InsertEnter * let save_cwd = getcwd() | set autochdir
-autocmd InsertLeave * set noautochdir | execute 'cd' fnameescape(save_cwd)
+augroup custom
+    autocmd!
+    " change dir for file completion
+    " https://github.com/bag-man/dotfiles/blob/master/vimrc
+    autocmd InsertEnter * let save_cwd = getcwd() | set autochdir
+    autocmd InsertLeave * set noautochdir | execute 'cd' fnameescape(save_cwd)
+augroup END
 
 " auto complete file paths
 imap <Tab> <C-X><C-F>
+
+set path+=**
+set foldignore=

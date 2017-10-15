@@ -83,39 +83,53 @@ setlocal softtabstop=4 tabstop=4
 BracelessEnable +indent
 
 
-nmap <Leader>pr print(repr())<Esc>F(a
-nmap <Leader>rr <Esc>bcsw)irepr<Esc>f(l
-nmap <Leader>B <Esc>Oimport pdb; pdb.set_trace()  # XXX debug<Esc>==:w<CR>
+nmap <localleader>pr print(repr())<Esc>F(a
+nmap <localleader>rr <Esc>bcsw)irepr<Esc>f(l
+nmap <localleader>B <Esc>Oimport ipdb; ipdb.set_trace()  # XXX debug<Esc>==:w<CR>
+
+let g:jedi#popup_on_dot=0
 
 
 " Syntax checking
 setlocal errorformat=%f:%l:\ %m
 setlocal makeprg=pylint\ --rcfile=~/git-hooks/pylintrc\ --jobs=4\ --reports=n\ --output-format=parseable
-nnoremap <leader>L :make %:p<cr><cr>
-" nnoremap <leader>L :PymodeLint<cr>
+nnoremap <localleader>L :make %:p<cr><cr>
+
+" nnoremap <localleader>L :PymodeLint<cr>
 
 
-nnoremap <leader>c :Coveragepy show<cr>
-nnoremap <leader><tab> <Esc>:%s/	/    /g<CR>
+nnoremap <localleader>c :Coveragepy show<cr>
+nnoremap <localleader><tab> <Esc>:%s/	/    /g<CR>
 
 
-nnoremap <Leader>tda <Esc>:DjangoTestApp<CR>
-nnoremap <Leader>tdf <Esc>:DjangoTestFile<CR>
-nnoremap <Leader>tdc <Esc>:DjangoTestClass<CR>
-nnoremap <Leader>tdm <Esc>:DjangoTestMethod<CR>
+nnoremap <localleader>tda <Esc>:DjangoTestApp<CR>
+nnoremap <localleader>tdf <Esc>:DjangoTestFile<CR>
+nnoremap <localleader>tdc <Esc>:DjangoTestClass<CR>
+nnoremap <localleader>tdm <Esc>:DjangoTestMethod<CR>
 
-nnoremap <Leader>tF <Esc>:Pytest file<CR>
-nnoremap <Leader>tFs <Esc>:Pytest file -s<CR>
-nnoremap <Leader>tc <Esc>:Pytest class<CR>
-nnoremap <Leader>tcs <Esc>:Pytest class -s<CR>
-nnoremap <Leader>tm <Esc>:Pytest method<CR>
-nnoremap <Leader>tms <Esc>:Pytest method -s<CR>
-nnoremap <Leader>tf <Esc>:Pytest function<CR>
-nnoremap <Leader>tfs <Esc>:Pytest function -s<CR>
+nnoremap <localleader>tF <Esc>:Pytest file<CR>
+nnoremap <localleader>tFs <Esc>:Pytest file -s<CR>
+nnoremap <localleader>tc <Esc>:Pytest class<CR>
+nnoremap <localleader>tcs <Esc>:Pytest class -s<CR>
+nnoremap <localleader>tm <Esc>:Pytest method<CR>
+nnoremap <localleader>tms <Esc>:Pytest method -s<CR>
+nnoremap <localleader>tf <Esc>:Pytest function<CR>
+nnoremap <localleader>tfs <Esc>:Pytest function -s<CR>
 
-nnoremap <Leader>te <Esc><Esc>:Pytest error<CR>
-nnoremap <Leader>ts <Esc><Esc>:Pytest session<CR>
-nnoremap <Leader>tl <Esc>:RerunLastTests<CR>
-nnoremap <Leader>t0 <Esc><Esc>:Pytest first<CR>
-nnoremap <Leader>tn <Esc><Esc>:Pytest next<CR>
-nnoremap <Leader>t$ <Esc><Esc>:Pytest last<CR>
+nnoremap <localleader>te <Esc><Esc>:Pytest error<CR>
+nnoremap <localleader>ts <Esc><Esc>:Pytest session<CR>
+nnoremap <localleader>tl <Esc>:RerunLastTests<CR>
+nnoremap <localleader>t0 <Esc><Esc>:Pytest first<CR>
+nnoremap <localleader>tn <Esc><Esc>:Pytest next<CR>
+nnoremap <localleader>t$ <Esc><Esc>:Pytest last<CR>
+
+
+map <C-Y> :call yapf#YAPF()<CR>
+imap <C-Y> <c-o>:call yapf#YAPF()<CR>
+
+iabbrev <buffer> Repr repr
+
+let g:ale_linters = {
+\  'python': ['pylint', 'autopep8', 'mypy', 'yapf'],
+\}
+" \  'python': ['pylint', 'autopep8', 'flake8', 'mypy', 'yapf'],

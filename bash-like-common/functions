@@ -1,8 +1,10 @@
+#!/bin/bash
+
 source_file_if_exists() {
-        if [ -f $1 ]; then
+        if [[ -f $1 ]]; then
                 . $1
-#        else
-#                echo "Attempted to source non-existant file: $1" >&2;
+        # else
+        #         echo "Attempted to source non-existant file: $1" >&2;
         fi
 }
 
@@ -29,26 +31,52 @@ OSNAME="$(platform)"
 export OSNAME
 
 # Path manipulation
+_path() {
+  "$HOME/.dotfiles/bin/_path.py" "$@"
+}
 
+if python -c ''; then
+  path() {
+    _path pretty
+  }
+  path_contains() {
+    _path check "$1"
+  }
+  path_add() {
+    PATH="$(_path add "$1")"
+    export PATH
+  }
+  path_rm() {
+    PATH="$(_path rm "$1")"
+    export PATH
+  }
+  path_add_maybe() {
+    PATH="$(_path add --maybe "$1")"
+    export PATH
+  }
+else
 path() {
-	local var="${1:-PATH}"; shift
-	local delim="${1:-:}"; shift
+	local var="${1:-PATH}"
+	local delim="${2:-:}"
 
-        printf "${!var//$delim/\\n}"
+	eval "val=\"\${$var//$delim/\\\n}\""
+        echo "$val"
 }
 
 path_contains() {
-	local newpath="$1"; shift
-	local var="${1:-PATH}"; shift
-	local delim="${1:-:}"; shift
-        path "$var" "$delim" | grep -q -e "^[[:space:]]*$newpath[[:space:]]*$"
+	local newpath="$1"
+	local var="${2:-PATH}"
+	local delim="${3:-:}"
+	# path "$var" "$delim" | grep -q -E "^[[:space:]]*$newpath[[:space:]]*$"
+	path "$var" "$delim" | grep -q -E "$newpath"
+	false
 }
 
 path_rm() {
 	# Arguments: path_rm [path_variable]
-	local rmpath="$1"; shift
-	local var="${1:-PATH}"; shift
-	local delim="${1:-:}"; shift
+	local rmpath="$1"
+	local var="${2:-PATH}"
+	local delim="${3:-:}"
 
 	local newpath=$(\
 		path "$var" "$delim" | \
@@ -60,15 +88,18 @@ path_rm() {
 
 path_add() {
 	# Arguments: path_add [prepend] [path_variable]
-	local newpath="$1"; shift || :
-	local prepend="${1:-0}"; shift || :
-	local var="${1:-PATH}"; shift || :
-	local delim="${1:-:}"; shift || :
+	local newpath="$1"
+	local prepend="${2:-0}"
+	local var="${3:-PATH}"
+	local delim="${4:-:}"
 
-        local stripped="${!var}"
+	# declare -n stripped="var"
+	# local stripped="${!var}"
+	# local stripped="${(P)var}"
+	eval "local stripped=\"\${$var}\""
 	if path_contains "$newpath" "$var" "$delim"; then
-                path_rm "$newpath" "$var" "$delim"
-                stripped="${!var}"
+		path_rm "$newpath" "$var" "$delim"
+		stripped="${!var}"
 	fi
 	if [ 0 -ne $prepend ]; then
 		stripped="$newpath$delim${stripped}"
@@ -87,9 +118,10 @@ path_add_maybe() {
 	local delim="${4:-:}"
 
 	if ! path_contains "$newpath" "$var" "$delim"; then
-                path_add "$@"
-        fi
+		path_add "$@"
+	fi
 }
+fi
 
 # Assorted
 swap() {
@@ -272,7 +304,7 @@ shreddir() {
   find "$1" -depth -type d -exec rmdir {} \;
 }
 
-gzto() { 
+gzto() {
   $1 | gzip - > $2
 }
 gunz() {
@@ -307,7 +339,7 @@ edcfg() {
     lsdotfiles | sed -e "s,$HOME/.dotfiles[_/],,"
 
   else
-    "$EDITOR" $(printf "$files" | xargs --null)
+    "$EDITOR" $(printf "$files" | xargs -0)
 
     if [[ "$dosource" != "0" ]]; then
       for file in "${files[@]}"; do
@@ -320,6 +352,7 @@ edcfg() {
 
 edexe() {
   local exe
+  local path
   exe="$1"
   path="$(command -v "$exe" 2> /dev/null)"
   if [ ! -z "$path" ]; then
@@ -332,7 +365,7 @@ edexe() {
 
 git_rebase_onto() {
   target="${1:-develop}"
-  git rebase --onto "$target" $(git merge-base "$target" $(git cb)) $(git cb)
+  git rebase --onto "$target" "$(git merge-base "$target" $(git cb))" "$(git cb)"
 }
 
 dev() {
@@ -349,3 +382,80 @@ if [[ "$OSNAME" == "mac" ]]; then
 fi
 
 source_file_if_exists "${HOME}/.dotfiles/docker/functions"
+
+py-path() {
+  python .-c "import sys; print('\n'.join(sys.path))"
+}
+
+dk-pause-all() {
+  docker ps --no-trunc | awk 'NR!=1 {print $1}' >| ~/.docker/paused
+  while read -r cid; do
+    docker pause "$cid"
+  done < ~/.docker/paused
+}
+
+dk-restart-paused() {
+  # may have to run this twice for containers that depend on others. It is idempotent though.
+  while read -r cid; do
+    docker start "$cid"
+  done < ~/.docker/paused
+}
+
+pyenv-cp() {
+  name="$1"
+  a=$(dirname "$(pyenv which pip)")
+  b=$(dirname "$(dirname "$a")")
+  cp "$b/$(pyenv whence "$name" | tail -n 1)/bin/$name" "$a"
+  echo "$a/$name"
+}
+
+dk-ssh() {
+  # https://forums.docker.com/t/is-it-possible-to-ssh-to-the-xhyve-machine/17426/8
+  docker run --rm -it --privileged --pid=host walkerlee/nsenter -t 1 -m -u -i -n sh
+}
+
+dk-dev() {
+  cont="$1"
+  for (( i = 1; i < 1000000; i++ )); do
+    if ! docker-compose logs --tail=1 -f "$cont"; then
+      # | sed -E -e 's/, (context|client): .*//' -e 's/ \[lua\]//'
+      sleep 1
+    fi
+    clear
+    docker-compose restart -t 0 "$cont"
+  done
+}
+
+git-arc() {
+  local arc
+  arc="/tmp/$(basename "$(pwd)").tar.gz"
+  git archive --format=tar.gz HEAD >| "$arc"
+}
+
+git-scan() {
+  while read -r repo; do
+    (cd "$repo" || exit; "$@")
+  done < <(find "$HOME/src" -type d -name '.git' \! -regex
+    '.*/\(vendor|scratch|docker|golang\)/.*' -mindepth 1 -maxdepth 3 -exec
+    dirname {} \;)
+}
+
+# https://docs.puppet.com/puppet/latest/lang_template.html
+validate_erb() {
+  erb -P -x -T '-' "$1" | ruby -c
+}
+
+vimsesh() {
+  vim -S Session.vim
+}
+
+fzf_preview() {
+  find "${@:-.dotfiles}" | fzf --preview 'strings | head -n 100 {}' 
+}
+
+ssl_show() {
+  openssl s_client -showcerts -connect "$1:443" </dev/null
+}
+
+
+# vim: filetype=sh:

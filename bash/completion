@@ -1,13 +1,8 @@
-
-# vim: ft=sh
-
 complete -A hostname ssh ping
 complete -d -f mkdir rmdir chmod chown chgrp
 complete -f zip
 complete -e echo
 complete -c -f sudo
-
-source_file_if_exists "${DOTFILES}/bash-like-common/git-completion.sh"
 
 ## BETTER DIRECTORY NAVIGATION ##
 
@@ -28,3 +23,9 @@ bind "set completion-map-case on"
 
 # Display matches for ambiguous patterns at first tab press
 bind "set show-all-if-ambiguous on"
+
+source_file_if_exists "$DOTFILES/bash-like-common/git-completion.sh"
+source_file_if_exists "/usr/local/share/autojump/autojump.bash"
+
+source <(awless completion bash)
+# vim: ft=sh

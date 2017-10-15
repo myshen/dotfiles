@@ -1,5 +1,7 @@
+#!/bin/bash
+
 # https://gist.github.com/Frick/1e0d77121cee39bad831
-function openfiles {
+openfiles() {
     if [ "${1}" = "-h" ]; then
         echo -e "Usage: openfiles [r|w|m|R|W] regex\n    -r    opened for reading or read/write\n    -w    opened for writing or read/write\n    -m    accessed from memory (includes running command)\n    -R    opened for reading only\n    -W    opened for writing only"
         return

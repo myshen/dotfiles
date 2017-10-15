@@ -1,57 +1,65 @@
 # Setup paths for package environment isolaters
-export WORKON_HOME="~/.pyvenv"
-alias workon='ldvenv; workon'
-alias mkvirtualenv='ldvenv; mkvirtualenv'
-alias rmvirtualenv='ldvenv; rmvirtualenv'
-alias cpvirtualenv='ldvenv; cpvirtualenv'
-ldvenv() {
-  unalias workon;
-  unalias mkvirtualenv;
-  unalias rmvirtualenv;
-  unalias cpvirtualenv;
-  source_file_if_exists /usr/local/bin/virtualenvwrapper.sh
-}
+export WORKON_HOME="$HOME/.pyvenv"
+# alias workon='ldvenv; workon'
+# alias mkvirtualenv='ldvenv; mkvirtualenv'
+# alias rmvirtualenv='ldvenv; rmvirtualenv'
+# alias cpvirtualenv='ldvenv; cpvirtualenv'
+# ldvenv() {
+#   unalias workon;
+#   unalias mkvirtualenv;
+#   unalias rmvirtualenv;
+#   unalias cpvirtualenv;
+#   source_file_if_exists /usr/local/bin/virtualenvwrapper.sh
+# }
 
-path_pkgmgr="$HOME/.rvm/bin"
-if [[ -d "$path_pkgmgr" ]]; then
-  # Doing this as a function causes zsh to crash.
-  source_file_if_exists ~/.rvm/scripts/rvm;
-  path_add "$path_pkgmgr"
-fi
+# path_pkgmgr="$HOME/perl5"
+# if [[ -d "$path_pkgmgr" ]]; then
+#   alias perlbrew='ldperlbrew; perlbrew'
+#   ldperlbrew() {
+#     unalias perlbrew;
+#     source_file_if_exists "$HOME/perl5/perlbrew/etc/bashrc"
+#   }
+# fi
 
-path_pkgmgr="$HOME/perl5"
-if [[ -d "$path_pkgmgr" ]]; then
-  alias perlbrew='ldperlbrew; perlbrew'
-  ldperlbrew() {
-    unalias perlbrew;
-    source_file_if_exists "$HOME/perl5/perlbrew/etc/bashrc"
-  }
-fi
+# path_pkgmgr="$HOME/.rvm/bin"
+# if [[ -d "$path_pkgmgr" ]]; then
+#   # Doing this as a function causes zsh to crash.
+#   source_file_if_exists ~/.rvm/scripts/rvm;
+#   path_add "$path_pkgmgr"
+# fi
 
-path_pkgmgr="/usr/local/share/npm/bin"
-if [[ -d "$path_pkgmgr" ]]; then
-  path_add "$path_pkgmgr" 1
-fi
+# path_pkgmgr="/usr/local/share/npm/bin"
+# if [[ -d "$path_pkgmgr" ]]; then
+#   path_add "$path_pkgmgr" 1
+# fi
 
-path_pkgmgr="${HOME}/.cabal/bin"
-if [[ -d "$path_pkgmgr" ]]; then
-  path_add "$path_pkgmgr" 1
-fi
+# path_pkgmgr="${HOME}/.cabal/bin"
+# if [[ -d "$path_pkgmgr" ]]; then
+#   path_add "$path_pkgmgr" 1
+# fi
 
-path_add "$HOME/.rbenv/bin" 1
-if hash rbenv &> /dev/null; then
-  eval "$(rbenv init -)"
-fi
+# path_add "$HOME/.rbenv/bin" 1
+# if hash rbenv &> /dev/null; then
+#   eval "$(rbenv init -)"
+# fi
 
-path_add "$HOME/.luaenv/bin" 1
-if hash luaenv &> /dev/null; then
-  eval "$(luaenv init -)"
-fi
+# path_add "$HOME/.luaenv/bin" 1
+# if hash luaenv &> /dev/null; then
+#   eval "$(luaenv init -)"
+# fi
+
+# pyenv
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi 
+if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
+
+# perl
+if which plenv > /dev/null; then eval "$(plenv init -)"; fi
 
 # Hook for desk activation
-[ -n "$DESK_ENV" ] && source "$DESK_ENV" || true
+[ -n "$DESK_ENV" ] && source "$DESK_ENV"
 
 # autoenv
 source_file_if_exists ~/.autoenv/activate.sh
 
 export GOPATH="$HOME/src/golang"
+# vim: ft=sh

@@ -7,10 +7,9 @@ set -o pipefail
 HERE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 main() {
-	:
+	echo "$HERE"
 }
 
-if [ "$0" = "${BASH_SOURCE[@]}" ]; then
+if [[ "$0" = "${BASH_SOURCE[*]}" ]]; then
 	main "$@"
 fi
-

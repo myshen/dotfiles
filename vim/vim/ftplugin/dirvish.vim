@@ -1,3 +1,3 @@
 " keeppatterns g@\v/\.[^\/]+/?$@d
-keeppatterns g@\v/(\.[^\/]+|.*\.pyc)/?$@d
+keeppatterns g@\v/(\.[^\/]+|.*\.pyc|__pycache__)/?$@d
 

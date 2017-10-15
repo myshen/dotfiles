@@ -1,0 +1,2 @@
+#!/bin/bash
+exec "$HOME/.pyenv/versions/scratch/bin/powerline-render" "$@"

@@ -2,69 +2,79 @@
 # loaded for interactive shells
 
 # non-interactive base config
-. ~/.dotfiles/bash-like-common/env
+. "$HOME/.dotfiles/bash-like-common/env"
 
-# Interactive stuff follows
-source_file_if_exists /etc/bashrc
-source_file_if_exists ${DOTFILES}/bash-like-common/rc
+_onetime() {
+  # if [[ 1 -eq "$BASH_ONETIME" ]]; then
+  #   return
+  # elif [[ -z "$BASH_ONETIME" ]]; then
+  #   export BASH_ONETIME=2
+  #   return
+  # fi
 
-source_file_if_exists ${DOTFILES}/bash/prompt
-source_file_if_exists /usr/share/autojump/autojump.sh
-source_file_if_exists "${DOTFILES}/bash/completion"
-source_file_if_exists "${DOTFILES}/git/fzf.sh"
-source_file_if_exists "/usr/local/Cellar/fzf/0.15.4/shell/completion.bash"
+  # PS4='+ $(date "+%s.%N")\011 '
+  # exec 3>&2 2>/tmp/bashstart.$$.log
+  # set -x
 
-# ENV #########################################################################
-# LC_COLLATE=C makes underscores sort before a
-export LC_COLLATE=C
-export HISTCONTROL=ignoreboth
+  # Interactive stuff follows
+  source_file_if_exists "/etc/bashrc"
+  source_file_if_exists "${DOTFILES}/bash-like-common/rc"
 
-# Update window size after every command
-shopt -s checkwinsize
+  # set +x
+  # exec 2>&3 3>&-
 
-shopt -s histappend
-# Save multi-line commands as one command
-shopt -s cmdhist
-unset HISTFILESIZE
-export HISTSIZE=10000000  # 10e7
-export HISTIGNORE='&:[  ]*:ls:ll:bg:fg:history:exit:clear:reset:git st:git co:git lg:gst:gdh:cd ..:jobs'
-export HISTCONTROL="ignoreboth:erasedups"
-export HISTTIMEFORMAT='%F %T '
+  # ENV #########################################################################
 
-# export TERM="screen-256color"
+  # Update window size after every command
+  shopt -s checkwinsize
 
-# Color for Man pages in less (doesn't work in zsh; untested otherwise)
-# https://linuxtidbits.wordpress.com/2009/03/23/less-colors-for-man-pages/
-export LESS_TERMCAP_mb="$(printf '\e[01;31m')"       # begin blinking
-export LESS_TERMCAP_md="$(printf '\e[01;38;5;74m')"  # begin bold
-export LESS_TERMCAP_me="$(printf '\e[0m')"           # end mode
-export LESS_TERMCAP_se="$(printf '\e[0m')"           # end standout-mode
-export LESS_TERMCAP_so="$(printf '\e[38;5;246m')"    # begin standout-mode - info box
-export LESS_TERMCAP_ue="$(printf '\e[0m')"           # end underline
-export LESS_TERMCAP_us="$(printf '\e[04;38;5;146m')" # begin underline
+  shopt -s histappend
+  # Save multi-line commands as one command
+  shopt -s cmdhist
+  unset HISTFILESIZE
+  export HISTSIZE=10000000  # 10e7
+  export HISTIGNORE='&:[  ]*:ls:ll:bg:fg:jobs:history:exit:clear:reset:git st:git co:git lg:git rc:git spi:git dc:git fetch:git stash:git ca:git reset:gst:gdh:cd ..:pass'
+  export HISTCONTROL="ignoreboth:erasedups"
+  export HISTTIMEFORMAT='%F %T '
 
-# This defines where cd looks for targets
-# Add the directories you want to have fast access to, separated by colon
-# Ex: CDPATH=".:~:~/projects" will look for targets in the current working directory, in home and in the ~/projects folder
-CDPATH="."
+  # Color for Man pages in less (doesn't work in zsh; untested otherwise)
+  # https://linuxtidbits.wordpress.com/2009/03/23/less-colors-for-man-pages/
+  export LESS_TERMCAP_mb="$(printf '\e[01;31m')"       # begin blinking
+  export LESS_TERMCAP_md="$(printf '\e[01;38;5;74m')"  # begin bold
+  export LESS_TERMCAP_me="$(printf '\e[0m')"           # end mode
+  export LESS_TERMCAP_se="$(printf '\e[0m')"           # end standout-mode
+  export LESS_TERMCAP_so="$(printf '\e[38;5;246m')"    # begin standout-mode - info box
+  export LESS_TERMCAP_ue="$(printf '\e[0m')"           # end underline
+  export LESS_TERMCAP_us="$(printf '\e[04;38;5;146m')" # begin underline
 
-# Prevent file overwrite on stdout redirection
-# Use `>|` to force redirection to an existing file
-set -o noclobber
+  # This defines where cd looks for targets
+  # Add the directories you want to have fast access to, separated by colon
+  # Ex: CDPATH=".:~:~/projects" will look for targets in the current working directory, in home and in the ~/projects folder
+  export CDPATH="."
 
-# Enable incremental history search with up/down arrows (also Readline goodness)
-# Learn more about this here: http://codeinthehole.com/writing/the-most-important-command-line-tip-incremental-history-searching-with-inputrc/
-bind '"\e[A": history-search-backward'
-bind '"\e[B": history-search-forward'
-bind '"\e[C": forward-char'
-bind '"\e[D": backward-char'
+  # Prevent file overwrite on stdout redirection
+  # Use `>|` to force redirection to an existing file
+  set -o noclobber
 
-# Can't set this on cygwin, it's managed by windows
-if [[ "$(platform)" != "cygwin" ]]; then
-	ulimit -S -u 512
-fi
+  # Enable incremental history search with up/down arrows (also Readline goodness)
+  # Learn more about this here: http://codeinthehole.com/writing/the-most-important-command-line-tip-incremental-history-searching-with-inputrc/
+  bind '"\e[A": history-search-backward'
+  bind '"\e[B": history-search-forward'
+  bind '"\e[C": forward-char'
+  bind '"\e[D": backward-char'
 
-hist_last() {
-   history | awk 'END { $1 = ""; $2 = ""; $3 = ""; print }'
+  hist_last() {
+    history | awk 'END { $1 = ""; $2 = ""; $3 = ""; print }'
+  }
+
+  source_file_if_exists "${DOTFILES}/bash/completion"
+  source_file_if_exists "${DOTFILES}/bash/prompt"
+
+  export IGNOREEOF=1
+
+  # if [[ 2 -eq "$BASH_ONETIME" ]]; then
+  #   export BASH_ONETIME=1
+  # fi
 }
+_onetime
 # vim: ft=sh

@@ -338,8 +338,8 @@ nnoremap <silent> <buffer> <C-u> <C-u>:call <SID>Focus_Column(b:csv_column)<CR>
 nnoremap <silent> <buffer> 0 :let b:csv_column=1<CR>:call <SID>Highlight(b:csv_column)<CR>
 nnoremap <silent> <buffer> $ :let b:csv_column=b:csv_max_col<CR>:call <SID>Highlight(b:csv_column)<CR>
 nnoremap <silent> <buffer> gm :call <SID>Focus_Column(b:csv_column)<CR>
-nnoremap <silent> <buffer> <LocalLeader>J J
-nnoremap <silent> <buffer> <LocalLeader>K K
+nnoremap <silent> <buffer> <localleader>J J
+nnoremap <silent> <buffer> <localleader>K K
  
 " The column highlighting is window-local, not buffer-local, so it can persist
 " even when the filetype is undone or the buffer changed.

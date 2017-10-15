@@ -93,7 +93,7 @@ prompt_command() {
 
   git="$(git rev-parse --abbrev-ref HEAD 2> /dev/null)"
 
-  leader="\$ ${pyvenv:+($pyvenv) }${git:+($git) }"
+  leader="\$ ${pyvenv:+<$pyvenv> }${git:+($git) }"
   trailer="$(date +'%F %T')"
 
   prefix="$(make_prompt_divider "${leader}" "${trailer}" "${status}")"
@@ -114,3 +114,4 @@ prompt_command() {
 path_add "prompt_command" 1 "PROMPT_COMMAND" ";"
 # Executed every time the prompt is shown
 prompt_command
+# vim: filetype=sh

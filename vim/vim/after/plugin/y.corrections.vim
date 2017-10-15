@@ -1,0 +1,15 @@
+Abolish ipmort import
+Abolish improt import
+Abolish tiem{,stamp} time{}
+Abolish {,associa}toins {}tions
+Abolish environement environment
+Abolish {t,w}aht {}hat
+Abolish teh{,n} the{}
+Abolish adn and
+Abolish maen mean
+Abolish ccahe cache
+Abolish adapater adapter
+Abolish consloe console
+Abolish lgo log
+Abolish pirnt print
+Abolish pritn print

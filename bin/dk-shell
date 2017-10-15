@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+set -o nounset
+set -o errexit
+set -o pipefail
+
+dk_interactive() {
+	local image="$1"; shift
+	local shell="$1"; shift
+	docker run --rm -it -v "$(pwd):/mnt" --entrypoint "$shell" "$image" -- "$@"
+}
+
+dk_interactive_try_shells() {
+	local image="$1"; shift
+
+	local shell="${SHELL:-/bin/bash}"
+
+	dk_interactive "$image" "$shell" "$@" || \
+		dk_interactive "$image" "/bin/bash" "$@" || \
+		dk_interactive "$image" "/bin/sh" "$@"
+}
+
+main() {
+	local image="${1:-amazonlinux:2016.09}"; shift
+	dk_interactive_try_shells "$image" "$@"
+}
+
+if [[ "$0" = "${BASH_SOURCE[*]}" ]]; then
+	main "$@"
+fi

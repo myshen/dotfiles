@@ -45,7 +45,7 @@ alias please='sudo $(fc -ln -1)'
 alias df='df -h -x tmpfs -x devtmpfs'
 alias dl='curl -OJL'
 alias nocomment='egrep -v "^\s*(#|$)"'
-alias sudo='sudo ' # Fixes bash ignoring aliases after sudo
+alias sudo='sudo '  # Fix bash ignoring aliases after sudo
 
 alias tree='ls -lR'
 alias as='sudo -u'
@@ -71,28 +71,18 @@ alias nose="nosetests"
 alias max="osascript ~/Library/Scripts/KBmaximize.scpt"
 # https://www.reddit.com/r/sysadmin/comments/356tub/handy_functions_for_your_bashrc/cr23grs
 alias dumphttp="sudo tcpdump -A -s 0 'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)'"
-alias cleanpyc="find . -name '*.pyc' -delete"
+alias cleanpyc="find . -type f -name '*.pyc' -delete"
 # http://stackoverflow.com/a/26482258/533198
 alias ipy="python -c 'import IPython; IPython.terminal.ipapp.launch_new_instance()'"
 alias py="ipy"
+alias jq=jid
 alias sshtun="ssh -nNT"
 alias logv="less +F"
 
 alias proj='vim ~/.project'
 
-alias gco='git co'
-alias gsl='git stash list'
-alias gst='git st'
-alias gist='gst'
-alias gitst='gst'
-alias gdh='git diff --no-ext-diff HEAD'
-alias gdhh='git diff --no-ext-diff HEAD^'
-alias gd^='gdhh'
-alias gdiff='git diff --no-ext-diff'
-alias gitk='gitk --all &'
-alias gitsave='git cb > .gitsave'
-alias gitrest='git checkout $(cat .gitsave)'
-alias glg='git lg'
+alias getports="cd ~/.cache; curl -O https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.txt"
 
-source_file_if_exists "${HOME}/.dotfiles/docker/aliases"
-source_file_if_exists "${HOME}/.dotfiles/thefuck/aliases"
+source_file_if_exists "$HOME/.dotfiles/git/aliases.sh"
+source_file_if_exists "$HOME/.dotfiles/docker/aliases.sh"
+# vim: set ft=sh

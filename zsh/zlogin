@@ -1,10 +1,5 @@
-if [[ "${SSH_CONNECTION}" != "" ]]; then
-        client_b_block=$(echo ${SSH_CONNECTION} | awk '{print $1}' | tr '.' ' ' | awk '{print $1 "." $2}');
-        host_b_block=$(echo ${SSH_CONNECTION} | awk '{print $3}' | tr '.' ' ' | awk '{print $1 "." $2}');
-
-        if [[ "${client_b_block}" != "${host_b_block}" ]]; then
-                attachOrNewTmux;
-        fi
-fi
-
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+# sourced after .zshrc for a login shell
+source "$DOTFILES/bash-like-common/profile"
+# # OS X 10.8 defines a /etc/zprofile that is exactly the same as /etc/zshenv.
+# # This has the wonderful effect of resetting the paths.
+# setup_paths

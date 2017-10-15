@@ -1,45 +1,41 @@
 # Set up environment
 # This is equivalent to .zshenv and .bash_profile
-export DOTFILES="${HOME}/.dotfiles";
-. "${DOTFILES}/bash-like-common/functions";
+export DOTFILES="${HOME}/.dotfiles"
 
-# PATHS #######################################################################
+# LOCALE ######################################################################
+export LC_COLLATE=C  # makes underscores sort before a
+export LC_ALL="en_US.UTF-8"
+export LANG="en_US.UTF-8"
 
-setup_paths() {
-        # Note that these are in reverse actual order because of prepend
-        path_add "/usr/local/sbin" 1
-        path_add "/usr/local/bin" 1
-        path_add "${DOTFILES}/bin" 1
-
-        path_add "/usr/local/share/man" 1 "MANPATH"
-}
-setup_paths
-unset -f setup_paths
-
-# ENV #########################################################################
 export USE_CCACHE=1
+# export BROWSER=""
 export EDITOR="vim"
 export VISUAL="vim"
 export PAGER="less"
 export LESS='--RAW-CONTROL-CHARS -i'
-_src_hilite_path="/usr/local/bin/src-hilite-lesspipe.sh";
+_src_hilite_path="/usr/local/bin/src-hilite-lesspipe.sh"
 if [ -f ${_src_hilite_path} ]; then
         export LESSOPEN="| ${_src_hilite_path} %s"
 fi
+export CLICOLOR=1
+export LSCOLORS=ExFxCxDxBxegedabagacad
+export PYTHONSTARTUP="${HOME}/.pythonstartup.py"  # Path must be absolute
+export http_proxy=127.0.0.1:3128
+export http_proxy=
+export COMPOSE_HTTP_TIMEOUT=7
+export GCC_COLORS=auto
 
-export CLICOLOR=1;
-export LSCOLORS=ExFxCxDxBxegedabagacad;
-# Path must be absolute
-export PYTHONSTARTUP="${HOME}/.pythonstartup.py";
+# pass password manager
+export PASSWORD_STORE_CLIP_TIME=20
 
-# LOCALE ######################################################################
-export LC_ALL="en_US.UTF-8";
-export LANG="en_US.UTF-8";
+# pip
+export PIP_DEFAULT_TIMEOUT=10
+export PIP_REQUIRE_VIRTUALENV=true
+gpip() {
+  PIP_REQUIRE_VIRTUALENV="" pip "$@"
+}
 
-source_file_if_exists "${DOTFILES}/bash-like-common/osname.sh"
-source_file_if_exists "${DOTFILES}/bash-like-common/openvpn.sh"
-source_file_if_exists "${DOTFILES}/bash-like-common/attach-ssh-agent.sh"
-source_file_if_exists "${DOTFILES}/bash-like-common/lock"
-source_file_if_exists "${DOTFILES}/bash-like-common/upstart"
-
-source_file_if_exists "${HOME}/.dotfiles_local/bash-like-common/env" &> /dev/null;
+fname="$HOME/.dotfiles_local/bash-like-common/env"
+[[ -e "$fname" ]] && . "$fname"
+unset fname
+# vim: filetype=sh

@@ -1,117 +1,145 @@
 # loaded for interactive shells
-source "${HOME}/.dotfiles/bash-like-common/aliases";
+# TODO https://github.com/vinipsmaker/dotfiles/blob/master/config/.zshenv
 
-function autoload_init {
-        autoload -U $1 && $1;
+autoload_init() {
+        autoload -U $1 && $@
 }
-autoload_init promptinit;
-autoload_init bashcompinit;
-# Run compinit without checking for insecure directories
-autoload -U compinit; compinit -u;
-autoload_init colors;
+autoload_init colors
+autoload_init promptinit
+autoload_init compinit -u  # don't check for insecure directories
+autoload_init bashcompinit  # must come after compinit
 
-# complete commandline switches
-setopt completealiases
+source "$HOME/.dotfiles/bash-like-common/rc"
 
-# Nice zsh completion from github.com/windelicato
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' list-colors 'reply=( "=(#b)(*$VAR)(?)*=00=$color[green]=$color[bg-green]" )'
-zstyle ':completion:*:*:*:*:hosts' list-colors '=*=30;41'
-zstyle ':completion:*:*:*:*:users' list-colors '=*=$color[green]=$color[red]'
-zstyle ':completion:*' menu select
-
-setopt interactivecomments;
-setopt noclobber;
+setopt TRANSIENT_RPROMPT
+setopt interactivecomments
+setopt noclobber
 # Ignore trailing '`' if not paired
-setopt sunkeyboardhack;
-#set -o emacs;
+setopt sunkeyboardhack
+set -o emacs
 
 # PROMPT ######################################################################
 setopt prompt_subst
-function precmd {
-        PROMPT_LAST_CMD=" | $(history -1 | sed 's/^[ \t]*//' | sed 's/%/%%/')";
-        local termwidth;
-        (( termwidth = ${COLUMNS} - 1 ));
-        if [[ $(jobs | wc -l) -gt 0 ]]; then
-                PROMPT_JOBS=" | jobs: %j";
+
+prompt_git() {
+        printf '±'
+        local branch="$(git rev-parse --abbrev-ref HEAD 2> /dev/null)"
+        if [[ "$branch" == "HEAD" ]]; then
+                git describe --always
         else
-                PROMPT_JOBS="";
+                echo "$branch"
         fi
-
-        PROMPT_COLOR_CWD_SEP="%{$fg_no_bold[black]%}";
-        PROMPT_COLOR_CWD_PART="%{$fg_no_bold[yellow]%}";
-        PROMPT_CWD="${${(%):-%d}//\//${PROMPT_COLOR_CWD_SEP}/${PROMPT_COLOR_CWD_PART}}%f";
+        # see also http://stevelosh.com/blog/2010/02/my-extravagant-zsh-prompt/
 }
 
-function initprompt_ {
-        PROMPT_COLOR="%{$fg[blue]%}";
-        PROMPT_COLOR_HOST="%{$fg[green]%}";
-        local hostname_=$(hostname);
-        if [[ ${hostname_} == 'sui.ucsd.edu' ]]; then
+prompt_pyenv() {
+        printf '🐍'
+        pyenv version | awk -v "ORS= " '{print $1}' | xargs
+}
+
+precmd() {
+        PROMPT_LAST_CMD="$(history -1 | sed 's/^[ \t]*//' | sed 's/%/%%/' | cut -c1-80)"
+        PROMPT_GIT="$(prompt_git)"
+        PROMPT_PYENV="$(prompt_pyenv)"
+        local termwidth
+        (( termwidth = ${COLUMNS} - 1 ))
+        if [[ $(jobs | wc -l) -gt 0 ]]; then
+                PROMPT_JOBS=" [%j]"
+        else
+                PROMPT_JOBS=""
+        fi
+
+        PROMPT_COLOR_CWD_SEP="%{$fg_no_bold[black]%}"
+        PROMPT_COLOR_CWD_PART="%{$fg_no_bold[yellow]%}"
+        PROMPT_CWD="${${(%):-%d}//\//${PROMPT_COLOR_CWD_SEP}/${PROMPT_COLOR_CWD_PART}}%f"
+}
+
+initprompt_() {
+        PROMPT_COLOR="%{$fg[white]%}"
+        PROMPT_COLOR_HOST="%{$fg[green]%}"
+        local hostname_="$(hostname)"
+        if [[ ${hostname_} =~ '.*.ucsd.edu' ]]; then
                 PROMPT_COLOR_HOST="%{$fg[blue]%}"
-        elif [[ ${hostname_} == 'ghdc.ucsd.edu' ]]; then
-                PROMPT_COLOR_HOST="%{$fg[red]%}"
-        elif [[ ${hostname_} == 'goship.ucsd.edu' ]]; then
-                PROMPT_COLOR_HOST="%{$fg[yellow]%}"
-                PROMPT_COLOR="%{$fg[green]%}"
-        elif [[ ${hostname_} == 'terra.ucsd.edu' ]]; then
-                PROMPT_COLOR_HOST="%{$fg[cyan]%}"
         fi
-
         PROMPT='${PROMPT_COLOR}\
-. %n%{$fg[black]%}@${PROMPT_COLOR_HOST}%M${PROMPT_COLOR}%{$fg[black]%}:${PROMPT_CWD} ${PROMPT_COLOR}%l 
-  %(?.%{$fg[green]%}.%{$fg[red]%})%?${PROMPT_COLOR}${PROMPT_JOBS}%{${PROMPT_LAST_CMD}%}
-  %h ${PROMPT_COLOR_HOST}%# \
-%{$reset_color%}';
-
-        RPROMPT="${PROMPT_COLOR}$(date +%F) %*%{$reset_color%}";
+%# $(date +%F) %* %(?.%{$fg[green]%}.%{$fg[red]%})(%?%{${PROMPT_LAST_CMD}%})${PROMPT_COLOR}${PROMPT_JOBS}  $(prompt_git) $(prompt_pyenv)
+%n%{$fg[black]%}@${PROMPT_COLOR_HOST}%M${PROMPT_COLOR}%{$fg[black]%}:${PROMPT_CWD} \
+%{$reset_color%}
+'
+        # RPROMPT="${PROMPT_COLOR}$(date +%F) %*%{$reset_color%}"
+        RPROMPT="${PROMPT_COLOR}%l${PROMPT_COLOR_HOST} %{${PROMPT_GIT}%} ${PROMPT_PYENV}%{$reset_color%}"
 }
-initprompt_;
+initprompt_
 
 # HISTORY #####################################################################
-for c (pwd fg bg jobs exit clear reset); do
-  alias $c=" $c";
-done
+zshaddhistory() {
+        local line="${1%%$'\n'}"
+        local cmd="${line%% *}"
 
-HISTSIZE=1000;
-SAVEHIST=10000;
-HISTFILE=~/.zhistory;
-setopt BANG_HIST;
+        [[ ${#line} -ge 5
+                && ${cmd} != (l[sal])
+                && ${cmd} != (cd)
+                && ${cmd} != ([fb]g)
+                && ${cmd} != (pwd)
+                && ${cmd} != (jobs)
+                && ${cmd} != (exit)
+                && ${cmd} != (clear)
+                && ${cmd} != (reset)
+                && ${cmd} != (pass)
+                && ${cmd} != (pet)
+                && ${cmd} != (gdh)
+                && ${cmd} != (gst)
+                && ${cmd} != ( .*)
+        ]]
+}
+
+HISTSIZE=100000
+SAVEHIST=100000
+HISTFILE=~/.zhistory
+setopt BANG_HIST
 # Don't like SHARE_HISTORY. Can't keep history separate between terminals.
-setopt _APPEND_HISTORY;
-setopt HIST_IGNORE_SPACE;
-setopt HIST_EXPIRE_DUPS_FIRST;
-setopt EXTENDED_HISTORY;
-setopt HIST_NO_STORE;
+setopt _APPEND_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt EXTENDED_HISTORY
+setopt HIST_NO_STORE
 bindkey "^r" history-incremental-search-backward
+# https://stackoverflow.com/a/3483679
+bindkey "^U" backward-kill-line
 
-function history_share {
-        fc -RI;
+history_share() {
+        fc -RI
 }
 
 # EXEC ########################################################################
 
 # Attempt to set termcap to something with 256 colors
-try_termcap="screen-256color";
-infocmp ${try_termcap} > /dev/null;
+try_termcap="screen-256color"
+infocmp ${try_termcap} > /dev/null
 if [ 0 -eq $? ]; then
-         export TERM="${try_termcap}";
+         export TERM="${try_termcap}"
 else
-        try_termcap="xterm-256color";
-        infocmp ${try_termcap} > /dev/null;
+        try_termcap="xterm-256color"
+        infocmp ${try_termcap} > /dev/null
         if [ 0 -eq $? ]; then
-                export TERM="${try_termcap}";
+                export TERM="${try_termcap}"
         fi
 fi
 
-cd_wd;
+# setopt IGNOREEOF
+# ctrl-d() {
+# 	export IGNOREEOF=(($IGNOREEOF + 1))
+# 	echo "eof" $IGNOREEOF
+# 	if [[ $IGNOREEOF -gt 1 ]]; then
+# 		export IGNOREEOF=0
+# 		return 0
+# 	fi
+# 	zle -M "zsh: use 'exit' to exit."
+# 	return 1
+# } 
+# zle -N ctrl-d
+# bindkey '^D' ctrl-d
+# # https://github.com/zsh-users/zsh-syntax-highlighting/issues/377
 
-source_file_if_exists "${HOME}/.dotfiles/bash-like-common/rc";
-source_file_if_exists "${HOME}/.dotfiles/bash-like-common/pkg_env";
-source_file_if_exists "${HOME}/.bash_completion.d/python-argcomplete.sh";
-
-fpath=(~/.zsh/completion $fpath) 
-
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-export GOPATH="$HOME/.go";
-addPath "$HOME/.go/bin";
+source_file_if_exists "$DOTFILES/zsh/completion.zsh"

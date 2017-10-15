@@ -4,3 +4,6 @@ setlocal shiftwidth=2
 setlocal smarttab
 setlocal expandtab
 setlocal nosmartindent
+
+" fold tag
+nnoremap <buffer> <localleader>f Vatzf

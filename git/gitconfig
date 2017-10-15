@@ -11,3 +11,4 @@
         excludesfile = ~/.dotfiles/git/gitignore
 [color]
 	ui = auto
+[hooks]

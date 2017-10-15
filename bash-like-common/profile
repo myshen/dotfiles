@@ -1,35 +1,40 @@
-
 # common login shell customizations
 
-# global python virtualenv
-path_add "$HOME/.pyenv/versions/global/bin" 1
-
-# pyenv
-if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi 
-if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
-
 # base16-shell colors
-BASE16_SHELL="$HOME/.config/base16-shell"
-[ -n "$PS1" ] && [ -s "$BASE16_SHELL/profile_helper.sh" ] && eval "$(PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH" "$BASE16_SHELL/profile_helper.sh")"
+# BASE16_SHELL="$HOME/.config/base16-shell"
+# [ -n "$PS1" ] && [ -s "$BASE16_SHELL/profile_helper.sh" ] && eval "$(PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH" "$BASE16_SHELL/profile_helper.sh")"
 
 # tag for ag
 if hash ag 2>/dev/null; then
   tag() { command tag "$@"; source ${TAG_ALIAS_FILE:-/tmp/tag_aliases} 2>/dev/null; }
 fi
 
-# pass password manager
-export PASSWORD_STORE_CLIP_TIME=20
-
-# pip
-export PIP_DEFAULT_TIMEOUT=10
-export PIP_REQUIRE_VIRTUALENV=true 
-gpip() {
-  PIP_REQUIRE_VIRTUALENV="" pip "$@"
-}
-
 # attachOrNewTmux
 
+if [[ "${SSH_CONNECTION}" != "" ]]; then
+        client_b_block=$(echo ${SSH_CONNECTION} | awk '{print $1}' | tr '.' ' ' | awk '{print $1 "." $2}')
+        host_b_block=$(echo ${SSH_CONNECTION} | awk '{print $3}' | tr '.' ' ' | awk '{print $1 "." $2}')
+
+        if [[ "${client_b_block}" != "${host_b_block}" ]]; then
+                attachOrNewTmux
+        fi
+fi
+
 # motd
-[[ -f "$HOME/.motd" ]] && cat "$HOME/.motd"
+randseed() {
+  od -An -N1 -D /dev/urandom
+}
+randnline() {
+  local fname
+  fname="$1"
+  wc -l "$fname" | \
+    awk -v "seed=$(randseed)" 'BEGIN{srand(seed)} {print int(rand() * $1)}'
+}
+randline() {
+  local fname
+  fname="$1"
+  awk -v "nl=$(randnline "$fname")" 'nl == NR {print}' "$fname"
+}
+[[ -f "$HOME/.motd" ]] && randline "$HOME/.motd"
 
 # vim: ft=sh

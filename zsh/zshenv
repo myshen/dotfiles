@@ -1,1 +1,4 @@
-. ~/.dotfiles/bash-like-common/env
+# sourced always; these should be constants, not things like PATH
+source "$HOME/.dotfiles/bash-like-common/env"
+ZDOTDIR="$DOTFILES/zsh"
+export ZDOTDIR

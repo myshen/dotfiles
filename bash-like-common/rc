@@ -1,4 +1,47 @@
-source_file_if_exists "${DOTFILES}/bash-like-common/aliases"
-source_file_if_exists "${DOTFILES}/bash-like-common/pkg_env"
+. "${DOTFILES}/bash-like-common/functions"
 
-source_file_if_exists "${HOME}/.dotfiles_local/bash-like-common/rc"
+# Only /you/ can prevent fork bombs
+# Can't set this on cygwin, it's managed by windows
+if [[ "$(platform)" != "cygwin" ]]; then
+  ulimit -S -u 512
+fi
+
+# PATHS #######################################################################
+setup_paths() {
+        # Make python available
+        PATH="$HOME/.pyenv/shims:$PATH"
+        # Note that these are in reverse actual order because of prepend
+        PATH=$(_path multi <<EOI
+add $HOME/.pyenv/versions/scratch/bin
+add /usr/local/sbin 1
+add /usr/local/bin 1
+add $HOME/src/golang/bin 1
+add $HOME/.local/bin 1
+add $HOME/.rvm/bin 1
+add $HOME/.cargo/bin 1
+add $HOME/.go/bin 1
+add $DOTFILES/bin 1
+EOI
+)
+        export PATH
+        path_add "/usr/local/share/man" 1 "MANPATH"
+        export GOPATH="$HOME/.go"
+}
+setup_paths
+unset -f setup_paths
+
+source_file_if_exists "$DOTFILES/bash-like-common/aliases"
+source_file_if_exists "$DOTFILES/bash-like-common/pkg_env"
+
+source_file_if_exists "$DOTFILES/bash-like-common/openvpn.sh"
+source_file_if_exists "$DOTFILES/bash-like-common/attach-ssh-agent.sh"
+source_file_if_exists "$DOTFILES/bash-like-common/lock"
+source_file_if_exists "$DOTFILES/bash-like-common/upstart.sh"
+
+# Load RVM into a shell session *as a function*
+source_file_if_exists "$HOME/.rvm/scripts/rvm"
+source_file_if_exists "/usr/local/etc/profile.d/autojump.sh"
+source_file_if_exists "$DOTFILES/git/fzf.sh"
+
+source_file_if_exists "$HOME/.dotfiles_local/bash-like-common/rc"
+# vim: ft=sh

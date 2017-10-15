@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # https://gist.github.com/Frick/0c22207f0445477a66e9
 function listening {
     if [ "${1}" = "-h" ]; then
@@ -44,3 +46,7 @@ function listening {
         fi
     done
 }
+
+if [ "$0" = "$BASH_SOURCE" ]; then
+    listening "$@"
+fi

@@ -4,4 +4,12 @@
 . "$HOME/.bashrc"
 
 source_file_if_exists "$HOME/.dotfiles/bash-like-common/profile"
+
+source_file_if_exists "$HOME/.bash_completion.d/python-argcomplete.sh"
+source_file_if_exists "/usr/local/etc/bash_completion.d/aws_bash_completer"
+source_file_if_exists "/usr/local/etc/bash_completion.d/docker"
+source_file_if_exists "/usr/local/etc/bash_completion.d/tmux"
+source_file_if_exists "/usr/local/etc/bash_completion.d/brew"
+source_file_if_exists "/usr/local/Cellar/fzf/0.16.8_1/shell/completion.bash"
+
 source_file_if_exists "$HOME/.dotfiles_local/bash_profile"

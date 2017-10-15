@@ -1,16 +1,35 @@
 # https://help.github.com/articles/ignoring-files/
 # git config --global core.excludesfile ~/.gitignore_global
 
+.ctags
+*.bak
+
+.tags
 .agignore
 .cache
-.venv
-.env
 .ropeproject
 .vim-django
-*.pyc
-*.pyo
 
+# ansible
+*.retry
+
+# mypy
+.mypy_cache
+
+# pyenv
+.venv
+.env
 .python-version
+
+# python automat
+.automat_visualize/**
+
+# python pants #
+################
+.pants.d
+dist
+.pids
+.pants.workdir.file_lock
 
 # Misc #
 ########
@@ -18,6 +37,11 @@
 _shortcut
 Session.vim
 *ession.vim
+doc/.swagger-codegen-ignore
+swagger.json
+doc/swagger.json
+doc/README.md
+doc/LICENSE
 
 # Compiled source #
 ###################

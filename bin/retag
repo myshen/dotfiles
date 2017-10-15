@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+cat \
+	    <(find . ~/.dotfiles -maxdepth 1 -name '*.py') \
+	    <(find . -mindepth 2 -name '*.py' | grep /src/) \
+	    <(find ~/.pyenv/versions/scalar/lib/python3.6/site-packages/ -name '*.py') | \
+	    ctags -a -L -

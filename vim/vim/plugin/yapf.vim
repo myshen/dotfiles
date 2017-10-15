@@ -1,0 +1,1 @@
+../bundle/dein.vim/repos/github.com/google/yapf/plugins/vim/autoload/yapf.vim
